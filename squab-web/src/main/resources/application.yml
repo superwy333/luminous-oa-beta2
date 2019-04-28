@@ -9,7 +9,12 @@ server:
   servlet:
     context-path: /
 
+
+
+
 spring:
+  profiles:
+    include: activiti
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html

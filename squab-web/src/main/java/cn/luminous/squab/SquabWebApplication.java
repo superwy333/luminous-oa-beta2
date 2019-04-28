@@ -1,13 +1,13 @@
-package cn.luminous.squabactiviti;
+package cn.luminous.squab;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SquabActivitiApplication {
+public class SquabWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SquabActivitiApplication.class, args);
+        SpringApplication.run(SquabWebApplication.class, args);
     }
 
 }

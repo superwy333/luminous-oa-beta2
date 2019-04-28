@@ -1,4 +1,4 @@
-package cn.luminous.squabweb.controller;
+package cn.luminous.squab.controller;
 
 
 import org.springframework.stereotype.Controller;
