@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "code": "200",
+  "result": [{
+    "name": "填报申请",
+    "child": [{
+      "name": "请假申请",
+      "url": "workingTask"
+    }, {
+      "name": "报销申请",
+      "url": "applyList"
+    }]
+  }, {
+    "name": "仓储管理",
+    "child": []
+  }, {
+    "name": "人事管理",
+    "child": []
+  }, {
+    "name": "流程管理",
+    "child": [{
+      "name": "模型管理",
+      "url": "workingTask"
+    }, {
+      "name": "任务管理",
+      "url": "workingTask"
+    }, {
+      "name": "代办任务",
+      "url": "workingTask"
+    }, {
+      "name": "已办任务",
+      "url": "workingTask"
+    }]
+  },{
+    "name": "系统管理",
+    "child": [{
+      "name": "用户管理",
+      "url": "workingTask"
+    }, {
+      "name": "角色管理",
+      "url": "workingTask"
+    }
+
+    ]
+  }]
+}
