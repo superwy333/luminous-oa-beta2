@@ -1,0 +1,168 @@
+package cn.luminous.squab;
+
+
+import org.activiti.engine.*;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipInputStream;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ActivitiTest {
+
+    @Autowired
+    private ApplicationContext ioc;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private IdentityService identityService;
+
+    @Autowired
+    private RepositoryService repositoryService;
+
+    @Autowired
+    private ProcessEngine processEngine;
+
+    @Autowired
+    private HistoryService historyService;
+
+//    API文档
+//    https://www.activiti.org/userguide/#api.services.start.processinstance
+
+    /**
+     * 部署流程
+     */
+    @Test
+    public void deploy() {
+        processEngine.getRepositoryService()
+                .createDeployment()
+                .addClasspathResource("processes/test-process-01.bpmn20.xml")
+                .deploy();
+    }
+
+    @Test
+    public void deployWithZip() {
+        InputStream in=this.getClass().getClassLoader().getSystemResourceAsStream("processes/qjlc.zip");
+        ZipInputStream zipInputStream=new ZipInputStream(in);
+        Deployment deployment=processEngine.getRepositoryService()
+                .createDeployment().addZipInputStream(zipInputStream)
+                .name("请假流程WithZip")
+                .deploy();
+        System.out.println("流程部署ID:"+deployment.getId());
+        System.out.println("流程部署Name:"+deployment.getName());
+
+    }
+
+    /*
+     * 查询流程定义
+     */
+    @Test
+    public void findProcessDefinition(){
+        List<ProcessDefinition> list = processEngine.getRepositoryService()//与流程定义和部署对象相关的Service
+                .createProcessDefinitionQuery()//创建一个流程定义查询
+                /*指定查询条件,where条件*/
+                //.deploymentId(deploymentId)//使用部署对象ID查询
+                //.processDefinitionId(processDefinitionId)//使用流程定义ID查询
+                //.processDefinitionKey(processDefinitionKey)//使用流程定义的KEY查询
+                //.processDefinitionNameLike(processDefinitionNameLike)//使用流程定义的名称模糊查询
+
+                /*排序*/
+                .orderByProcessDefinitionVersion().asc()//按照版本的升序排列
+                //.orderByProcessDefinitionName().desc()//按照流程定义的名称降序排列
+
+                .list();//返回一个集合列表，封装流程定义
+        //.singleResult();//返回唯一结果集
+        //.count();//返回结果集数量
+        //.listPage(firstResult, maxResults)//分页查询
+
+        if(list != null && list.size()>0){
+            for(ProcessDefinition processDefinition:list){
+                System.out.println("流程定义ID:"+processDefinition.getId());//流程定义的key+版本+随机生成数
+                System.out.println("流程定义名称:"+processDefinition.getName());//对应HelloWorld.bpmn文件中的name属性值
+                System.out.println("流程定义的key:"+processDefinition.getKey());//对应HelloWorld.bpmn文件中的id属性值
+                System.out.println("流程定义的版本:"+processDefinition.getVersion());//当流程定义的key值相同的情况下，版本升级，默认从1开始
+                System.out.println("资源名称bpmn文件:"+processDefinition.getResourceName());
+                System.out.println("资源名称png文件:"+processDefinition.getDiagramResourceName());
+                System.out.println("部署对象ID:"+processDefinition.getDeploymentId());
+                System.out.println("################################");
+            }
+        }
+
+    }
+
+
+
+    /**
+     * 删除已经部署的流程
+     */
+    @Test
+    public void delete() {
+        String[] ids = {"100010","97501","302501"};
+        for (int i =0;i<ids.length;i++) {
+            processEngine.getRepositoryService()
+                    .deleteDeployment(ids[i],true);
+        }
+
+
+    }
+
+    /**
+     * 启动流程
+     */
+    @Test
+    public void start() {
+        System.out.println("【Before】Number of process instances: " + runtimeService.createProcessInstanceQuery().count());
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("assignee","aaa");
+        processEngine.getRuntimeService()
+                .startProcessInstanceByKey("test-process-01",variables); // 流程实例id传act_re_procdef.KEY
+        System.out.println("【After】Number of process instances: " + runtimeService.createProcessInstanceQuery().count());
+    }
+
+    /**
+     * 完成任务
+     */
+    @Test
+    public void completeTask() {
+        processEngine.getTaskService().complete("85007");
+
+    }
+
+    /**
+     * 完成任务
+     * 带流程变量
+     */
+    @Test
+    public void completeTask2() {
+        String post = "cwkzy"; // 财务科职员
+        String assignee = "";
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("post","zy");
+        variables.put("days",18);
+        if ("cwkzy".equals(post)) assignee = "财务科科长";
+        if ("xxkzy".equals(post)) assignee = "信息科科长";
+        variables.put("assignee",assignee);
+        processEngine.getTaskService().complete("70005",variables);
+
+    }
+
+
+
+
+}
