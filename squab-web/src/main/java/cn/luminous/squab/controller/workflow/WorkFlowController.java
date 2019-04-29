@@ -1,6 +1,7 @@
 package cn.luminous.squab.controller.workflow;
 
 
+import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
@@ -40,14 +41,12 @@ public class WorkFlowController {
     public R apply(@RequestBody Rq rq) {
         OaTask oaTask = new OaTask();
         try {
+            log.debug("【任务注册开始】入参: " + rq.toString());
             oaTask.setBizKey(rq.getBizKey());
-            oaTask.setData(rq.getData());
+            oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
             oaTaskService.registerTask(oaTask);
         }catch (Exception e) { // 统一再controller层捕获异常
-            // 异常的处理
-            // 1.日志打印,必须用error，必须有异常中文表述和异常栈
-            log.error("申请失败",e);
-            // 2.返回前端处理结果
+            log.error("【任务注册失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
         return R.ok();

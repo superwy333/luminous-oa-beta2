@@ -103,14 +103,17 @@
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
-                    layer.msg("申请成功");
+                    if (data.code==0) {
+                        layer.msg("申请成功");
+                    } else {
+                        layer.alert("申请失败，失败原因：" + data.msg);
+                    }
                 },
                 error: function (data) {
-                    layer.alert("申请失败");
+                    layer.alert("网络超时，请联系管理员");
                 }
             });
             return false;
-
         });
 
 

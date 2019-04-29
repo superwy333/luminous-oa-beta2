@@ -11,7 +11,7 @@ spring:
     druid:
       url: jdbc:mysql://localhost:3306/laminous_activiti?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
       username: root
-      password:
+      password: root
       initial-size: 10
       max-active: 100
       min-idle: 10

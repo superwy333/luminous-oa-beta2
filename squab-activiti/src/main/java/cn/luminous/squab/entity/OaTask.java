@@ -10,7 +10,7 @@ public class OaTask extends BaseDomain {
     @Column(name = "biz_key")
     private String bizKey;
     @Column(name = "data")
-    private Object data;
+    private String data;
     @Column(name = "proc_inst_id")
     private String procInstId;
     @Column(name = "ext_field1")
@@ -32,11 +32,11 @@ public class OaTask extends BaseDomain {
         this.bizKey = bizKey;
     }
 
-    public Object getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(String data) {
         this.data = data;
     }
 
