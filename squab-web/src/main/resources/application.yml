@@ -11,7 +11,7 @@ server:
 
 spring:
   profiles:
-    include: activiti
+    include: activiti,mybatis
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html

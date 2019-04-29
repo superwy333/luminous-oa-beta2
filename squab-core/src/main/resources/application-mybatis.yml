@@ -1,0 +1,7 @@
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+mapper:
+  not-empty: false
+  identity: MYSQL
+  mappers: cn.luminous.squab.mybatis.imapper.IMapper
