@@ -95,6 +95,15 @@ public class TkMabatisTest {
 
     }
 
+    @Test
+    public void testQueryByXml() {
+        SysUer sysUer = new SysUer();
+        sysUer.setId(2L);
+        List<SysUer> sysUerList = sysUserService.queryAllUsers(sysUer);
+        log.info("---result---" + sysUerList.size());
+
+    }
+
 
 
 }
