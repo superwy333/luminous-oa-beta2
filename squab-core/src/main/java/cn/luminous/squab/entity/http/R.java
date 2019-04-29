@@ -34,6 +34,10 @@ public class R extends HashMap<String,Object> {
         return nok(null,FAIL_CODE,null);
     }
 
+    public static R nok(String msg) {
+        return nok(null,FAIL_CODE,msg);
+    }
+
     public static R nok(Object data, Integer failCode, String msg) {
         R r = new R();
         r.put(CODE,FAIL_CODE);
