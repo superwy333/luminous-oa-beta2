@@ -9,15 +9,15 @@ server:
   servlet:
     context-path: /
 
-
-
-
 spring:
   profiles:
-    include: activiti
+    include: activiti,mybatis
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     encoding: UTF-8
-    mode: HTML # 去除thymeleaf的严格校验，需要搭配nekohtml依赖一起使用
+    mode: LEGACYHTML5 # 去除thymeleaf的严格校验，需要搭配nekohtml依赖一起使用
     cache: false
+
+
+
