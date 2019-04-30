@@ -14,6 +14,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,6 +49,26 @@ public class WorkFlowController {
     @RequestMapping("/qjAdd")
     public String toQjApply() {
         return "qj-add";
+    }
+
+    /**
+     * 跳转请假审批表单
+     * @return
+     */
+    @RequestMapping("/qjApprove")
+    public String toQjApprove(Model model, String taskId) {
+        try {
+            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(taskId);
+            String data = oaTaskModel.getData();
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
+            Map<String,Object> dataMap = gson.fromJson(data,Map.class);
+            model.addAllAttributes(dataMap);
+        }catch (Exception e) {
+            // TODO 跳转到404页面
+        }
+        return "qj-approve";
     }
 
     /**

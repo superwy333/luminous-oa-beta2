@@ -69,5 +69,23 @@
 
     </select>
 
+    <select id="queryTaskById" resultMap="ModelResultMap" parameterType="java.lang.String">
+        SELECT
+        acttask.id_ AS task_id,
+        oatask.proc_inst_id,
+        oatask.proc_def_id,
+        oatask.apply_name,
+        oatask.apply_Time,
+        oatask.biz_key,
+        oatask.data
+        FROM
+        act_ru_task acttask
+        LEFT JOIN oa_task oatask on oatask.proc_inst_id = acttask.PROC_INST_ID_
+        <where>
+            acttask.id_ = #{taskId}
+        </where>
+
+    </select>
+
 
 </mapper>

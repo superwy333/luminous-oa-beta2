@@ -1,0 +1,32 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "id": 1,
+      "node": "科室审批",
+      "approver": "科长",
+      "approveResult": "同意",
+      "approveDetail": "",
+      "approveTime": "2019-04-30 15:42:23"
+    },{
+      "id": 2,
+      "node": "部门审批",
+      "approver": "部长",
+      "approveResult": "同意",
+      "approveDetail": "",
+      "approveTime": "2019-04-30 17:42:23"
+    }
+
+
+
+
+
+
+
+
+  ]
+
+
+
+}

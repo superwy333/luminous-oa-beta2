@@ -44,10 +44,10 @@
                         <input type="text" name="taskNo" placeholder="申请编号" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-inline layui-show-xs-block">
-                        <input type="text" name="taskType" placeholder="任务类型" autocomplete="off" class="layui-input">
+                        <input type="text" name="bizKey" placeholder="任务类型" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-inline layui-show-xs-block">
-                        <input id="createBy" type="text" name="createBy" placeholder="填报人" autocomplete="off"
+                        <input id="createBy" type="text" name="applyName" placeholder="填报人" autocomplete="off"
                                class="layui-input">
                     </div>
                     <button class="layui-btn" id="reload"><i class="layui-icon">&#xe615;</i></button>
@@ -57,9 +57,10 @@
                     <table id="taskTodo" lay-filter="taskTodo"></table>
 
                     <script type="text/html" id="taskTodoOperation">
-                        <a class="layui-table-link" href="#" lay-event="detail">审批</a>
+                        <a class="layui-table-link" href="#" lay-event="approve">审批</a>
+                        <a class="layui-table-link" href="#" lay-event="detail">流转记录</a>
 <!--                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>-->
-<!--                        <a class="layui-table-link" href="#" lay-event="del">删除</a>-->
+                        <a class="layui-table-link" href="#" lay-event="del">删除</a>
                     </script>
 
                     <!--数据表格操作-->

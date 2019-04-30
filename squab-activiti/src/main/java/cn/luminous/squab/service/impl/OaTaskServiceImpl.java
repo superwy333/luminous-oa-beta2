@@ -73,4 +73,9 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         String userCode = "008";
         return oaTaskMapper.queryTaskToDo(userCode);
     }
+
+    @Override
+    public OaTaskModel queryTaskById(String taskId) throws Exception {
+        return oaTaskMapper.queryTaskById(taskId);
+    }
 }

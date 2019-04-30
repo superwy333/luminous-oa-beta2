@@ -12,6 +12,7 @@ layui.use(['table', 'jquery'], function () {
             {field: 'taskId', title: 'taskId', minWidth: 150, sort: true, fixed: 'left', hide: true},
             {field: 'procInstId', title: 'procInstId', minWidth: 150, sort: true, fixed: 'left', hide: true},
             {field: 'procDefId', title: 'procDefId', minWidth: 150, sort: true, fixed: 'left', hide: true}
+            , {field: 'taskNo', title: '申请编号', minWidth: 150, sort: true}
             , {field: 'applyName', title: '填报人', minWidth: 150, sort: true}
             , {
                 field: 'bizKey', title: '任务类型', minWidth: 150, sort: true,
@@ -43,27 +44,24 @@ layui.use(['table', 'jquery'], function () {
     });
 
     //监听工具条
-    table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+    table.on('tool(taskTodo)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-        if (layEvent === 'detail') { //查看
+        if (layEvent === 'detail') { //流转记录
             //do somehing
-        } else if (layEvent === 'del') { //删除
-            layer.confirm('真的删除行么', function (index) {
-                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                layer.close(index);
-                //向服务端发送删除指令
-            });
-        } else if (layEvent === 'edit') { //编辑
-            //do something
-
-            //同步更新缓存对应的值
-            obj.update({
-                username: '123'
-                , title: 'xxx'
-            });
+            xadmin.open('流程记录','/workflow/qjApprove',1500,800,false);
+        } else if (layEvent === 'approve'){
+            xadmin.open('流程记录','/workflow/qjApprove?taskId=' + data.taskId,1500,800,true);
         }
+
+        // } else if (layEvent === 'del') { //删除
+        //     layer.confirm('真的删除行么', function (index) {
+        //         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+        //         layer.close(index);
+        //         //向服务端发送删除指令
+        //     });
+        // }
     });
 })
