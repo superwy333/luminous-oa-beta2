@@ -1,9 +1,19 @@
 package cn.luminous.squab;
 
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
+import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
+import org.activiti.image.ProcessDiagramGenerator;
+import org.activiti.image.impl.DefaultProcessDiagramGenerator;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 import java.util.zip.ZipInputStream;
 
 @RunWith(SpringRunner.class)
@@ -42,6 +50,9 @@ public class ActivitiTest {
     @Autowired
     private HistoryService historyService;
 
+    @Autowired
+    ProcessEngineConfiguration processEngineConfiguration;
+
 //    API文档
 //    https://www.activiti.org/userguide/#api.services.start.processinstance
 
@@ -50,9 +61,10 @@ public class ActivitiTest {
      */
     @Test
     public void deploy() {
+        System.out.println(ioc.containsBean("processEngineConfiguration"));
         processEngine.getRepositoryService()
                 .createDeployment()
-                .addClasspathResource("processes/test-process-01.bpmn20.xml")
+                .addClasspathResource("processes/test-process.bpmn20.xml")
                 .deploy();
     }
 
@@ -113,7 +125,7 @@ public class ActivitiTest {
      */
     @Test
     public void delete() {
-        String[] ids = {"100010","97501","302501"};
+        String[] ids = {"137501"};
         for (int i =0;i<ids.length;i++) {
             processEngine.getRepositoryService()
                     .deleteDeployment(ids[i],true);
@@ -160,6 +172,44 @@ public class ActivitiTest {
         variables.put("assignee",assignee);
         processEngine.getTaskService().complete("70005",variables);
 
+    }
+
+    /**
+     * 查询待办任务
+     */
+    @Test
+    public void queryWorkTodo() {
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee("008").list();
+        System.out.println(taskList);
+
+    }
+
+    /**
+     * 获取流程图
+     * 解决中文方框问题
+     * @throws Exception
+     */
+    @Test
+    public void genPic() throws Exception {
+//        ProcessInstance pi = this.processEngine.getRuntimeService().createProcessInstanceQuery()
+//                .processInstanceId(procId).singleResult();
+        BpmnModel bpmnModel = this.processEngine.getRepositoryService().getBpmnModel("test-process:1:140004");
+        System.out.println(bpmnModel);
+        processEngineConfiguration = processEngine.getProcessEngineConfiguration();
+        Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
+
+        ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+        InputStream inputStream = diagramGenerator.generateDiagram(bpmnModel, "png", new ArrayList<>(),new ArrayList<>(),"宋体","宋体","宋体",null,1.0);
+        FileOutputStream outputStream=new FileOutputStream("F:/a.png");
+        byte[] b=new byte[1024];
+        int red=inputStream.read(b);
+        while(red!=-1){
+            outputStream.write(b,0,red);
+            red=inputStream.read(b);
+        }
+        outputStream.write(b);
+        inputStream.close();
+        outputStream.close();
     }
 
 

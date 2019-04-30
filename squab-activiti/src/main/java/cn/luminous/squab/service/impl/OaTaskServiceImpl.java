@@ -1,8 +1,5 @@
 package cn.luminous.squab.service.impl;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.http.R;
@@ -11,10 +8,11 @@ import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.OaTaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("oaTaskService")
@@ -44,13 +42,14 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
 
         // TODO 根据bizKey分拣得出流程定义key
-        String processKey = "myProcess_1";
+        String processKey = "test-process";
 
         // 把oaTask的表单提交数据装入流程变量
         Map<String,Object> variables =  JSONUtil.parseObj(oaTask.getData());
 
         // TODO 把当前登陆用户信息装入流程变量
         variables.put("post","zy");
+        variables.put("assignee","008");
         // ....
 
         // 启动流程
@@ -60,5 +59,18 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         // 记录提交的表单数据
         this.add(oaTask);
         return R.ok();
+    }
+
+
+    /**
+     * 查询待办任务
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<Task> queryTaskToDo() throws Exception {
+        // TODO 从Shiro中获取当前登陆用户
+        String userCode = "008";
+        return activitiService.queryTaskTodo(userCode);
     }
 }
