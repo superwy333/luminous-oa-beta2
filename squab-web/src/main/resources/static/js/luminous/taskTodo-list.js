@@ -4,7 +4,7 @@ layui.use(['table', 'jquery'], function () {
         elem: '#taskTodo'
         , method: 'post'
         , contentType: 'application/json'
-        , height: 'full-200'
+        // , height: 'full-200'
         , url: '/workflow/taskToDo' //数据接口
         , page: true //开启分页
         , cols: [[ //表头
