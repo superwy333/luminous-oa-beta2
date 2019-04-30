@@ -4,11 +4,11 @@ import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.mapper.OaTaskMapper;
+import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.OaTaskService;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,9 +68,9 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @throws Exception
      */
     @Override
-    public List<Task> queryTaskToDo() throws Exception {
+    public List<OaTaskModel> queryTaskToDo() throws Exception {
         // TODO 从Shiro中获取当前登陆用户
         String userCode = "008";
-        return activitiService.queryTaskTodo(userCode);
+        return oaTaskMapper.queryTaskToDo(userCode);
     }
 }

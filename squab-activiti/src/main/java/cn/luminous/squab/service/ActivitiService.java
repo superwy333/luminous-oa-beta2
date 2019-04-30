@@ -1,5 +1,7 @@
 package cn.luminous.squab.service;
 
+import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.model.OaTaskModel;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
@@ -9,8 +11,6 @@ import java.util.Map;
 public interface ActivitiService {
 
     ProcessInstance startProcess(String processKey, Map<String,Object> variables) throws Exception;
-
-    List<Task> queryTaskTodo(String userCode) throws Exception;
 
 
 

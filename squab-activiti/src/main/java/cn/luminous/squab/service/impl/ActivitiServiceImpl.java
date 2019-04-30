@@ -1,5 +1,7 @@
 package cn.luminous.squab.service.impl;
 
+import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.ActivitiService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.TaskService;
@@ -34,14 +36,4 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
 
-    /**
-     * 根据userCode查询当前用户的代办任务
-     * @param userCode
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public List<Task> queryTaskTodo(String userCode) throws Exception {
-        return taskService.createTaskQuery().taskAssignee(userCode).list();
-    }
 }

@@ -1,35 +1,29 @@
-package cn.luminous.squab.entity;
+package cn.luminous.squab.model;
 
-
-import javax.persistence.Column;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "oa_task")
-public class OaTask extends BaseDomain {
+public class OaTaskModel {
 
-    @Column(name = "biz_key")
+    private String taskId; //act_ru_task.ID_
     private String bizKey;
-    @Column(name = "data")
     private String data;
-    @Column(name = "proc_inst_id")
     private String procInstId;
-    @Column(name = "proc_def_id")
     private String procDefId;
-    @Column(name = "apply_name")
     private String applyName;
-    @Column(name = "apply_time")
     private Date applyTime;
-    @Column(name = "ext_field1")
     private String extField1;
-    @Column(name = "ext_field2")
     private String extField2;
-    @Column(name = "ext_field3")
     private String extField3;
-    @Column(name = "ext_field4")
     private String extField4;
-    @Column(name = "ext_field5")
     private String extField5;
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
 
     public String getBizKey() {
         return bizKey;
@@ -118,4 +112,5 @@ public class OaTask extends BaseDomain {
     public void setExtField5(String extField5) {
         this.extField5 = extField5;
     }
+
 }
