@@ -81,6 +81,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:4.3.23.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:4.3.23.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: cn.hutool:hutool-all:4.5.7" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework.boot:spring-boot-devtools:1.5.20.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:1.5.20.RELEASE" level="project" />
   </component>
 </module>
