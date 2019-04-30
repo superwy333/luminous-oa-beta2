@@ -1,6 +1,9 @@
 package cn.luminous.squab.service.impl;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.mapper.OaTaskMapper;
@@ -38,11 +41,13 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
     @Override
     public R registerTask(OaTask oaTask) throws Exception {
 
+        // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
+
         // TODO 根据bizKey分拣得出流程定义key
         String processKey = "myProcess_1";
 
         // 把oaTask的表单提交数据装入流程变量
-        Map<String,Object> variables =  (Map<String,Object>) oaTask.getData();
+        Map<String,Object> variables =  JSONUtil.parseObj(oaTask.getData());
 
         // TODO 把当前登陆用户信息装入流程变量
         variables.put("post","zy");

@@ -1,6 +1,6 @@
 package cn.luminous.squab.entity.http;
 
-import java.util.Map;
+import cn.hutool.json.JSONUtil;
 
 public class Rq{
 
@@ -12,7 +12,7 @@ public class Rq{
     /**
      * 前端传过来的json数据
      */
-    private Map<String,Object> data;
+    private Object data;
 
     public String getBizKey() {
         return bizKey;
@@ -22,11 +22,16 @@ public class Rq{
         this.bizKey = bizKey;
     }
 
-    public Map<String, Object> getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(Map<String, Object> data) {
+    public void setData(Object data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonStr(this);
     }
 }
