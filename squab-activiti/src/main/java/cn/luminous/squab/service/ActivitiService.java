@@ -12,6 +12,12 @@ public interface ActivitiService {
 
     ProcessInstance startProcess(String processKey, Map<String,Object> variables) throws Exception;
 
+    Map<String,Object> getVariables(String actTaskId) throws Exception;
+
+    void completeTask(String actTaskId) throws Exception;
+
+    void completeTask(String actTaskId, Map<String,Object> variables) throws Exception;
+
 
 
 

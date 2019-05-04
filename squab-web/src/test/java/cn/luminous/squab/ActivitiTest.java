@@ -125,7 +125,7 @@ public class ActivitiTest {
      */
     @Test
     public void delete() {
-        String[] ids = {"55001"};
+        String[] ids = {"105001"};
         for (int i =0;i<ids.length;i++) {
             processEngine.getRepositoryService()
                     .deleteDeployment(ids[i],true);
@@ -145,6 +145,17 @@ public class ActivitiTest {
         processEngine.getRuntimeService()
                 .startProcessInstanceByKey("test-process-01",variables); // 流程实例id传act_re_procdef.KEY
         System.out.println("【After】Number of process instances: " + runtimeService.createProcessInstanceQuery().count());
+    }
+
+    /**
+     * 获取流程变量
+     */
+    @Test
+    public void getVariables() {
+        Map<String,Object> variables = taskService.getVariables("100030");
+        System.out.println(variables);
+
+
     }
 
     /**
@@ -193,14 +204,14 @@ public class ActivitiTest {
     public void genPic() throws Exception {
 //        ProcessInstance pi = this.processEngine.getRuntimeService().createProcessInstanceQuery()
 //                .processInstanceId(procId).singleResult();
-        BpmnModel bpmnModel = this.processEngine.getRepositoryService().getBpmnModel("test-process:1:140004");
+        BpmnModel bpmnModel = this.processEngine.getRepositoryService().getBpmnModel("myProcess_1:1:105004");
         System.out.println(bpmnModel);
         processEngineConfiguration = processEngine.getProcessEngineConfiguration();
         Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
 
         ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
         InputStream inputStream = diagramGenerator.generateDiagram(bpmnModel, "png", new ArrayList<>(),new ArrayList<>(),"宋体","宋体","宋体",null,1.0);
-        FileOutputStream outputStream=new FileOutputStream("F:/a.png");
+        FileOutputStream outputStream=new FileOutputStream("D:/a.png");
         byte[] b=new byte[1024];
         int red=inputStream.read(b);
         while(red!=-1){

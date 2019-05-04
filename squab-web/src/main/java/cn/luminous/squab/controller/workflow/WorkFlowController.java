@@ -3,6 +3,7 @@ package cn.luminous.squab.controller.workflow;
 
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.model.OaTaskModel;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class WorkFlowController{
      */
     @RequestMapping("/applyList")
     public String toApplyList() {
-        // TODO 根据用户权限做可申请的业务帅选
+        // TODO 根据用户权限做可申请的业务筛选
         return "apply-list";
 
     }
@@ -71,7 +73,10 @@ public class WorkFlowController{
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
                     .create();
             Map<String,Object> dataMap = gson.fromJson(data,Map.class);
+            model.addAttribute("taskId",oaTaskModel.getTaskId());
             model.addAllAttributes(dataMap);
+            // TODO 把当前登陆人加入模板参数
+            model.addAttribute("currentUser","008");
         }catch (Exception e) {
             // TODO 跳转到404页面
         }
@@ -97,6 +102,36 @@ public class WorkFlowController{
         return R.ok();
     }
 
+    /**
+     * 审批
+     */
+    @RequestMapping(value = "/approve", method = RequestMethod.POST)
+    @ResponseBody
+    public String approve(@RequestBody Rq rq) {
+        OaTask oaTask = new OaTask();
+        try {
+            log.debug("【审批开始】入参: " + rq.toString());
+            Map<String,Object> data = (Map<String,Object>) rq.getData();
+            OaTaskApprove oaTaskApprove = new OaTaskApprove();
+            oaTaskApprove.setActTaskId((String) data.get("actTaskId"));
+            oaTaskApprove.setApproveContent((String) data.get("approveContent"));
+            oaTaskApprove.setApprover((String) data.get("currentUser"));
+            oaTaskApprove.setApproveTime(new Date());
+            oaTaskApprove.setOaTaskId(111L);
+            oaTaskService.approveTask(oaTaskApprove);
+        }catch (Exception e) { // 统一再controller层捕获异常
+            log.error("【审批失败】入参: " + rq.toString(), e);
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
+    }
+
+
+    /**
+     * 我的代办列表
+     * @param rq
+     * @return
+     */
     @RequestMapping(value = "/taskToDo", method = RequestMethod.POST)
     @ResponseBody
     public String taskToDo(@RequestBody Rq rq) {

@@ -35,5 +35,38 @@ public class ActivitiServiceImpl implements ActivitiService {
                 .startProcessInstanceByKey(processKey,variables); // 流程实例id传act_re_procdef.KEY
     }
 
+    /**
+     * 获取流程变量
+     * @param actTaskId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Map<String, Object> getVariables(String actTaskId) throws Exception{
+        return taskService.getVariables(actTaskId);
+    }
 
+    /**
+     * 完成任务
+     * @param actTaskId
+     * @throws Exception
+     */
+    @Override
+    public void completeTask(String actTaskId) throws Exception {
+        processEngine.getTaskService().complete(actTaskId);
+
+    }
+
+
+    /**
+     * 完成任务
+     * @param actTaskId
+     * @param variables
+     * @throws Exception
+     */
+    @Override
+    public void completeTask(String actTaskId, Map<String, Object> variables) throws Exception {
+        processEngine.getTaskService().complete(actTaskId, variables);
+
+    }
 }

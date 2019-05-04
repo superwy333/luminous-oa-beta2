@@ -1,6 +1,7 @@
 package cn.luminous.squab.service;
 
 import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.model.OaTaskModel;
 
@@ -10,6 +11,8 @@ public interface OaTaskService extends BaseService<OaTask> {
 
 
     String registerTask(OaTask oaTask) throws Exception;
+
+    String approveTask(OaTaskApprove oaTaskApprove) throws Exception;
 
     List<OaTaskModel> queryTaskToDo() throws Exception;
 

@@ -4,11 +4,14 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
+import cn.luminous.squab.mapper.OaTaskApproveMapper;
 import cn.luminous.squab.mapper.OaTaskMapper;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.ActivitiService;
+import cn.luminous.squab.service.OaTaskApproveService;
 import cn.luminous.squab.service.OaTaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
     @Autowired
     private OaTaskMapper oaTaskMapper;
     @Autowired
+    private OaTaskApproveService oaTaskApproveService;
+    @Autowired
     private ActivitiService activitiService;
 
     @Override
@@ -38,6 +43,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * 启动流程
      * @return
      * @throws Exception
+     * TODO 这个地方需要考虑事务的问题
      */
     @Override
     public String registerTask(OaTask oaTask) throws Exception {
@@ -64,11 +70,28 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
 
         // 记录提交的表单数据
-        // TODO 这个地方需要考虑事务的问题
         this.add(oaTask);
         return R.ok();
     }
 
+
+    /**
+     * 通用审批
+     * @param oaTaskApprove
+     * @return
+     * @throws Exception
+     * TODO 这个地方需要考虑事务的问题
+     */
+    @Override
+    public String approveTask(OaTaskApprove oaTaskApprove) throws Exception {
+        String actTaskId = oaTaskApprove.getActTaskId();
+        // 完成任务
+        Map<String,Object> variables = activitiService.getVariables(actTaskId);
+        activitiService.completeTask(actTaskId, variables);
+        // 记录审批信息
+        oaTaskApproveService.add(oaTaskApprove);
+        return R.ok();
+    }
 
     /**
      * 查询待办任务

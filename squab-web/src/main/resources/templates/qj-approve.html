@@ -149,13 +149,13 @@
 
             <div class="layui-form-item">
                 <label class="layui-form-label"></label>
-                <button class="layui-btn" lay-filter="add" lay-submit="">同意</button>
-                <button class="layui-btn" lay-filter="add" lay-submit="">驳回</button>
+                <button class="layui-btn" lay-filter="pass" lay-submit="">同意</button>
+                <button class="layui-btn" lay-filter="reject" lay-submit="">驳回</button>
             </div>
         </form>
     </div>
 </div>
-<script>layui.use(['form', 'layer'],
+<script th:inline="javascript">layui.use(['form', 'layer'],
     function () {
         $ = layui.jquery;
         var form = layui.form,
@@ -176,28 +176,41 @@
             // }
         });
 
-        form.on('submit(add)', function (data) {
-            var reqData = {
-                bizKey: 'qj',
-                data: data.field
+        form.on('submit(pass)', function (data) {
+            var actTaskId = [[${taskId}]];
+            var currentUser = [[${currentUser}]];
+            var data = {
+                actTaskId: actTaskId,
+                approveContent: data.field.approveContent,
+                currentUser: currentUser
             };
+            var reqData = {
+                bizKey: 'qjApprove',
+                data:data
+            };
+            // alert(JSON.stringify(reqData));
             $.ajax({
-                url: '/workflow/apply',
+                url: '/workflow/approve',
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
                     if (data.code==0) {
-                        layer.msg("申请成功");
+                        layer.msg("操作成功");
                     } else {
-                        layer.alert("申请失败，失败原因：" + data.msg);
+                        layer.alert("操作失败，失败原因：" + data.msg);
                     }
                 },
                 error: function (data) {
                     layer.alert("网络超时，请联系管理员");
                 }
             });
+            return false;
+        });
+
+        form.on('submit(reject)', function (data) {
+            layer.alert("开发中...");
             return false;
         });
 
