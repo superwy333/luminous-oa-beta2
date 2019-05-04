@@ -125,7 +125,7 @@ public class ActivitiTest {
      */
     @Test
     public void delete() {
-        String[] ids = {"137501"};
+        String[] ids = {"55001"};
         for (int i =0;i<ids.length;i++) {
             processEngine.getRepositoryService()
                     .deleteDeployment(ids[i],true);

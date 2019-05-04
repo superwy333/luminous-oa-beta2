@@ -64,4 +64,4 @@ layui.use(['table', 'jquery'], function () {
         //     });
         // }
     });
-})
+});

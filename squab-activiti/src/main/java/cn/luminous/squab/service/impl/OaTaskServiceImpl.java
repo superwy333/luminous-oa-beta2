@@ -1,5 +1,7 @@
 package cn.luminous.squab.service.impl;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.http.R;
@@ -12,6 +14,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +40,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @throws Exception
      */
     @Override
-    public R registerTask(OaTask oaTask) throws Exception {
+    public String registerTask(OaTask oaTask) throws Exception {
 
         // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
 
@@ -55,8 +58,13 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         // 启动流程
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
         oaTask.setProcInstId(processInstance.getProcessInstanceId());
+        oaTask.setProcDefId(processInstance.getProcessDefinitionId());
+        oaTask.setApplyName((String) variables.get("applyName"));
+        oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
+
 
         // 记录提交的表单数据
+        // TODO 这个地方需要考虑事务的问题
         this.add(oaTask);
         return R.ok();
     }

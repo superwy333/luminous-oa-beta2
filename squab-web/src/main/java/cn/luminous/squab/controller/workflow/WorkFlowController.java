@@ -10,9 +10,7 @@ import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,17 +18,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/workflow")
 @Controller
 @Slf4j
-public class WorkFlowController {
+public class WorkFlowController{
 
     @Autowired
     private OaTaskService oaTaskService;
+
+    /**
+     * 跳转申请汇总页面
+     * @return
+     */
+    @RequestMapping("/applyList")
+    public String toApplyList() {
+        // TODO 根据用户权限做可申请的业务帅选
+        return "apply-list";
+
+    }
 
     /**
      * 跳转我的待办
@@ -40,7 +48,6 @@ public class WorkFlowController {
     public String toTaskToDo() {
         return "taskTodo-list";
     }
-
 
     /**
      * 跳转请假申请表单
@@ -76,7 +83,7 @@ public class WorkFlowController {
      */
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
     @ResponseBody
-    public R apply(@RequestBody Rq rq) {
+    public String apply(@RequestBody Rq rq) {
         OaTask oaTask = new OaTask();
         try {
             log.debug("【任务注册开始】入参: " + rq.toString());
@@ -93,30 +100,16 @@ public class WorkFlowController {
     @RequestMapping(value = "/taskToDo", method = RequestMethod.POST)
     @ResponseBody
     public String taskToDo(@RequestBody Rq rq) {
-        List<OaTaskModel> taskList = new ArrayList<>();
+        List<OaTaskModel> taskList;
         try {
             log.debug("【查询代办开始】入参: " + rq.toString());
             taskList = oaTaskService.queryTaskToDo();
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
-            //return R.nok(e.getMessage());
+            return R.nok(e.getMessage());
         }
+        return R.ok(taskList);
 
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .create();
-
-        return gson.toJson(R.ok(taskList));
-
-
-
-//        return JSONUtil.parse(R.ok(taskList));
     }
-
-
-
-
-
-
 
 }

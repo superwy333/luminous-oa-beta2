@@ -17,7 +17,7 @@
       "url": "workingTask"
     }, {
       "name": "报销申请",
-      "url": "applyList"
+      "url": "/workflow/applyList"
     }]
   }, {
     "name": "仓储管理",

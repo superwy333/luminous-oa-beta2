@@ -9,7 +9,7 @@ import java.util.List;
 public interface OaTaskService extends BaseService<OaTask> {
 
 
-    R registerTask(OaTask oaTask) throws Exception;
+    String registerTask(OaTask oaTask) throws Exception;
 
     List<OaTaskModel> queryTaskToDo() throws Exception;
 
