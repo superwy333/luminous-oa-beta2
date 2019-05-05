@@ -5,7 +5,7 @@
     "name": "我的工作台",
     "child": [{
     "name": "我的申请",
-    "url": "/workflow/taskDoneList"
+    "url": "/workflow/myTaskList"
     }, {
       "name": "我的待办",
       "url": "/workflow/taskTodoList"

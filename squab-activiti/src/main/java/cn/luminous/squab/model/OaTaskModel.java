@@ -14,12 +14,30 @@ public class OaTaskModel extends BaseDomain {
     private String procInstId;
     private String procDefId;
     private String applyName;
+    private String applyCode;
+    private String assignee;
     private Date applyTime;
     private String extField1;
     private String extField2;
     private String extField3;
     private String extField4;
     private String extField5;
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
+    }
+
+    public String getApplyCode() {
+        return applyCode;
+    }
+
+    public void setApplyCode(String applyCode) {
+        this.applyCode = applyCode;
+    }
 
     public String getTaskName() {
         return taskName;

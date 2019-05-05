@@ -20,6 +20,8 @@ public class OaTask extends BaseDomain {
     private String procDefId;
     @Column(name = "apply_name")
     private String applyName;
+    @Column(name = "apply_code")
+    private String applyCode;
     @Column(name = "apply_time")
     private Date applyTime;
     @Column(name = "ext_field1")
@@ -32,6 +34,14 @@ public class OaTask extends BaseDomain {
     private String extField4;
     @Column(name = "ext_field5")
     private String extField5;
+
+    public String getApplyCode() {
+        return applyCode;
+    }
+
+    public void setApplyCode(String applyCode) {
+        this.applyCode = applyCode;
+    }
 
     public String getTaskState() {
         return taskState;

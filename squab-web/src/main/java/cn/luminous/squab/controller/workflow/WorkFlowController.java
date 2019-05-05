@@ -91,6 +91,11 @@ public class WorkFlowController{
         return "qj-approve";
     }
 
+    @RequestMapping("/myTaskList")
+    public String myTaskList() {
+        return "myTask-list";
+    }
+
     /**
      * 表单提交
      */
@@ -200,7 +205,28 @@ public class WorkFlowController{
             return R.nok(e.getMessage());
         }
         return R.ok(oaTaskApproveModelList);
+    }
 
+
+    /**
+     * 我的申请
+     * @param rq
+     * @return
+     */
+    @RequestMapping(value = "/myTaskList", method = RequestMethod.POST)
+    @ResponseBody
+    public String myTaskList(@RequestBody Rq rq) {
+        List<OaTaskModel> oaTaskModelList;
+        try {
+            // TODO 获取当前登陆人
+            String currentUserCode = "008";
+            oaTaskModelList = oaTaskService.queryMyTask(currentUserCode);
+            log.debug("【查询我的任务开始】入参: " + rq.toString());
+        }catch (Exception e) {
+            log.error("【查询我的任务失败】入参: " + rq.toString(), e);
+            return R.nok(e.getMessage());
+        }
+        return R.ok(oaTaskModelList);
     }
 
 

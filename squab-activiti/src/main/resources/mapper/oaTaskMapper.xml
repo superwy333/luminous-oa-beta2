@@ -6,7 +6,9 @@
         <result column="biz_key" property="bizKey" jdbcType="VARCHAR"/>
         <result column="proc_inst_id" property="procInstId" jdbcType="VARCHAR"/>
         <result column="proc_def_id" property="procDefId" jdbcType="VARCHAR"/>
+        <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
         <result column="apply_name" property="applyName" jdbcType="VARCHAR"/>
+        <result column="apply_code" property="applyName" jdbcType="VARCHAR"/>
         <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
         <result column="data" property="data" jdbcType="VARCHAR"/>
         <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
@@ -26,9 +28,12 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="task_id" property="taskId" jdbcType="VARCHAR"/>
         <result column="biz_key" property="bizKey" jdbcType="VARCHAR"/>
+        <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
+        <result column="assignee" property="assignee" jdbcType="VARCHAR"/>
         <result column="proc_inst_id" property="procInstId" jdbcType="VARCHAR"/>
         <result column="proc_def_id" property="procDefId" jdbcType="VARCHAR"/>
         <result column="apply_name" property="applyName" jdbcType="VARCHAR"/>
+        <result column="apply_code" property="applyCode" jdbcType="VARCHAR"/>
         <result column="task_name" property="taskName" jdbcType="VARCHAR"/>
         <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
         <result column="data" property="data" jdbcType="VARCHAR"/>
@@ -47,7 +52,7 @@
 
 
     <sql id="Base_Column_List">
-        id, biz_key, proc_inst_id, proc_def_id, apply_name, apply_time, data, create_by, create_time,
+        id, biz_key, proc_inst_id, proc_def_id, task_state, apply_name, apply_code, apply_time, data, create_by, create_time,
         last_modify_by, last_modify_time, deleted, version, ext_field1, ext_field2, ext_field3,
         ext_field4, ext_field5
     </sql>
@@ -106,6 +111,35 @@
             acttask.id_ = #{taskId}
         </where>
 
+    </select>
+
+    <select id="queryMyTask" resultMap="ModelResultMap" parameterType="java.lang.String">
+        SELECT
+        task.id,
+        task.proc_def_id,
+        task.proc_inst_id,
+        task.biz_key,
+        task.apply_time,
+        task.task_state,
+        actTask.assignee_ AS assignee
+        FROM
+        oa_task task
+        LEFT JOIN act_ru_task actTask on actTask.proc_inst_id_ = task.proc_inst_id
+        WHERE task.task_state = 0
+        AND task.apply_code = #{userCode}
+        UNION
+        SELECT
+        task.id,
+        task.proc_def_id,
+        task.proc_inst_id,
+        task.biz_key,
+        task.apply_time,
+        task.task_state,
+        null AS assignee
+        FROM
+        oa_task task
+        WHERE (task.task_state = 1 or task.task_state = 2)
+        AND task.apply_code = #{userCode}
     </select>
 
 

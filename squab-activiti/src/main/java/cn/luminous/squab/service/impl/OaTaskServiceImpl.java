@@ -164,10 +164,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         return oaTaskApproveMapper.queryApproveDetail(oaTaskId);
     }
 
-
-
-
-
-
-
+    @Override
+    public List<OaTaskModel> queryMyTask(String userCode) throws Exception {
+        return oaTaskMapper.queryMyTask(userCode);
+    }
 }
