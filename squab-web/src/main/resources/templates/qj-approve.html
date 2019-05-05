@@ -187,7 +187,7 @@
                 currentUser: currentUser
             };
             var reqData = {
-                bizKey: 'qjApprove',
+                bizKey: 'pass',
                 data:data
             };
             // alert(JSON.stringify(reqData));
@@ -212,7 +212,37 @@
         });
 
         form.on('submit(reject)', function (data) {
-            layer.alert("开发中...");
+            var actTaskId = [[${taskId}]];
+            var currentUser = [[${currentUser}]];
+            var oaTaskId = [[${id}]];
+            var data = {
+                actTaskId: actTaskId,
+                oaTaskId: oaTaskId,
+                approveContent: data.field.approveContent,
+                currentUser: currentUser
+            };
+            var reqData = {
+                bizKey: 'reject',
+                data:data
+            };
+            // alert(JSON.stringify(reqData));
+            $.ajax({
+                url: '/workflow/approve',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(reqData),
+                success: function (data) {
+                    if (data.code==0) {
+                        layer.msg("操作成功");
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
             return false;
         });
 

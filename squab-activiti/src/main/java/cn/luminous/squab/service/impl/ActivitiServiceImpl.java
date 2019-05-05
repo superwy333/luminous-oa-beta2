@@ -72,6 +72,12 @@ public class ActivitiServiceImpl implements ActivitiService {
         processEngine.getTaskService().complete(actTaskId, variables);
     }
 
+    @Override
+    public void deleteTask(String actTaskId) throws Exception {
+        Task task = taskService.createTaskQuery().taskId(actTaskId).singleResult();
+        runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "Reject");
+    }
+
     /**
      * 当前任务流程实例是否已经结束
      * @param procInstId

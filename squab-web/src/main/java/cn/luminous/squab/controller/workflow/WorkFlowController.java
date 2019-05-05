@@ -1,7 +1,9 @@
 package cn.luminous.squab.controller.workflow;
 
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
+import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
@@ -124,7 +126,12 @@ public class WorkFlowController{
             oaTaskApprove.setApprover((String) data.get("currentUser"));
             oaTaskApprove.setApproveTime(new Date());
             oaTaskApprove.setOaTaskId(((Integer)data.get("oaTaskId")).longValue());
-            oaTaskService.approveTask(oaTaskApprove);
+            if (Constant.BIZ_KEY.PASS.equals(rq.getBizKey())) { // 流程通过
+                oaTaskService.approveTask(oaTaskApprove);
+            }else if (Constant.BIZ_KEY.REJECT.equals(rq.getBizKey())) { // 流程驳回
+                oaTaskService.rejectTask(oaTaskApprove);
+            }
+
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【审批失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());

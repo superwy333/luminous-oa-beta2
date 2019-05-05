@@ -73,7 +73,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
         // 记录提交的表单数据
         this.add(oaTask);
-        return R.ok();
+        return null;
     }
 
 
@@ -99,7 +99,19 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
             oaTask.setTaskState(Constant.TASK_STATES.PASSED);
             updateByIdSelective(oaTask);
         }
-        return R.ok();
+        return null;
+    }
+
+    @Override
+    public String rejectTask(OaTaskApprove oaTaskApprove) throws Exception {
+        String actTaskId = oaTaskApprove.getActTaskId();
+        Long oaTaskId = oaTaskApprove.getOaTaskId();
+        activitiService.deleteTask(actTaskId);
+        oaTaskApproveService.add(oaTaskApprove);
+        OaTask oaTask = queryById(oaTaskApprove.getOaTaskId());
+        oaTask.setTaskState(Constant.TASK_STATES.REJECTED);
+        updateByIdSelective(oaTask);
+        return null;
     }
 
     /**

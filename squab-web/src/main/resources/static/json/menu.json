@@ -16,9 +16,6 @@
   },{
     "name": "填报申请",
     "child": [{
-      "name": "请假申请",
-      "url": "workingTask"
-    }, {
       "name": "报销申请",
       "url": "/workflow/applyList"
     }]

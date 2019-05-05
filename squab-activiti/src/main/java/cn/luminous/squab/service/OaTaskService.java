@@ -14,6 +14,8 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     String approveTask(OaTaskApprove oaTaskApprove) throws Exception;
 
+    String rejectTask(OaTaskApprove oaTaskApprove) throws Exception;
+
     List<OaTaskModel> queryTaskToDo() throws Exception;
 
     List<OaTaskModel> queryTaskDone() throws Exception;
