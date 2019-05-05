@@ -18,6 +18,8 @@ public interface ActivitiService {
 
     void completeTask(String actTaskId, Map<String,Object> variables) throws Exception;
 
+    Boolean isEnd(String actTaskId);
+
 
 
 

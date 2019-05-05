@@ -4,11 +4,13 @@ package cn.luminous.squab;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -118,6 +120,46 @@ public class ActivitiTest {
                 System.out.println("################################");
             }
         }
+
+    }
+
+    /**
+     * 判断流程是否结束
+     */
+    @Test
+    public void isEnd() {
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId("150077").singleResult();
+        if (processInstance==null) {
+            System.out.println("流程结束");
+        }else {
+            System.out.println("流程未结束");
+        }
+    }
+
+
+    /**
+     * 获取下一个节点信息
+     */
+    @Test
+    public void getNext() {
+
+        BpmnModel model = repositoryService.getBpmnModel("test-process:1:152504");
+        Collection<FlowElement> flowElementList = model.getMainProcess().getFlowElements();
+        System.out.println(flowElementList);
+
+
+//        ExecutionEntity execution = (ExecutionEntity) runtimeService
+//                .createProcessInstanceQuery()
+//                .processInstanceId("111")
+//                .singleResult();
+//
+//        String activitiId = execution.getActivityId();
+//
+//
+//
+//
+//        ProcessDefinitionEntity def = (ProcessDefinitionEntity) ((RepositoryServiceImpl)rs).getDeployedProcessDefinition("task_def_id");
+//
 
     }
 

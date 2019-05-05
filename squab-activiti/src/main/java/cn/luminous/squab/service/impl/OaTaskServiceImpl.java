@@ -3,6 +3,7 @@ package cn.luminous.squab.service.impl;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONUtil;
+import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
@@ -67,6 +68,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         oaTask.setProcDefId(processInstance.getProcessDefinitionId());
         oaTask.setApplyName((String) variables.get("applyName"));
         oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
+        oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
 
 
         // 记录提交的表单数据
@@ -90,6 +92,13 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         activitiService.completeTask(actTaskId, variables);
         // 记录审批信息
         oaTaskApproveService.add(oaTaskApprove);
+        // 判断任务是否已经结束了
+        OaTask oaTask = queryById(oaTaskApprove.getOaTaskId());
+        Boolean isEnd = activitiService.isEnd(oaTask.getProcInstId());
+        if (isEnd) {
+            oaTask.setTaskState(Constant.TASK_STATES.PASSED);
+            updateByIdSelective(oaTask);
+        }
         return R.ok();
     }
 

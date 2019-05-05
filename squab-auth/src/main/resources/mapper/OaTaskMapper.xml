@@ -92,6 +92,7 @@
     <select id="queryTaskById" resultMap="ModelResultMap" parameterType="java.lang.String">
         SELECT
         acttask.id_ AS task_id,
+        oatask.id AS id,
         oatask.proc_inst_id,
         oatask.proc_def_id,
         oatask.apply_name,

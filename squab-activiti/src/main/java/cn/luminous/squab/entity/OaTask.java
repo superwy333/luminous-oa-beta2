@@ -12,6 +12,8 @@ public class OaTask extends BaseDomain {
     private String bizKey;
     @Column(name = "data")
     private String data;
+    @Column(name = "task_state")
+    private String taskState;
     @Column(name = "proc_inst_id")
     private String procInstId;
     @Column(name = "proc_def_id")
@@ -30,6 +32,14 @@ public class OaTask extends BaseDomain {
     private String extField4;
     @Column(name = "ext_field5")
     private String extField5;
+
+    public String getTaskState() {
+        return taskState;
+    }
+
+    public void setTaskState(String taskState) {
+        this.taskState = taskState;
+    }
 
     public String getBizKey() {
         return bizKey;

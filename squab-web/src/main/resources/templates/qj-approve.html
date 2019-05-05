@@ -179,8 +179,10 @@
         form.on('submit(pass)', function (data) {
             var actTaskId = [[${taskId}]];
             var currentUser = [[${currentUser}]];
+            var oaTaskId = [[${id}]];
             var data = {
                 actTaskId: actTaskId,
+                oaTaskId: oaTaskId,
                 approveContent: data.field.approveContent,
                 currentUser: currentUser
             };

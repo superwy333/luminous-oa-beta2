@@ -1,11 +1,14 @@
 package cn.luminous.squab.model;
 
+import cn.luminous.squab.entity.BaseDomain;
+
 import java.util.Date;
 
-public class OaTaskModel {
+public class OaTaskModel extends BaseDomain {
 
     private String taskId; //act_ru_task.ID_
     private String taskName;
+    private String taskState; // 0：流转中 1：已通过 2：已驳回
     private String bizKey;
     private String data;
     private String procInstId;
@@ -17,6 +20,22 @@ public class OaTaskModel {
     private String extField3;
     private String extField4;
     private String extField5;
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getTaskState() {
+        return taskState;
+    }
+
+    public void setTaskState(String taskState) {
+        this.taskState = taskState;
+    }
 
     public String getTaskId() {
         return taskId;

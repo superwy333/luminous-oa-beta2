@@ -79,6 +79,7 @@ public class WorkFlowController{
                     .create();
             Map<String,Object> dataMap = gson.fromJson(data,Map.class);
             model.addAttribute("taskId",oaTaskModel.getTaskId());
+            model.addAttribute("id",oaTaskModel.getId());
             model.addAllAttributes(dataMap);
             // TODO 把当前登陆人加入模板参数
             model.addAttribute("currentUser","008");
@@ -122,7 +123,7 @@ public class WorkFlowController{
             oaTaskApprove.setApproveContent((String) data.get("approveContent"));
             oaTaskApprove.setApprover((String) data.get("currentUser"));
             oaTaskApprove.setApproveTime(new Date());
-            oaTaskApprove.setOaTaskId(111L);
+            oaTaskApprove.setOaTaskId(((Integer)data.get("oaTaskId")).longValue());
             oaTaskService.approveTask(oaTaskApprove);
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【审批失败】入参: " + rq.toString(), e);

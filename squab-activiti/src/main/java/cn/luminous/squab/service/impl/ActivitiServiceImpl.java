@@ -4,6 +4,7 @@ import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.ActivitiService;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -20,6 +21,8 @@ public class ActivitiServiceImpl implements ActivitiService {
     private ProcessEngine processEngine;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private RuntimeService runtimeService;
 
 
     /**
@@ -67,6 +70,20 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public void completeTask(String actTaskId, Map<String, Object> variables) throws Exception {
         processEngine.getTaskService().complete(actTaskId, variables);
+    }
 
+    /**
+     * 当前任务流程实例是否已经结束
+     * @param procInstId
+     * @return
+     */
+    @Override
+    public Boolean isEnd(String procInstId) {
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
+        if (processInstance==null) { // 结束
+            return true;
+        }else { // 未结束
+            return false;
+        }
     }
 }
