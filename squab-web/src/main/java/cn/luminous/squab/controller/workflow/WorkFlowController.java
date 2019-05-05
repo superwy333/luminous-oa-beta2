@@ -1,13 +1,13 @@
 package cn.luminous.squab.controller.workflow;
 
 
-import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
+import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.Gson;
@@ -127,8 +127,10 @@ public class WorkFlowController{
             oaTaskApprove.setApproveTime(new Date());
             oaTaskApprove.setOaTaskId(((Integer)data.get("oaTaskId")).longValue());
             if (Constant.BIZ_KEY.PASS.equals(rq.getBizKey())) { // 流程通过
+                oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);
                 oaTaskService.approveTask(oaTaskApprove);
             }else if (Constant.BIZ_KEY.REJECT.equals(rq.getBizKey())) { // 流程驳回
+                oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.REJECT);
                 oaTaskService.rejectTask(oaTaskApprove);
             }
 
@@ -179,5 +181,28 @@ public class WorkFlowController{
         return R.ok(taskList);
 
     }
+
+    /**
+     * 审批流转记录
+     * @param rq
+     * @return
+     */
+    @RequestMapping(value = "/approveDetails", method = RequestMethod.POST)
+    @ResponseBody
+    public String approveDetails(@RequestBody Rq rq) {
+        List<OaTaskApproveModel> oaTaskApproveModelList;
+        try {
+            log.debug("【查询审批记录开始】入参: " + rq.toString());
+            Map<String,Object> data = (Map<String,Object>) rq.getData();
+            oaTaskApproveModelList = oaTaskService.queryTaskApproveDetails(Long.valueOf((String) data.get("oaTaskId")));
+        }catch (Exception e) {
+            log.error("【查询审批记录失败】入参: " + rq.toString(), e);
+            return R.nok(e.getMessage());
+        }
+        return R.ok(oaTaskApproveModelList);
+
+    }
+
+
 
 }

@@ -1,32 +1,31 @@
-package cn.luminous.squab.entity;
+package cn.luminous.squab.model;
 
-import javax.persistence.Column;
+import cn.luminous.squab.entity.BaseDomain;
+
 import java.util.Date;
 
-public class OaTaskApprove extends BaseDomain {
+public class OaTaskApproveModel extends BaseDomain {
 
-    @Column(name = "oa_task_id")
     private Long oaTaskId;
-    @Column(name = "act_task_id")
     private String actTaskId;
-    @Column(name = "approve_content")
     private String approveContent;
-    @Column(name = "approver")
     private String approver;
-    @Column(name = "approve_result")
     private String approveResult;
-    @Column(name = "approve_time")
+    private String nodeName;
     private Date approveTime;
-    @Column(name = "ext_field1")
     private String extField1;
-    @Column(name = "ext_field2")
     private String extField2;
-    @Column(name = "ext_field3")
     private String extField3;
-    @Column(name = "ext_field4")
     private String extField4;
-    @Column(name = "ext_field5")
     private String extField5;
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
 
     public String getApproveResult() {
         return approveResult;

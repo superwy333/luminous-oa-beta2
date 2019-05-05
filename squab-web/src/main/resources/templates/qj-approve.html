@@ -20,6 +20,9 @@
     <![endif]--></head>
 
 <body>
+<!--隐藏域开始-->
+<input id="oaTaskId" type="hidden" th:value="${id}">
+<!--隐藏域结束-->
 <div class="layui-fluid">
     <div class="layui-row">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;border-color: black">
@@ -28,6 +31,7 @@
 
         <table id="approveDetailTable" lay-filter="approveDetailTable"></table>
         <script type="text/javascript" src="/js/luminous/approveDetailTable.js"></script>
+<!--        <script th:src="@{/js/luminous/approveDetailTable.js}"></script>-->
 
 
 

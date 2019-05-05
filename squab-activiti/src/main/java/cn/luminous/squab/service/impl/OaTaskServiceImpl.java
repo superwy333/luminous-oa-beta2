@@ -9,6 +9,7 @@ import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.mapper.OaTaskApproveMapper;
 import cn.luminous.squab.mapper.OaTaskMapper;
+import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.ActivitiService;
@@ -18,7 +19,6 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +27,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
     @Autowired
     private OaTaskMapper oaTaskMapper;
+    @Autowired
+    private OaTaskApproveMapper oaTaskApproveMapper;
     @Autowired
     private OaTaskApproveService oaTaskApproveService;
     @Autowired
@@ -139,8 +141,33 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         return oaTaskMapper.queryTaskDone(userCode);
     }
 
+
+    /**
+     * 通过act_ru_task表id查询oa_task表记录
+     * @param taskId
+     * @return
+     * @throws Exception
+     */
     @Override
     public OaTaskModel queryTaskById(String taskId) throws Exception {
         return oaTaskMapper.queryTaskById(taskId);
     }
+
+
+    /**
+     * 查询审批流转记录
+     * @param oaTaskId
+     * @return
+     */
+    @Override
+    public List<OaTaskApproveModel> queryTaskApproveDetails(Long oaTaskId) {
+        return oaTaskApproveMapper.queryApproveDetail(oaTaskId);
+    }
+
+
+
+
+
+
+
 }

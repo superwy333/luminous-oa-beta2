@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.luminous.squab.mapper.OaTaskApproveMapper">
+
+    <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.OaTaskApprove">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="oa_task_id" property="oaTaskId" jdbcType="BIGINT"/>
+        <result column="act_Task_id" property="actTaskId" jdbcType="VARCHAR"/>
+        <result column="approve_content" property="approveContent" jdbcType="VARCHAR"/>
+        <result column="approver" property="approver" jdbcType="VARCHAR"/>
+        <result column="approve_result" property="approveResult" jdbcType="VARCHAR"/>
+        <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_modify_by" property="lastModifyBy" jdbcType="VARCHAR"/>
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP"/>
+        <result column="deleted" property="deleted" jdbcType="TINYINT"/>
+        <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="ext_field1" property="extField1" jdbcType="VARCHAR"/>
+        <result column="ext_field2" property="extField2" jdbcType="VARCHAR"/>
+        <result column="ext_field3" property="extField3" jdbcType="VARCHAR"/>
+        <result column="ext_field4" property="extField4" jdbcType="VARCHAR"/>
+        <result column="ext_field5" property="extField5" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="ModelResultMap" type="cn.luminous.squab.model.OaTaskApproveModel">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="oa_task_id" property="oaTaskId" jdbcType="BIGINT"/>
+        <result column="act_Task_id" property="actTaskId" jdbcType="VARCHAR"/>
+        <result column="approve_content" property="approveContent" jdbcType="VARCHAR"/>
+        <result column="approver" property="approver" jdbcType="VARCHAR"/>
+        <result column="node_name" property="nodeName" jdbcType="VARCHAR"/>
+        <result column="approve_result" property="approveResult" jdbcType="VARCHAR"/>
+        <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_modify_by" property="lastModifyBy" jdbcType="VARCHAR"/>
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP"/>
+        <result column="deleted" property="deleted" jdbcType="TINYINT"/>
+        <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="ext_field1" property="extField1" jdbcType="VARCHAR"/>
+        <result column="ext_field2" property="extField2" jdbcType="VARCHAR"/>
+        <result column="ext_field3" property="extField3" jdbcType="VARCHAR"/>
+        <result column="ext_field4" property="extField4" jdbcType="VARCHAR"/>
+        <result column="ext_field5" property="extField5" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryApproveDetail" resultMap="ModelResultMap" parameterType="java.lang.Long">
+        SELECT
+	    approve.id,
+	    his.NAME_ AS node_name,
+	    approve.approver,
+	    approve.approve_result,
+	    approve.approve_content,
+	    approve.approve_time
+        FROM
+	    oa_task_approve approve
+        LEFT JOIN act_hi_taskinst his ON approve.act_task_id = his.id_
+        <where>
+            approve.oa_task_id = #{oaTaskId}
+        </where>
+        ORDER BY
+	    approve.approve_time ASC
+    </select>
+
+
+
+
+
+
+
+
+
+</mapper>
