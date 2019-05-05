@@ -35,3 +35,7 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
+security:
+  basic:
+    enabled: false
