@@ -27,5 +27,7 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     List<OaTaskModel> queryMyTask(String userCode) throws Exception;
 
+    void testTransactional() throws Exception;
+
 
 }

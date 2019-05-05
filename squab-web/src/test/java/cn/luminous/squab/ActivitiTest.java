@@ -236,7 +236,7 @@ public class ActivitiTest {
      */
     @Test
     public void endProcess() {
-        runtimeService.deleteProcessInstance("150001","delete");
+        runtimeService.deleteProcessInstance("187501","delete");
 
     }
 

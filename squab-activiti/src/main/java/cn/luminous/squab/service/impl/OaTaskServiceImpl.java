@@ -6,7 +6,6 @@ import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
-import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.mapper.OaTaskApproveMapper;
 import cn.luminous.squab.mapper.OaTaskMapper;
 import cn.luminous.squab.model.OaTaskApproveModel;
@@ -18,11 +17,13 @@ import cn.luminous.squab.service.OaTaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Service("oaTaskService")
+@Transactional
 public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTaskService {
 
     @Autowired
@@ -41,12 +42,27 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
 
     /**
+     * 事务的测试
+     */
+    @Override
+    public void testTransactional() throws Exception{
+        OaTask oaTask = new OaTask();
+        OaTaskApprove oaTaskApprove = new OaTaskApprove();
+        oaTaskApprove.setOaTaskId(888L);
+        oaTaskApprove.setActTaskId("888");
+        add(oaTask);
+        // 这里加上异常
+        int i = 1/0;
+        oaTaskApproveService.add(oaTaskApprove);
+
+    }
+
+    /**
      * 接收提交的申请
      * 记录
      * 启动流程
      * @return
      * @throws Exception
-     * TODO 这个地方需要考虑事务的问题
      */
     @Override
     public String registerTask(OaTask oaTask) throws Exception {
@@ -72,7 +88,6 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
         oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
 
-
         // 记录提交的表单数据
         this.add(oaTask);
         return null;
@@ -84,7 +99,6 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @param oaTaskApprove
      * @return
      * @throws Exception
-     * TODO 这个地方需要考虑事务的问题
      */
     @Override
     public String approveTask(OaTaskApprove oaTaskApprove) throws Exception {
@@ -104,6 +118,14 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         return null;
     }
 
+
+    /**
+     * 任务驳回
+     * 直接中止任务
+     * @param oaTaskApprove
+     * @return
+     * @throws Exception
+     */
     @Override
     public String rejectTask(OaTaskApprove oaTaskApprove) throws Exception {
         String actTaskId = oaTaskApprove.getActTaskId();
@@ -164,6 +186,12 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         return oaTaskApproveMapper.queryApproveDetail(oaTaskId);
     }
 
+    /**
+     * 查询我的申请列表
+     * @param userCode
+     * @return
+     * @throws Exception
+     */
     @Override
     public List<OaTaskModel> queryMyTask(String userCode) throws Exception {
         return oaTaskMapper.queryMyTask(userCode);
