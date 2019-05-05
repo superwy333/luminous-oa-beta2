@@ -51,6 +51,11 @@ public class WorkFlowController{
         return "taskTodo-list";
     }
 
+    @RequestMapping("/taskDoneList")
+    public String toTaskDone() {
+        return "taskDone-list";
+    }
+
     /**
      * 跳转请假申请表单
      * @return
@@ -141,6 +146,26 @@ public class WorkFlowController{
             taskList = oaTaskService.queryTaskToDo();
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
+            return R.nok(e.getMessage());
+        }
+        return R.ok(taskList);
+
+    }
+
+    /**
+     * 我的已办列表
+     * @param rq
+     * @return
+     */
+    @RequestMapping(value = "/taskDone", method = RequestMethod.POST)
+    @ResponseBody
+    public String taskDone(@RequestBody Rq rq) {
+        List<OaTaskModel> taskList;
+        try {
+            log.debug("【查询已办开始】入参: " + rq.toString());
+            taskList = oaTaskService.queryTaskDone();
+        }catch (Exception e) { // 统一再controller层捕获异常
+            log.error("【查询已办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
         return R.ok(taskList);

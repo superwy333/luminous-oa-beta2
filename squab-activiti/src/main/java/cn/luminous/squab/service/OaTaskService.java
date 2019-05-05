@@ -16,6 +16,8 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     List<OaTaskModel> queryTaskToDo() throws Exception;
 
+    List<OaTaskModel> queryTaskDone() throws Exception;
+
     OaTaskModel queryTaskById(String taskId) throws Exception;
 
 

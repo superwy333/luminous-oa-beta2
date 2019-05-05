@@ -5,8 +5,11 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -125,7 +128,7 @@ public class ActivitiTest {
      */
     @Test
     public void delete() {
-        String[] ids = {"105001"};
+        String[] ids = {"147501"};
         for (int i =0;i<ids.length;i++) {
             processEngine.getRepositoryService()
                     .deleteDeployment(ids[i],true);
@@ -185,6 +188,16 @@ public class ActivitiTest {
 
     }
 
+
+    /**
+     * 中止流程
+     */
+    @Test
+    public void endProcess() {
+        runtimeService.deleteProcessInstance("150001","delete");
+
+    }
+
     /**
      * 查询待办任务
      */
@@ -193,6 +206,12 @@ public class ActivitiTest {
         List<Task> taskList = taskService.createTaskQuery().taskAssignee("008").list();
         System.out.println(taskList);
 
+    }
+
+    @Test
+    public void queryWorkDone() {
+        List<HistoricTaskInstance> hisTaskList = historyService.createHistoricTaskInstanceQuery().taskAssignee("008").orderByTaskId().desc().list();
+        System.out.println(hisTaskList);
     }
 
     /**

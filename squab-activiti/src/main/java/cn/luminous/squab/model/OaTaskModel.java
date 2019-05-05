@@ -5,6 +5,7 @@ import java.util.Date;
 public class OaTaskModel {
 
     private String taskId; //act_ru_task.ID_
+    private String taskName;
     private String bizKey;
     private String data;
     private String procInstId;

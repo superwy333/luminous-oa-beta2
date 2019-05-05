@@ -105,6 +105,19 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         return oaTaskMapper.queryTaskToDo(userCode);
     }
 
+
+    /**
+     * 查询已办任务
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<OaTaskModel> queryTaskDone() throws Exception {
+        // TODO 从Shiro中获取当前登陆用户
+        String userCode = "008";
+        return oaTaskMapper.queryTaskDone(userCode);
+    }
+
     @Override
     public OaTaskModel queryTaskById(String taskId) throws Exception {
         return oaTaskMapper.queryTaskById(taskId);
