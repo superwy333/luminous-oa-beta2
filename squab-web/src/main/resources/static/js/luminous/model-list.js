@@ -1,4 +1,5 @@
 layui.use(['table', 'jquery'], function () {
+    var $ = layui.jquery;
     var table = layui.table;
     var tableIns = table.render({
         elem: '#modelList'
@@ -10,8 +11,9 @@ layui.use(['table', 'jquery'], function () {
         , cols: [[ //表头
             {field: 'id', title: 'ID', minWidth: 150, sort: true, fixed: 'left', hide: true}
             , {field: 'name', title: '模型名称', minWidth: 150, sort: true}
+            // , {field: 'description', title: '描述', minWidth: 150, sort: true}
             , {field: 'createTime', title: '创建时间', minWidth: 150, sort: true}
-            , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#taskTodoOperation'}
+            , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#modelListOperation'}
         ]]
     });
 
@@ -35,19 +37,60 @@ layui.use(['table', 'jquery'], function () {
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-        if (layEvent === 'detail') { //流转记录
-            //do somehing
-            xadmin.open('流程记录','/workflow/qjApprove',1500,800,false);
-        } else if (layEvent === 'approve'){
-            xadmin.open('流程记录','/workflow/qjApprove?taskId=' + data.taskId,1500,800,true);
-        }
+        if (layEvent === 'edit') {
+            window.parent.parent.location.href='/editor?modelId=' + data.id;
 
-        // } else if (layEvent === 'del') { //删除
-        //     layer.confirm('真的删除行么', function (index) {
-        //         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-        //         layer.close(index);
-        //         //向服务端发送删除指令
-        //     });
-        // }
+        } else if (layEvent === 'deploy') {
+            var reqData = {
+                bizKey: 'deployModel',
+                data: {
+                    id:data.id
+                }
+            };
+            $.ajax({
+                url: '/modeler/deploy',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(reqData),
+                success: function (data) {
+                    if (data.code==0) {
+                        layer.msg("操作成功");
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
+
+
+        } else if (layEvent === 'del') {
+            var reqData = {
+                bizKey: 'delModel',
+                data: {
+                    id:data.id
+                }
+            };
+            $.ajax({
+                url: '/modeler/deleteModel',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(reqData),
+                success: function (data) {
+                    if (data.code==0) {
+                        layer.msg("操作成功");
+                        window.location.reload();
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
+        }
     });
 });

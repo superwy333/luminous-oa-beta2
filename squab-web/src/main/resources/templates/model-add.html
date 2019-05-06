@@ -22,99 +22,31 @@
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
-        <form class="layui-form" id="qj-from">
+        <form class="layui-form" id="model-from">
+
 
             <div class="layui-form-item">
-                <label for="applyName" class="layui-form-label">
-                    <span class="x-red">*</span>申请人</label>
+                <label for="name" class="layui-form-label">
+                    <span class="x-red">*</span>名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="applyName" name="applyName" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input"></div>
-
-                <label for="dept" class="layui-form-label">
-                    <span class="x-red">*</span>部门</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="dept" name="dept" required="" lay-verify="required"
+                    <input type="text" id="name" name="name" required="" lay-verify="required"
                            autocomplete="off" class="layui-input"></div>
             </div>
 
             <div class="layui-form-item">
-                <label for="post" class="layui-form-label">
-                    <span class="x-red">*</span>岗位</label>
+                <label for="key" class="layui-form-label">
+                    <span class="x-red">*</span>流程key</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="post" name="post" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input"></div>
-
-                <label for="qjType" class="layui-form-label">
-                    <span class="x-red">*</span>请假类型</label>
-                <div class="layui-input-inline">
-                    <select id="qjType" name="qjType" class="valid">
-                        <option value="0">事假</option>
-                        <option value="1">病假</option>
-                        <option value="2">丧假</option>
-                        <option value="3">婚嫁</option>
-                        <option value="4">产假</option>
-                        <option value="5">其他</option>
-                    </select></div>
-            </div>
-
-            <div class="layui-form-item">
-                <label for="applyTime" class="layui-form-label">
-                    <span class="x-red">*</span>申请日期</label>
-                <div class="layui-input-inline">
-                    <input type="date" id="applyTime" name="applyTime" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input"></div>
-                <label for="xjType" class="layui-form-label">
-                    <span class="x-red">*</span>销假方式</label>
-                <div class="layui-input-inline">
-                    <select id="xjType" name="xjType" class="valid">
-                        <option value="0">扣薪</option>
-                        <option value="1">调休</option>
-                    </select></div>
-            </div>
-
-            <div class="layui-form-item">
-                <label for="jbNo" class="layui-form-label">
-                    加班流水号</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="jbNo" name="jbNo" required="" lay-verify=""
-                           autocomplete="off" class="layui-input"></div>
-                <label class="layui-form-label">
-                    <span class="x-red">*</span></label>
-                <div class="layui-input-inline">销假方式选择调休必须填写加班申请单流水号</div>
-            </div>
-
-            <div class="layui-form-item">
-                <label for="startTime" class="layui-form-label">
-                    <span class="x-red">*</span>休假开始日期</label>
-                <div class="layui-input-inline">
-                    <input type="date" id="startTime" name="startTime" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input"></div>
-
-                <label for="endTime" class="layui-form-label">
-                    <span class="x-red">*</span>休假结束日期</label>
-                <div class="layui-input-inline">
-                    <input type="date" id="endTime" name="endTime" required="" lay-verify="required"
+                    <input type="text" id="key" name="key" required="" lay-verify="required"
                            autocomplete="off" class="layui-input"></div>
             </div>
 
             <div class="layui-form-item">
-                <label for="days" class="layui-form-label">
-                    <span class="x-red">*</span>合计天数</label>
+                <label for="description" class="layui-form-label">
+                    <span class="x-red"></span>描述</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="days" name="days" required="" lay-verify="number"
+                    <input type="text" id="description" name="description" required="" lay-verify=""
                            autocomplete="off" class="layui-input"></div>
-                <label class="layui-form-label">
-                    <span class="x-red">*</span></label>
-                <div class="layui-input-inline">半天以0.5表示</div>
-
-            </div>
-
-            <div class="layui-form-item layui-form-text">
-                <label for="reason" class="layui-form-label">请假说明</label>
-                <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" id="reason" name="reason" class="layui-textarea"></textarea>
-                </div>
             </div>
 
             <div class="layui-form-item">
@@ -130,38 +62,19 @@
         var form = layui.form,
             layer = layui.layer;
 
-        //自定义验证规则
-        form.verify({
-            // nikename: function (value) {
-            //     if (value.length < 5) {
-            //         return '昵称至少得5个字符啊';
-            //     }
-            // },
-            // pass: [/(.+){6,12}$/, '密码必须6到12位'],
-            // repass: function (value) {
-            //     if ($('#L_pass').val() != $('#L_repass').val()) {
-            //         return '两次密码不一致';
-            //     }
-            // }
-        });
-
         form.on('submit(add)', function (data) {
             var reqData = {
-                bizKey: 'qj',
+                bizKey: 'modelAdd',
                 data: data.field
             };
             $.ajax({
-                url: '/workflow/apply',
+                url: '/modeler/newModel',
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
-                    if (data.code==0) {
-                        layer.msg("申请成功");
-                    } else {
-                        layer.alert("申请失败，失败原因：" + data.msg);
-                    }
+                    window.parent.parent.location.href = data.data;
                 },
                 error: function (data) {
                     layer.alert("网络超时，请联系管理员");
