@@ -51,7 +51,8 @@ public class ActivitiDiagramTest {
         //获取历史流程实例
         HistoricProcessInstance processInstance =  historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         //获取流程图
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
+//        BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
+        BpmnModel bpmnModel = repositoryService.getBpmnModel("test-process:1:70007");
         processEngineConfiguration = processEngine.getProcessEngineConfiguration();
         Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
 
@@ -90,6 +91,36 @@ public class ActivitiDiagramTest {
 //        while ((len = imageStream.read(b, 0, 1024)) != -1) {
 //            response.getOutputStream().write(b, 0, len);
 //        }
+    }
+
+
+    @Test
+    public void getPicByProcDefId() throws Exception{
+        String procDefId = "test-process:1:70007";
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(procDefId);
+        processEngineConfiguration = processEngine.getProcessEngineConfiguration();
+        Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
+
+        ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+        ProcessDefinitionEntity definitionEntity = (ProcessDefinitionEntity)repositoryService.getProcessDefinition(procDefId);
+        InputStream imageStream = diagramGenerator.
+                generateDiagram(bpmnModel,
+                        "png",
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        "宋体","宋体","宋体",
+                        null,
+                        1.0);
+        FileOutputStream outputStream=new FileOutputStream("F:/a.png");
+        byte[] b=new byte[1024];
+        int red=imageStream.read(b);
+        while(red!=-1){
+            outputStream.write(b,0,red);
+            red=imageStream.read(b);
+        }
+        outputStream.write(b);
+        imageStream.close();
+        outputStream.close();
     }
 
 

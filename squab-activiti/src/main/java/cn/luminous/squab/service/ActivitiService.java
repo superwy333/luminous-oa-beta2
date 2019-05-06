@@ -5,6 +5,7 @@ import cn.luminous.squab.model.OaTaskModel;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,9 @@ public interface ActivitiService {
 
     void deleteTask(String actTaskId) throws Exception;
 
-    Boolean isEnd(String actTaskId);
+    Boolean isEnd(String actTaskId) throws Exception;
+
+    InputStream getDiagramOrgin(String deployId) throws Exception;
 
 
 

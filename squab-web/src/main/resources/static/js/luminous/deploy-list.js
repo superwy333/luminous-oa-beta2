@@ -38,6 +38,7 @@ layui.use(['table', 'jquery'], function () {
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
         if (layEvent === 'diagram') {
+            xadmin.open('流程记录','/deploy/deployDiagram?deployId=' + data.id,1200,800,false);
         } else if (layEvent === 'del') {
             var reqData = {
                 bizKey: 'delDeploy',

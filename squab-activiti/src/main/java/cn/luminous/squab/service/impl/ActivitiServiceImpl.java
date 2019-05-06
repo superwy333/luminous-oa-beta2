@@ -3,14 +3,22 @@ package cn.luminous.squab.service.impl;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.ActivitiService;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.engine.*;
+import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.Model;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.activiti.image.ProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +31,10 @@ public class ActivitiServiceImpl implements ActivitiService {
     private TaskService taskService;
     @Autowired
     private RuntimeService runtimeService;
+    @Autowired
+    private RepositoryService repositoryService;
+    @Autowired
+    ProcessEngineConfiguration processEngineConfiguration;
 
 
     /**
@@ -84,12 +96,39 @@ public class ActivitiServiceImpl implements ActivitiService {
      * @return
      */
     @Override
-    public Boolean isEnd(String procInstId) {
+    public Boolean isEnd(String procInstId) throws Exception{
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
         if (processInstance==null) { // 结束
             return true;
         }else { // 未结束
             return false;
         }
+    }
+
+    @Override
+    public InputStream getDiagramOrgin(String deployId) throws Exception{
+        //Model modelData = repositoryService.getModel(modelId);
+//        Deployment deployment = repositoryService
+//                .createDeploymentQuery()
+//                .deploymentId(modelData.getDeploymentId()).singleResult();
+        ProcessDefinition processDefinition = repositoryService
+                .createProcessDefinitionQuery()
+                .deploymentId(deployId).singleResult();
+        String procDefId = processDefinition.getId();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(procDefId);
+        processEngineConfiguration = processEngine.getProcessEngineConfiguration();
+        Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
+
+        ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+        ProcessDefinitionEntity definitionEntity = (ProcessDefinitionEntity)repositoryService.getProcessDefinition(procDefId);
+        InputStream imageStream = diagramGenerator.
+                generateDiagram(bpmnModel,
+                        "png",
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        "宋体","宋体","宋体",
+                        null,
+                        1.0);
+        return imageStream;
     }
 }
