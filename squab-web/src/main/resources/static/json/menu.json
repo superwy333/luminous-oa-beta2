@@ -32,7 +32,7 @@
       "url": "/modeler/modelList"
     }, {
       "name": "部署管理",
-      "url": "workingTask"
+      "url": "/deploy/deployList"
     }]
   },{
     "name": "系统管理",
