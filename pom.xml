@@ -23,6 +23,7 @@
         <module>squab-activiti</module>
         <module>squab-web</module>
         <module>squab-auth</module>
+        <module>squab-generator</module>
     </modules>
 
     <dependencies>
