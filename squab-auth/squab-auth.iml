@@ -48,7 +48,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.11" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-devtools:1.5.20.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:1.5.20.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jdbc:8.5.39" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-juli:8.5.39" level="project" />

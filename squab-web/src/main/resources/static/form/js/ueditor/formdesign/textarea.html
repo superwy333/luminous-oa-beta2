@@ -99,7 +99,7 @@ dialog.onok = function (){
         try {
             var html = '<textarea ';
             html += ' title = "' + gTitle + '"';
-            html += ' id = "' + gTitle + '"';
+            html += ' id = "' + gName + '"';
             html += ' name = "' + gName + '"';
             html += ' leipiPlugins = "'+thePlugins+'"';
             html += ' value = "' + gValue + '"';
@@ -153,6 +153,7 @@ dialog.onok = function (){
     } else {
         oNode.setAttribute('title', gTitle);
         oNode.setAttribute('name', gName);
+        oNode.setAttribute('id', gName);
         oNode.setAttribute('value',gValue);
         oNode.innerHTML = gValue;
         if( $G('orgrich').checked ) {

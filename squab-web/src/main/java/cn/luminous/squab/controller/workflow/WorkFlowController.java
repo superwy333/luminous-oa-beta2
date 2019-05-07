@@ -7,6 +7,8 @@ import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
+import cn.luminous.squab.form.entity.DynamicForm;
+import cn.luminous.squab.form.service.DynamicFormService;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.OaTaskService;
@@ -32,6 +34,8 @@ public class WorkFlowController{
 
     @Autowired
     private OaTaskService oaTaskService;
+    @Autowired
+    private DynamicFormService dynamicFormService;
 
     /**
      * 跳转申请汇总页面
@@ -65,6 +69,20 @@ public class WorkFlowController{
     @RequestMapping("/qjAdd")
     public String toQjApply() {
         return "qj-add";
+    }
+
+    /**
+     * 跳转请假申请表单
+     * 使用自定义表单
+     * @return
+     */
+    @RequestMapping("/qjAdd2")
+    public String toQjApply2(Model model) {
+        long id = 12;
+        DynamicForm dynamicForm = dynamicFormService.queryById(id);
+        model.addAttribute("html", dynamicForm.getFormHtml());
+        model.addAttribute("name","哈哈老王");
+        return "qj-add2";
     }
 
     /**

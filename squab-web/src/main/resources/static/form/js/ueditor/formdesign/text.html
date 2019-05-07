@@ -149,7 +149,7 @@ dialog.onok = function (){
         try {
             oNode = createElement('input',gTitle);
             oNode.setAttribute('type','text');
-            oNode.setAttribute('id',gTitle);
+            oNode.setAttribute('id',gName);
             oNode.setAttribute('title',gTitle);
             oNode.setAttribute('value',gValue);
             oNode.setAttribute('name',gName);
@@ -202,6 +202,7 @@ dialog.onok = function (){
     } else {
         
         oNode.setAttribute('title', gTitle);
+        oNode.setAttribute('id', gName);
         oNode.setAttribute('value', gValue);
         oNode.setAttribute('name',gName);
         if( $G('orghide').checked ) {
