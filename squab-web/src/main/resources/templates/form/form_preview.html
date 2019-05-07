@@ -24,6 +24,19 @@
 <script th:inline="javascript" type="text/javascript">
     var html = [[${html}]];
     $('#ff').html(html);
+
+    var id= 'tt';
+    $("#" + id).val("哈哈哈");
+    $("#" + id).attr("readonly","readonly");
+    $("#" + id).attr("disabled","disabled");
+
+    // $('#tt').val("哈哈哈");
+    // $('#tt').attr("readonly","readonly");
+    // $('#tt').attr("disabled","disabled");
+
+    $('#ss').val("哈哈2");
+    $('#ss').attr("readonly","readonly");
+    $('#ss').attr("disabled","disabled");
 </script>
 
 

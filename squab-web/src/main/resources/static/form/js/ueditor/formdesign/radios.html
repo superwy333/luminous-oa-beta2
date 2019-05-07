@@ -332,7 +332,7 @@ dialog.onok = function (){
 			//	oNode.setAttribute('url_value_field', url_value_field);
             
             //{|- 使用边界，防止用户删除了span标签
-            var html = '{|-<span leipiplugins="radios" title="'+gTitle+'" name="' + gName + '" url="' + url_value + '" url_title_field="' + url_title_field + '" url_value_field="' + url_value_field + '" value_type="' + value_type + '">';
+            var html = '{|-<span leipiplugins="radios" id="'+gTitle+'" title="'+gTitle+'" name="' + gName + '" url="' + url_value + '" url_title_field="' + url_title_field + '" url_value_field="' + url_value_field + '" value_type="' + value_type + '">';
                 html +=options;
                 html +='</span>-|}';
             editor.execCommand('insertHtml',html);

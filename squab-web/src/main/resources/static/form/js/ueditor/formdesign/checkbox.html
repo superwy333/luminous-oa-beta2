@@ -71,6 +71,7 @@ dialog.onok = function (){
         try {
             oNode = createElement('input','leipiNewField');
             oNode.setAttribute('title',gTitle);
+            oNode.setAttribute('id',gTitle);
             oNode.setAttribute('leipiPlugins',thePlugins );
             oNode.setAttribute('type','checkbox');
             if ($G('orgchecked1').checked) {

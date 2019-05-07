@@ -70,20 +70,8 @@ public class FormController {
     public String previewEditForm(String formeditor , Integer form_id, Model model) {
         long id = 12;
         DynamicForm dynamicForm = dynamicFormService.queryById(id);
-
-//        UeForm form = null ;//
-//        if(formeditor != null)
-//            form = UeForm.praseTemplate(formeditor);
-//        else if(form_id != null && form_id > 0) {
-//            form = ueService.findByFormId(form_id);
-//        }
-//
-//        String parse = form.getParse();
-//        String template = form.getTemplate();
-
-        //model.addObject("parse", parse);
-        //model.addObject("template", template);
         model.addAttribute("html", dynamicForm.getFormHtml());
+        model.addAttribute("name","哈哈老王");
 
         return "form/form_preview";
     }

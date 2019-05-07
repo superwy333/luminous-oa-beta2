@@ -92,7 +92,7 @@ $('#save').click(function () {
             dataType: 'json',
             // data : {'template': formeditor , 'form_name' :form_name ,'form_id' : form_id  },
             success: function (data) {
-                if (data.success()) {
+                if (data.success) {
                     alert('操作成功');
                 } else {
                     alert('保存失败！');
