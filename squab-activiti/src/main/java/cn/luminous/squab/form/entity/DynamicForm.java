@@ -1,19 +1,15 @@
-package cn.luminous.squab.entity;
+package cn.luminous.squab.form.entity;
 
-import java.util.Date;
+import cn.luminous.squab.entity.BaseDomain;
+
 import javax.persistence.*;
 
-@Table(name = "sys_user")
-public class SysUser extends BaseDomain {
-    private String name;
-
-    private String address;
-
-    private Date birth;
-
-    private String email;
-
-    private String password;
+@Table(name = "dynamic_form")
+public class DynamicForm extends BaseDomain {
+    @Column(name = "form_name")
+    private String formName;
+    @Column(name = "form_code")
+    private String formCode;
 
     @Column(name = "ext_field1")
     private String extField1;
@@ -30,74 +26,30 @@ public class SysUser extends BaseDomain {
     @Column(name = "ext_field5")
     private String extField5;
 
-    /**
-     * @return name
-     */
-    public String getName() {
-        return name;
+    @Column(name = "form_html")
+    private String formHtml;
+
+
+    public String getFormCode() {
+        return formCode;
+    }
+
+    public void setFormCode(String formCode) {
+        this.formCode = formCode;
     }
 
     /**
-     * @param name
+     * @return form_name
      */
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public String getFormName() {
+        return formName;
     }
 
     /**
-     * @return address
+     * @param formName
      */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * @param address
-     */
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
-
-    /**
-     * @return birth
-     */
-    public Date getBirth() {
-        return birth;
-    }
-
-    /**
-     * @param birth
-     */
-    public void setBirth(Date birth) {
-        this.birth = birth;
-    }
-
-    /**
-     * @return email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email
-     */
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    /**
-     * @return password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password
-     */
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+    public void setFormName(String formName) {
+        this.formName = formName == null ? null : formName.trim();
     }
 
     /**
@@ -168,5 +120,19 @@ public class SysUser extends BaseDomain {
      */
     public void setExtField5(String extField5) {
         this.extField5 = extField5 == null ? null : extField5.trim();
+    }
+
+    /**
+     * @return form_html
+     */
+    public String getFormHtml() {
+        return formHtml;
+    }
+
+    /**
+     * @param formHtml
+     */
+    public void setFormHtml(String formHtml) {
+        this.formHtml = formHtml == null ? null : formHtml.trim();
     }
 }

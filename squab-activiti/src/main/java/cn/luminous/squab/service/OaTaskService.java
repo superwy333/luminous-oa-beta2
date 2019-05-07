@@ -11,15 +11,15 @@ import java.util.List;
 public interface OaTaskService extends BaseService<OaTask> {
 
 
-    String registerTask(OaTask oaTask) throws Exception;
+    String registerTask(OaTask oaTask) throws Exception; //  启动流程
 
-    String approveTask(OaTaskApprove oaTaskApprove) throws Exception;
+    String approveTask(OaTaskApprove oaTaskApprove) throws Exception; // 审批通过，完成当前任务
 
-    String rejectTask(OaTaskApprove oaTaskApprove) throws Exception;
+    String rejectTask(OaTaskApprove oaTaskApprove) throws Exception; // 审批驳回，这届停止流程
 
-    List<OaTaskModel> queryTaskToDo() throws Exception;
+    List<OaTaskModel> queryTaskToDo() throws Exception; // 查询待办
 
-    List<OaTaskModel> queryTaskDone() throws Exception;
+    List<OaTaskModel> queryTaskDone() throws Exception; // 查询已办
 
     OaTaskModel queryTaskById(String taskId) throws Exception;
 
