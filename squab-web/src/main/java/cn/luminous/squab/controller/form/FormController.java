@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class FormController {
     private DynamicFormService dynamicFormService;
 
     @RequestMapping("/edit")
-    public String toFormEdit(@RequestParam("formId") Long formId, Model model) {
+    public String toFormEdit(@RequestParam(value = "formId", required = false) Long formId, Model model) {
         try {
             DynamicForm dynamicForm = dynamicFormService.queryById(formId);
             model.addAttribute("id",dynamicForm.getId());
@@ -62,6 +63,29 @@ public class FormController {
             return R.nok(e.getMessage());
         }
         return R.ok();
+    }
+
+
+    @RequestMapping("/previewEditForm")
+    public String previewEditForm(String formeditor , Integer form_id, Model model) {
+        long id = 12;
+        DynamicForm dynamicForm = dynamicFormService.queryById(id);
+
+//        UeForm form = null ;//
+//        if(formeditor != null)
+//            form = UeForm.praseTemplate(formeditor);
+//        else if(form_id != null && form_id > 0) {
+//            form = ueService.findByFormId(form_id);
+//        }
+//
+//        String parse = form.getParse();
+//        String template = form.getTemplate();
+
+        //model.addObject("parse", parse);
+        //model.addObject("template", template);
+        model.addAttribute("html", dynamicForm.getFormHtml());
+
+        return "form/form_preview";
     }
 
 
