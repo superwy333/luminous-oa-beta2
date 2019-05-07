@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head> 
+
+<link rel="stylesheet" type="text/css" href="themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/icon.css"> 
+	<script type="text/javascript" src="jquery.min.js"></script>  
+    <script type="text/javascript" src="jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="locale/easyui-lang-zh_CN.js"></script>
+
+<body>
+
+
+
+	<div id="dg" style="height: 400px;width: 800px;"></div>
+	
+	
+	<script type="text/javascript">
+		
+	$(function(){
+		
+		//先请求到所有的职位 select distinct name from station_t
+		var stat_names = ["项目主管","项目经理","项目助理"];
+		 
+		  
+		//先带上项目名称
+		var columns = [{field:"project_name"  , title:"项目名称",width:100}];
+		for(var i in stat_names) {
+			 
+			var field = stat_names[i]; 
+			var col = {field : field, title:field,width:80 , formatter:function(v , r , i){
+			 	return r.value[this.field];
+			}};
+			 
+			columns.push(col);
+		}
+		columns.push({field:"sum"  , title:"总数",width:100});
+		 
+		var dg = $('#dg').datagrid({
+			url:'./data.json',
+			singleSelect:true,
+			fitColumns:true, 
+			collapsible:true,
+			//data: data,
+			columns:[columns] 
+		});
+		
+		
+	});
+	
+	
+	
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>日期选择框</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+    <meta name="generator" content="www.leipi.org" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="leipi.style.css">
+    <script type="text/javascript" src="../dialogs/internal.js"></script>
+</head>
+<body>
+<div class="content">
+    <table class="table table-bordered table-striped table-hover">
+     <tr>
+        <th><span>控件名称key(存储用)</span><span class="label label-important">*</span></th>
+       <th><span>控件名称title(提示用)</span><span class="label label-important">*</span></th>
+    </tr>
+    <tr>
+        <td><input id="orgname" type="text" placeholder="必填项"/></td> 
+        <td><input id="title" type="text" placeholder="必填项"/></td> 
+    </tr>
+    <tr> 
+        <th colspan="2"><span>增强</span> </th>
+    </tr>
+    <tr> 
+        <td colspan="2"> <label class="checkbox"><input id="now" type="checkbox"  /> 默认当前日期 </label> <br>
+        	<label class="checkbox inline"><input id="notnull" type="checkbox"  /> 非空 </label>
+         </td> 
+    </tr>
+     
+    </table>
+</div>
+<script type="text/javascript">
+var oNode = null,thePlugins = 'datepicker';;
+window.onload = function() {
+    if( UE.plugins[thePlugins].editdom ){
+        oNode = UE.plugins[thePlugins].editdom;
+        var gName=oNode.getAttribute('name').replace(/&quot;/g,"\"") ;
+        var gTitle=oNode.getAttribute('title').replace(/&quot;/g,"\"") ;
+        var notnull = oNode.getAttribute('notnull');
+        var now = oNode.getAttribute('now');
+       
+        gTitle = gTitle==null ? '' : gTitle;
+        gName = gName==null ? '' : gName;
+        $G('orgname').value = gName;
+        $G('title').value = gTitle;
+        if ( notnull == '1' ) {
+            $G('notnull').checked = true ;
+        }
+        if ( now == '1' ) {
+            $G('now').checked = true ;
+        }
+        
+    }
+}
+dialog.oncancel = function () {
+    if( UE.plugins[thePlugins].editdom ) {
+        delete UE.plugins[thePlugins].editdom;
+    }
+};
+dialog.onok = function (){
+	var name = $G('orgname').value;
+	var title = $G('title').value;
+    if(name==''){
+        alert('请输入控件名称key');
+        return false;
+    }
+    if(title==''){
+        alert('请输入控件名称title');
+        return false;
+    }
+    var gTitle= title.replace(/\"/g,"&quot;");
+    var gName= name.replace(/\"/g,"&quot;");
+
+    if( !oNode ) {
+        try {
+            var html = '<input type="text"';
+            html += ' title = "' + gTitle + '"';
+            html += ' name = "' + gName + '"';
+            html += ' leipiPlugins = "'+thePlugins+'"';
+            
+           
+            if ( $G('notnull').checked ) {
+                html += ' notnull = "1"';
+            } else {
+                html += ' notnull = "0"';
+            }
+            if ( $G('now').checked ) {
+                html += ' now = "1"';
+            } else {
+                html += ' now = "0"';
+            }
+             
+            html += '/>'; 
+            editor.execCommand('insertHtml',html);
+        } catch (e) {
+            try {
+                editor.execCommand('error');
+            } catch ( e ) {
+                alert('控件异常，请到 [雷劈网] 反馈或寻求帮助！');
+            }
+            return false;
+        }
+    } else {
+        oNode.setAttribute('title', gTitle);
+        oNode.setAttribute('name', gName);
+       
+        oNode.innerHTML = gValue;
+        if( $G('now').checked ) {
+            oNode.setAttribute('now', 1);
+        } else {
+            oNode.setAttribute('now', 0);
+        }
+        
+        if( $G('notnull').checked ) {
+            oNode.setAttribute('notnull', 1);
+        } else {
+            oNode.setAttribute('notnull', 0);
+        }
+        
+        delete UE.plugins[thePlugins].editdom;
+    }
+};
+</script>
+</body>
+</html>
