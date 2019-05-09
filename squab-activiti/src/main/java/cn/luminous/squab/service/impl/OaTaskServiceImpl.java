@@ -1,7 +1,8 @@
 package cn.luminous.squab.service.impl;
 
-import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
@@ -14,11 +15,13 @@ import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.OaTaskApproveService;
 import cn.luminous.squab.service.OaTaskService;
+import com.google.gson.*;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +60,25 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
     }
 
+    private Map<String,Object> parseJson(String string) throws Exception {
+        //JSONArray jsonArrayTotal = new JSONArray();
+        Map<String,Object> variables = new HashMap<>();
+
+
+
+
+        JSONArray jsonArray = JSONUtil.parseArray(string);
+        for (Object object:jsonArray) {
+            JSONObject jsonObject = JSONUtil.parseObj(object);
+            //JSONObject jsonObjectNew = new JSONObject();
+            //jsonObjectNew.put((String) jsonObject.get("name"), jsonObject.get("value"));
+            //jsonArrayTotal.add(jsonObjectNew);
+            variables.put((String) jsonObject.get("name"), jsonObject.get("value"));
+        }
+        return variables;
+
+    }
+
     /**
      * 接收提交的申请
      * 记录
@@ -70,10 +92,12 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
 
         // TODO 根据bizKey分拣得出流程定义key
-        String processKey = "test-process";
+        String processKey = "bx-process";
 
         // 把oaTask的表单提交数据装入流程变量
-        Map<String,Object> variables =  JSONUtil.parseObj(oaTask.getData());
+
+        //Map<String,Object> variables =  JSONUtil.parseObj(oaTask.getData());
+        Map<String,Object> variables =  parseJson(oaTask.getData());
 
         // TODO 把当前登陆用户信息装入流程变量
         variables.put("post","zy");

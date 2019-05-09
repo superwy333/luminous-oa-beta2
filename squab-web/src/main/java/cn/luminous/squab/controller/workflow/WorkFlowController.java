@@ -1,6 +1,7 @@
 package cn.luminous.squab.controller.workflow;
 
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
@@ -18,10 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -109,10 +108,34 @@ public class WorkFlowController{
         return "qj-approve";
     }
 
+//    @RequestMapping("/myTaskList")
+//    public String myTaskList() {
+//        return "myTask-list";
+//    }
+
     @RequestMapping("/myTaskList")
-    public String myTaskList() {
-        return "myTask-list";
+    public ModelAndView myTaskList() {
+        ModelAndView m = new ModelAndView();
+        m.setViewName("myTask-list");
+        return m;
     }
+
+    @RequestMapping("/approve")
+    public ModelAndView toApprove(@RequestParam("id") String id, Model model) {
+        ModelAndView m = new ModelAndView();
+        try {
+            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(id);
+            JSONArray jsonArray = JSONUtil.parseArray(oaTaskModel.getData());
+            model.addAttribute("data",jsonArray);
+            model.addAttribute("taskId",oaTaskModel.getTaskId());
+            model.addAttribute("id",oaTaskModel.getId());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        m.setViewName("form/bx/bx_approve");
+        return m;
+    }
+
 
     /**
      * 表单提交

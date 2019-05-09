@@ -19,6 +19,8 @@ layui.use(['table', 'jquery'], function () {
                 templet: function (d) {
                     if (d.bizKey == 'qj') {
                         return '请假申请';
+                    } else if (d.bizKey == 'bxApply') {
+                        return '报销'
                     } else {
                         return '其他';
                     }
@@ -51,9 +53,9 @@ layui.use(['table', 'jquery'], function () {
 
         if (layEvent === 'detail') { //流转记录
             //do somehing
-            xadmin.open('流程记录','/workflow/qjApprove',1500,800,false);
+            xadmin.open('流程记录','/workflow/approve?id=' + data.id,1500,800,false);
         } else if (layEvent === 'approve'){
-            xadmin.open('流程记录','/workflow/qjApprove?taskId=' + data.taskId,1500,800,true);
+            xadmin.open('审批','/workflow/approve?id=' + data.taskId,1500,800,true);
         }
 
         // } else if (layEvent === 'del') { //删除

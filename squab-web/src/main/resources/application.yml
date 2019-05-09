@@ -18,9 +18,5 @@ spring:
     encoding: UTF-8
     mode: LEGACYHTML5 # 去除thymeleaf的严格校验，需要搭配nekohtml依赖一起使用
     cache: false
-#  devtools:
-#    restart:
-#      additional-paths: /resources/static,/resources/templates
-
 
 
