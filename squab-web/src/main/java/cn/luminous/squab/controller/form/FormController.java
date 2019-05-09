@@ -23,6 +23,14 @@ public class FormController {
     @Autowired
     private DynamicFormService dynamicFormService;
 
+
+    @RequestMapping("/bxApply")
+    public String toBxApply() {
+        return "form/bx/bx_apply";
+    }
+
+
+
     @RequestMapping("/edit")
     public String toFormEdit(@RequestParam(value = "formId", required = false) Long formId, Model model) {
         try {
@@ -40,6 +48,7 @@ public class FormController {
 
     @PostMapping("/saveOrUpdateForm")
     @ResponseBody
+    @CrossOrigin
     public String saveOrUpdateForm(@RequestBody Rq rq) {
         try {
             log.debug("【动态表单保存】入参: " + rq.toString());
