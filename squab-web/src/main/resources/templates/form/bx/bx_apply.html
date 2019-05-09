@@ -215,7 +215,17 @@
                 <tr>
                     <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="166">附件</td>
                     <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661">
-                        <input leipiplugins='images' name='data_24' style='' type='text' value=''/>
+                        <div id="uploader" class="wu-example">
+                            <!--用来存放文件信息-->
+
+                            <div style="display: inline-block;" class="btns">
+                                <div id="picker">选择文件</div>
+                                <!--<button id="ctlBtn" class="btn btn-default">开始上传</button>-->
+                            </div>
+                            <div style="display: inline-block;margin-left: 100px" id="thelist" class="uploader-list"></div>
+                        </div>
+                        <!--<input leipiplugins='images' name='data_24' style='' type='text' value=''/>-->
+
                     </td>
 
                 </tr>
@@ -255,9 +265,45 @@
 
 </div>
 
-
 <script type="text/javascript">
     layui.use(['form', 'layer','jquery'], function () {
+
+        var uploader = WebUploader.create({
+
+            // swf文件路径
+            swf: 'static/form/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '/form/fileUpload',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#picker',
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        // 当有文件被添加进队列的时候
+        uploader.on( 'fileQueued', function( file ) {
+            $('#thelist').append( '<div style="display: inline-block;margin-left: 20px" id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name +'</h4>' +
+                // '<p class="state">等待上传...</p>' +
+                '<a class="remove-this" href="#"> <font size="1" color="red">删除</font></a>' +
+                '</div>' );
+        });
+
+        $('#thelist').on('click', '.remove-this', function() {
+            var fileItem = $(this).parent();
+            var id = $(fileItem).attr("id");
+            console.log(id)
+            uploader.removeFile(id, true);
+            $(fileItem).fadeOut(function() {
+                $(fileItem).remove();
+            });
+
+        });
+
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
@@ -285,6 +331,8 @@
                 success: function (data) {
                     if (data.code==0) {
                         layer.msg("申请成功");
+                        // 表单提交成功之后进行附件上传
+                        uploader.upload();
                     } else {
                         layer.alert("申请失败，失败原因：" + data.msg);
                     }
