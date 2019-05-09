@@ -143,7 +143,7 @@ public class ActivitiTest {
     @Test
     public void getNext() {
 
-        BpmnModel model = repositoryService.getBpmnModel("test-process:1:152504");
+        BpmnModel model = repositoryService.getBpmnModel("test_any_node:1:102511");
         Collection<FlowElement> flowElementList = model.getMainProcess().getFlowElements();
         System.out.println(flowElementList);
 
@@ -170,7 +170,7 @@ public class ActivitiTest {
      */
     @Test
     public void delete() {
-        String[] ids = {"152501"};
+        String[] ids = {"70004","77504","85001","85005","90047"};
         for (int i =0;i<ids.length;i++) {
             processEngine.getRepositoryService()
                     .deleteDeployment(ids[i],true);
