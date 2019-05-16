@@ -9,9 +9,6 @@
     }, {
       "name": "我的待办",
       "url": "/workflow/taskTodoList"
-    }, {
-      "name": "我的已办",
-      "url": "/workflow/taskDoneList"
     }]
   },{
     "name": "填报申请",
@@ -19,13 +16,15 @@
       "name": "报销申请",
       "url": "/workflow/applyList"
     }]
-  }, {
-    "name": "仓储管理",
-    "child": []
-  }, {
-    "name": "人事管理",
-    "child": []
-  }, {
+  },{
+    "name": "表单管理",
+    "child": [
+      {
+        "name": "表单管理",
+        "url": ""
+      }
+    ]
+  },{
     "name": "流程管理",
     "child": [{
       "name": "模型管理",
