@@ -89,10 +89,11 @@ public class FormController {
 
     @RequestMapping("/previewEditForm")
     public String previewEditForm(String formeditor , Integer form_id, Model model) {
-        long id = 12;
-        DynamicForm dynamicForm = dynamicFormService.queryById(id);
-        model.addAttribute("html", dynamicForm.getFormHtml());
-        model.addAttribute("name","哈哈老王");
+        //long id = 18;
+        //DynamicForm dynamicForm = dynamicFormService.queryById(id);
+        //model.addAttribute("html", dynamicForm.getFormHtml());
+        model.addAttribute("html", formeditor);
+        //model.addAttribute("name","哈哈老王");
 
         return "form/form_preview";
     }
