@@ -2,6 +2,7 @@ package cn.luminous.squab.controller.form;
 
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.luminous.squab.controller.form.pojo.UeForm;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.form.entity.DynamicForm;
@@ -32,7 +33,8 @@ public class FormController {
     public ModelAndView toBxApply(Model model) {
         ModelAndView m = new ModelAndView();
         try {
-            DynamicForm dynamicForm = dynamicFormService.queryById(18L);
+            //DynamicForm dynamicForm = dynamicFormService.queryById(18L);
+            DynamicForm dynamicForm = dynamicFormService.queryById(20L);
             model.addAttribute("html",dynamicForm.getFormHtml());
         }catch (Exception e) {
             e.printStackTrace();
@@ -69,14 +71,20 @@ public class FormController {
             if (BeanUtil.isEmpty(idStr) || idStr.length()<=0) { // 新增
                 DynamicForm dynamicForm = new DynamicForm();
                 dynamicForm.setFormName((String) data.get("formName"));
-                dynamicForm.setFormName((String) data.get("formCode"));
-                dynamicForm.setFormHtml((String) data.get("template"));
+                dynamicForm.setFormCode((String) data.get("formCode"));
+                //dynamicForm.setFormHtml((String) data.get("template"));
+                String temp = (String) data.get("template");
+                UeForm form = UeForm.praseTemplate(temp);
+                dynamicForm.setFormHtml(form.getHtml());
                 dynamicFormService.add(dynamicForm);
             }else { // 更新
                 DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(idStr));
                 dynamicForm.setFormName((String) data.get("formName"));
-                dynamicForm.setFormName((String) data.get("formCode"));
-                dynamicForm.setFormHtml((String) data.get("template"));
+                dynamicForm.setFormCode((String) data.get("formCode"));
+                //dynamicForm.setFormHtml((String) data.get("template"));
+                String temp = (String) data.get("template");
+                UeForm form = UeForm.praseTemplate(temp);
+                dynamicForm.setFormHtml(form.getHtml());
                 dynamicFormService.updateByIdSelective(dynamicForm);
             }
         }catch (Exception e) {
@@ -92,8 +100,10 @@ public class FormController {
         //long id = 18;
         //DynamicForm dynamicForm = dynamicFormService.queryById(id);
         //model.addAttribute("html", dynamicForm.getFormHtml());
-        model.addAttribute("html", formeditor);
+        //model.addAttribute("html", formeditor);
         //model.addAttribute("name","哈哈老王");
+        UeForm form = UeForm.praseTemplate(formeditor);
+        model.addAttribute("html", form.getHtml());
 
         return "form/form_preview";
     }
