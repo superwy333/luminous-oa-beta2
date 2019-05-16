@@ -12,6 +12,7 @@ import cn.luminous.squab.form.entity.DynamicForm;
 import cn.luminous.squab.form.service.DynamicFormService;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
+import cn.luminous.squab.model.OaTaskNodeModel;
 import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -124,11 +125,16 @@ public class WorkFlowController{
     public ModelAndView toApprove(@RequestParam("id") String id, Model model) {
         ModelAndView m = new ModelAndView();
         try {
+            // 流程流转的数据
             OaTaskModel oaTaskModel = oaTaskService.queryTaskById(id);
             JSONArray jsonArray = JSONUtil.parseArray(oaTaskModel.getData());
             model.addAttribute("data",jsonArray);
             model.addAttribute("taskId",oaTaskModel.getTaskId());
             model.addAttribute("id",oaTaskModel.getId());
+
+            // 审批需要的数据
+            List<OaTaskNodeModel> oaTaskNodeModelList = oaTaskService.getCallBackNodes(oaTaskModel.getProcInstId());
+            model.addAttribute("callBackNodes",oaTaskNodeModelList);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -176,10 +182,14 @@ public class WorkFlowController{
                 oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);
                 oaTaskService.approveTask(oaTaskApprove);
             }else if (Constant.BIZ_KEY.REJECT.equals(rq.getBizKey())) { // 流程驳回
-                oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.REJECT);
-                oaTaskService.rejectTask(oaTaskApprove);
+                String hisTaskId = (String) data.get("callBackNode"); // 流程回退的历史任务id
+                if ("start".equals(hisTaskId)) { // 退回发起人
+                    oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.REJECT);
+                    oaTaskService.rejectTask(oaTaskApprove);
+                }else { // 退回到历史节点
+                    oaTaskService.callBackTaskToHisTask(hisTaskId);
+                }
             }
-
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【审批失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());

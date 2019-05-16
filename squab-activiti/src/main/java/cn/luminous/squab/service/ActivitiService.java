@@ -2,6 +2,7 @@ package cn.luminous.squab.service;
 
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.model.OaTaskModel;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
@@ -24,6 +25,10 @@ public interface ActivitiService {
     Boolean isEnd(String actTaskId) throws Exception;
 
     InputStream getDiagramOrgin(String deployId) throws Exception;
+
+    List<HistoricTaskInstance> getCallBackNodes(String processInstanceId) throws Exception;
+
+    void callBackTaskToHisTask(String hisTaskId) throws Exception;
 
 
 

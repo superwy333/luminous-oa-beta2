@@ -5,9 +5,11 @@ import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.ActivitiService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -35,6 +37,10 @@ public class ActivitiServiceImpl implements ActivitiService {
     private RepositoryService repositoryService;
     @Autowired
     ProcessEngineConfiguration processEngineConfiguration;
+    @Autowired
+    private HistoryService historyService;
+    @Autowired
+    ManagementService managementService;
 
 
     /**
@@ -130,5 +136,32 @@ public class ActivitiServiceImpl implements ActivitiService {
                         null,
                         1.0);
         return imageStream;
+    }
+
+    /**
+     * 根据流程实例id获取流程流转经过的节点，即可以回退的节点
+     * @param processInstanceId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<HistoricTaskInstance> getCallBackNodes(String processInstanceId) throws Exception {
+        return historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).orderByTaskCreateTime().finished().asc().list();
+    }
+
+    @Override
+    public void callBackTaskToHisTask(String hisTaskId) throws Exception {
+        HistoricTaskInstance hisTask = historyService.createHistoricTaskInstanceQuery().taskId(hisTaskId).singleResult();
+        // String taskAssignee = hisTask.getAssignee();
+        //进而获取流程实例
+        ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(hisTask.getProcessInstanceId()).singleResult();
+        //取得流程定义
+        ProcessDefinitionEntity definition = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(hisTask.getProcessDefinitionId());
+        //获取历史任务的Activity
+        ActivityImpl hisActivity = definition.findActivity(hisTask.getTaskDefinitionKey());
+        //实现跳转
+        managementService.executeCommand(new JumpCmd(instance.getId(), hisActivity.getId()));
+        //return hisTask.getProcessInstanceId();
+
     }
 }

@@ -5,6 +5,7 @@ import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
+import cn.luminous.squab.model.OaTaskNodeModel;
 
 import java.util.List;
 
@@ -28,6 +29,10 @@ public interface OaTaskService extends BaseService<OaTask> {
     List<OaTaskModel> queryMyTask(String userCode) throws Exception;
 
     void testTransactional() throws Exception;
+
+    List<OaTaskNodeModel> getCallBackNodes(String processInstanceId) throws Exception;
+
+    void callBackTaskToHisTask(String hisTaskId) throws Exception;
 
 
 }

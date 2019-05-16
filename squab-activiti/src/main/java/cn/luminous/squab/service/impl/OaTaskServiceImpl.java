@@ -11,16 +11,19 @@ import cn.luminous.squab.mapper.OaTaskApproveMapper;
 import cn.luminous.squab.mapper.OaTaskMapper;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
+import cn.luminous.squab.model.OaTaskNodeModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.OaTaskApproveService;
 import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.*;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,5 +222,23 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
     @Override
     public List<OaTaskModel> queryMyTask(String userCode) throws Exception {
         return oaTaskMapper.queryMyTask(userCode);
+    }
+
+    @Override
+    public List<OaTaskNodeModel> getCallBackNodes(String processInstanceId) throws Exception {
+        List<HistoricTaskInstance> historicTaskInstanceList = activitiService.getCallBackNodes(processInstanceId);
+        List<OaTaskNodeModel> oaTaskNodeModelList = new ArrayList<>();
+        historicTaskInstanceList.stream().forEach(his -> {
+            OaTaskNodeModel oaTaskNodeModel = new OaTaskNodeModel();
+            oaTaskNodeModel.setNodeId(his.getId());
+            oaTaskNodeModel.setName(his.getName());
+            oaTaskNodeModelList.add(oaTaskNodeModel);
+        });
+        return oaTaskNodeModelList;
+    }
+
+    @Override
+    public void callBackTaskToHisTask(String hisTaskId) throws Exception{
+        activitiService.callBackTaskToHisTask(hisTaskId);
     }
 }

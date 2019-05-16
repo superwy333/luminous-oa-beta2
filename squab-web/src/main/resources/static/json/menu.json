@@ -4,7 +4,7 @@
   "result": [{
     "name": "我的工作台",
     "child": [{
-    "name": "我的申请",
+    "name": "我发起的",
     "url": "/workflow/myTaskList"
     }, {
       "name": "我的待办",

@@ -60,18 +60,9 @@ layui.use(['table', 'jquery'], function () {
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
         if (layEvent === 'detail') { //流转记录
-            //do somehing
             xadmin.open('流程记录','/workflow/qjApprove',1500,800,false);
-        } else if (layEvent === 'approve'){
+        } else if (layEvent === 'edit'){
             xadmin.open('流程记录','/workflow/qjApprove?taskId=' + data.taskId,1500,800,true);
         }
-
-        // } else if (layEvent === 'del') { //删除
-        //     layer.confirm('真的删除行么', function (index) {
-        //         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-        //         layer.close(index);
-        //         //向服务端发送删除指令
-        //     });
-        // }
     });
 });

@@ -32,11 +32,6 @@
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
 </head>
 <body>
-<!--<div class="page-header">-->
-<!--    <h1>预览表单-->
-<!--        <small>如无问题请保存你的设计</small>-->
-<!--    </h1>-->
-<!--</div>-->
 <div class="container">
     <form id="ff">
         <div class="row ">
@@ -271,19 +266,40 @@
         <div class="row ">
             <table align="center" class="table table-bordered" data-sort="sortDisabled">
                 <tr>
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">审核意见：</td>
+                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>
+                    <td>
+                        <select id="approveType" style="width: 150px">
+                            <option value="approvePass">同意</option>
+                            <option value="approveReject">回退</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr id="callBackNodeRow" style="display: none">
+                    <td style="-ms-word-break: break-all;" valign="top" width="166">回退节点:</td>
+                    <td>
+                        <select id="callBackNode" style="width: 150px">
+                            <option value="start">发起人</option>
+                            <option th:each="option : ${callBackNodes}" th:value="${option.nodeId}" th:text="${option.name}"></option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核意见:</td>
                     <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea
                             id='approveContent' name='approveContent' style='width: 685px; height: 84px; margin: 0px;'
                             value=''></textarea></td>
+                </tr>
             </table>
         </div>
     </form>
 </div>
 
 <div class="form-btn" style="text-align:center;margin-top:20px">
-    <input class="btn btn-success btn-small" id="pass" type="submit" value="通过">
-    <span id="tip" style="color: #f00"></span>
-    <input class="btn btn-primary btn-small" id="reject" type="reset" value="退回">
+
+    <input class="btn btn-success btn-small" id="approveSubmit" type="submit" value="提交">
+    <!--<span id="tip" style="color: #f00"></span>-->
+    <!--<input class="btn btn-primary btn-small" id="reject" type="reset" value="退回申请人">-->
 </div>
 
 <script th:inline="javascript" type="text/javascript">
@@ -312,16 +328,66 @@
             $('textarea[name="' + value.name + '"]').val(value.value);
         })
 
+        // 移除需要操作的input和select的disabled和readOnly
         $('#approveContent').removeAttr("readOnly");
         $('#approveContent').removeAttr("disabled");
-        $('#pass').removeAttr("readOnly");
-        $('#pass').removeAttr("disabled");
-        $('#reject').removeAttr("readOnly");
-        $('#reject').removeAttr("disabled");
+        $('#approveType').removeAttr("readOnly");
+        $('#approveType').removeAttr("disabled");
+        $('#callBackNode').removeAttr("readOnly");
+        $('#callBackNode').removeAttr("disabled");
+        $('#approveSubmit').removeAttr("readOnly");
+        $('#approveSubmit').removeAttr("disabled");
+
+        $('#approveType').change(function () {
+            var data = $(this).val();
+            console.log(data);
+            if (data=='approveReject') {
+                $('#callBackNodeRow').css('display','table-row')
+            }else {
+                $('#callBackNodeRow').css('display','none')
+            }
+        });
 
         var actTaskId = [[${taskId}]];
         var currentUser = [[${currentUser}]];
         var oaTaskId = [[${id}]];
+
+        $('#approveSubmit').click(function () {
+            var data = {
+                actTaskId: actTaskId,
+                oaTaskId: oaTaskId,
+                approveType: $('#approveType').val(),
+                approveContent: $('#approveContent').val(),
+                callBackNode: $('#callBackNode').val(),
+                currentUser: currentUser
+            };
+            var reqData = {
+                bizKey: $('#approveType').val(),
+                data: data
+            };
+            $.ajax({
+                url: '/workflow/approve',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(reqData),
+                success: function (data) {
+                    if (data.code==0) {
+                        layer.msg("操作成功");
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
+            return false;
+        });
+
+
+
+
         $('#pass').click(function () {
             var data = {
                 actTaskId: actTaskId,

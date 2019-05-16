@@ -170,7 +170,7 @@ public class ActivitiTest {
      */
     @Test
     public void delete() {
-        String[] ids = {"70004","77504","85001","85005","90047"};
+        String[] ids = {"102508"};
         for (int i =0;i<ids.length;i++) {
             processEngine.getRepositoryService()
                     .deleteDeployment(ids[i],true);

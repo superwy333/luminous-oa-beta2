@@ -162,12 +162,15 @@ public class ActivitiCallBackTest {
         return hisTask.getProcessInstanceId();
     }
 
+
     @Test
     public void rollBackStart() {
-        String processInstanceId = "105001";
+        String processInstanceId = "140001";
         //1.获取需要跳转的流程环节processid
-        List<HistoricTaskInstance> historicTaskInstance= historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).orderByTaskCreateTime().asc().list();
-        this.taskRollback(historicTaskInstance.get(0).getId());
+        //List<HistoricTaskInstance> historicTaskInstance= historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId)
+        List<HistoricTaskInstance> historicTaskInstance= historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).orderByTaskCreateTime().finished().asc().list();
+        System.out.println(historicTaskInstance);
+        //this.taskRollback(historicTaskInstance.get(0).getId()); // 这里取第一个就是跳转到第一个节点
 
     }
 

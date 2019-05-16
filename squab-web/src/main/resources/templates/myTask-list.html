@@ -24,7 +24,7 @@
                 <a href="#">首页</a>
                 <!--                <a href="#">流程管理</a>-->
                 <a>
-                    <cite>我的申请</cite></a>
+                    <cite>我发起的</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
        onclick="location.reload()" title="刷新">
@@ -57,8 +57,11 @@
                     <table id="myTask" lay-filter="myTask"></table>
 
                     <script type="text/html" id="myTaskOperation">
-<!--                        <a class="layui-table-link" href="#" lay-event="approve">审批</a>-->
-<!--                        <a class="layui-table-link" href="#" lay-event="detail">流转记录</a>-->
+                        {{#  if(d.taskState == '2'){ }}
+                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>
+                        {{#  } else{ }}
+                        <a class="layui-table-link" href="#" lay-event="detail">详情</a>
+                        {{#  } }}
                     </script>
 
                     <!--数据表格操作-->

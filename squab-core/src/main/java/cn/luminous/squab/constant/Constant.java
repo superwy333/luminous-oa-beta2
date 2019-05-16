@@ -19,8 +19,8 @@ public class Constant {
      * 业务键
      */
     public static class BIZ_KEY {
-        public static final String PASS = "pass"; // 审批通过
-        public static final String REJECT = "reject"; // 审批驳回
+        public static final String PASS = "approvePass"; // 审批通过
+        public static final String REJECT = "approveReject"; // 审批驳回
 
     }
 
