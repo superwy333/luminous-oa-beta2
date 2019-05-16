@@ -34,228 +34,8 @@
 <body>
 <div class="container">
     <form id="ff">
-        <div class="row ">
-            <p style="text-align: center;"><span style="font-size: 24px;"><span
-                    style="font-size: 18px;">江苏福田物业发展有限公司</span><span style="font-size: 18px;">费用报销专用审批</span></span>
-            </p>
-            <table align="center" class="table table-bordered" data-sort="sortDisabled">
-                <tbody>
-                <tr class="firstRow">
-                    <td colspan="1" rowspan="1" style="word-break: break-all;" valign="top" width="166">日期</td>
-                    <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="230"><input
-                            leipiplugins="macros" name="data_70" orghide="0" orgtype="sys_date" orgwidth="150" readonly
-                            style="width: 150px;" title="日期" type="text" value="2019-05-08"/></td>
-                    <td colspan="1" rowspan="1" style="word-break: break-all;" valign="top" width="220">流水号</td>
-                    <td colspan="1" rowspan="1" valign="top" width="169"><input name="data_71" readonly
-                                                                                style="width: 150px;" type="text"
-                                                                                value="{sys_runid}"/></td>
-                </tr>
-                <tr>
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">报销人</td>
-                    <td valign="top" width="230"><input leipiplugins="macros" name="data_1" orghide="0" orgtype="sys_realname"
-                                                        orgwidth="150" readonly style="width: 150px;" title="报销人"
-                                                        type="text" value="管理员"/></td>
-                    <td style="-ms-word-break: break-all;" valign="top" width="220">部门</td>
-                    <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="169"><input
-                            leipiplugins="macros" name="data_2" orghide="0" orgtype="sys_dept" orgwidth="150" readonly
-                            style="width: 150px;" title="部门" type="text" value="总经办"/></td>
-                </tr>
-                <tr>
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">岗位</td>
-                    <td valign="top" width="230"><input leipiplugins="macros" name="data_22" orghide="0" orgtype="sys_post"
-                                                        orgwidth="150" readonly style="width: 150px;" title="岗位"
-                                                        type="text" value="OA管理员"/></td>
-                    <td align="left" colspan="1" rowspan="2" style="word-break: break-all;" valign="middle" width="220">
-                        收款人名称<br/></td>
-                    <td align="left" colspan="1" rowspan="2" style="-ms-word-break: break-all;" valign="middle"
-                        width="169"><input datatype='text' name='data_63' style='width: 150px; text-align: left;' type='text'
-                                           value=''></td>
-                </tr>
-                <tr>
-                    <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="166">币种</td>
-                    <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="230"><input
-                            datatype='text' name='data_62' style='width: 150px; text-align: left;' type='text'
-                            value='人民币（￥）'></td>
-                </tr>
-                <tr>
-                    <td colspan="4" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="848">
-                        <script>
-                            function tbAddRow(dname) {
-                                var sTbid = dname + "_table";
-                                var trNum = $("#" + sTbid + " tbody").find("tr").length;
-                                if (trNum > 5) {
-                                    alert("最多允许创建5条");
-                                    return false;
-                                }
+        <div id="htmlContainer" class="row ">
 
-                                $("#" + sTbid + " .template")
-                                //连同事件一起复制
-                                    .clone(true)
-                                    //去除模板标记
-                                    .removeClass("template").addClass("dataRow" + trNum)
-                                    //修改内部元素
-                                    .find(".delrow").show().end()
-                                    .find("input").val("").end()
-                                    .find("textarea").val("").end()
-                                    //插入表格
-                                    .appendTo($("#" + sTbid));
-                                // 处理一下name的值
-                                var lls = $(".dataRow" + trNum).find("input");
-                                $.each(lls, function (index, value) {
-                                    var oldName = $(lls[index]).attr("name");
-                                    $(lls[index]).attr("name",oldName + "[" + trNum + "]");
-                                })
-                            }
-
-                            //统计
-                            function sum_total(dname, e) {
-                                var tsum = 0;
-
-                                var tableId = dname + "_table";
-                                var inputs = $("#" + tableId).find("input");
-                                //console.log(inputs);
-                                $.each(inputs, function (index, value) {
-                                    var name = $(value).attr("name");
-                                    //alert(name + ">>>>" + name.indexOf("money"));
-                                    if (name.indexOf("money")!= -1) {
-                                        var t = parseFloat($(value).val());
-                                        if (!t) t = 0;
-                                        if (t) tsum += t * 100;
-                                        $(value).val(t);
-                                    }
-                                });
-                                tsum = tsum / 100;
-                                var xsd = tsum.toString().split(".");
-                                if (xsd.length == 1) {
-                                    tsum = tsum.toString() + ".00";
-
-                                }
-                                if (xsd.length > 1) {
-                                    if (xsd[1].length < 2) {
-                                        tsum = tsum.toString() + "0";
-                                    }
-                                }
-                                $('input[name="' + dname + '[total]"]').val(tsum);
-
-
-                                // var tsum = 0;
-                                // $('input[name="' + dname + '[]"]').each(function () {
-                                //     var t = parseFloat($(this).val());
-                                //     if (!t) t = 0;
-                                //     if (t) tsum += t * 100;
-                                //     //$(this).val(t);
-                                // });
-                                // tsum = tsum / 100;
-                                // var xsd = tsum.toString().split(".");
-                                // if (xsd.length == 1) {
-                                //     tsum = tsum.toString() + ".00";
-                                //
-                                // }
-                                // if (xsd.length > 1) {
-                                //     if (xsd[1].length < 2) {
-                                //         tsum = tsum.toString() + "0";
-                                //     }
-                                // }
-                                // $('input[name="' + dname + '[total]"]').val(tsum);
-
-                            }
-
-                            /*删除tr*/
-                            function fnDeleteRow(obj) {
-                                var sTbid = "data_5_table";
-                                var oTable = document.getElementById(sTbid);
-                                var trNum = $("#" + sTbid + " tbody").find("tr").length;
-
-                                if (trNum == 2) {
-                                    alert("最少保留1条");
-                                    return false;
-                                }
-                                while (obj.tagName != "TR") {
-                                    obj = obj.parentNode;
-                                }
-                                oTable.deleteRow(obj.rowIndex);
-                            }
-                        </script>
-                        <table cellspacing="0" class="table table-bordered table-condensed " id="data_5_table"
-                               style="width: 100%;">
-                            <thead>
-                            <tr>
-                                <th colspan="6">
-                                    费用详情<span class="pull-right">
-                                        <!--<button class="btn btn-small btn-success" onclick="tbAddRow('data_5')"-->
-                                                <!--type="button">添加一行</button>-->
-                                    </span>
-                                </th>
-                            </tr>
-                            <tr>
-                            <tr>
-                                <th>费用摘要</th>
-                                <th>单位</th>
-                                <th>数量</th>
-                                <th>单价</th>
-                                <th>金额</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tr class="template">
-                                <td><input class="input-medium" datatype="text" name="data_5[0]" type="text" value="">
-                                </td>
-                                <td><input class="input-medium" datatype="text" name="data_5[1]" type="text" value="">
-                                </td>
-                                <td><input class="input-medium" datatype="int" name="data_5[2]" type="text" value="">
-                                </td>
-                                <td><input class="input-medium" datatype="float" name="data_5[3]" type="text"
-                                           value=""></td>
-                                <td><input class="input-medium" datatype="float" name="data_money_5[4]"
-                                           onblur="sum_total('data_5')" type="text" value=""></td>
-                                <!--<td><a class="delrow" href="javascript:void(0);" onclick="fnDeleteRow(this)">删除</a></td>-->
-                            </tr>
-                            </tbody>
-                            <tfooter>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>合计：<input class="input-small" name="data_5[total]" onblur="sum_total('data_5[4][]')" readonly
-                                                  type="text" value=""></td>
-                                    <td></td>
-                                </tr>
-                            </tfooter>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="166">附件</td>
-                    <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661">
-                        <!--<input leipiplugins='images' name='data_24' style='' type='text' value=''/>-->
-                    </td>
-                </tr>
-                <tr>
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">支出说明：</td>
-                    <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea
-                            id='data_64' name='data_64' style='width: 685px; height: 84px; margin: 0px;'
-                            value=''></textarea></td>
-                </tr>
-                <tr>
-                    <td colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="166">支付方式：</td>
-                    <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><span
-                            leipiplugins="select"><select leipiplugins="select" name="data_65" orgwidth="150" size="1"
-                                                          style="width: 150px;" title="支持说明"><option
-                            value="现金">现金</option><option value="转账">转账</option><option value="电汇">电汇</option><option
-                            value="冲减借款">冲减借款</option><option value="支票">支票</option><option
-                            value="其他">其他</option></select>&nbsp;&nbsp;</span></td>
-                </tr>
-                <tr>
-                    <td align="left" colspan="1" rowspan="1" style="-ms-word-break: break-all;" valign="top"
-                        width="166"><p style="padding: 0px; margin-top: 0px; margin-bottom: 0px; white-space: normal;">
-                        领款人签字：</p></td>
-                    <td align="left" colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top"
-                        width="661"><p style="padding: 0px; margin-top: 0px; margin-bottom: 0px; white-space: normal;">
-                        <br/></p></td>
-                </tr>
-                </tbody>
-            </table>
 
 
         </div>
@@ -302,6 +82,13 @@
     <!--<input class="btn btn-primary btn-small" id="reject" type="reset" value="退回申请人">-->
 </div>
 
+
+<!--动态渲染表单-->
+<script th:inline="javascript">
+    var html = [[${html}]];
+    $('#htmlContainer').html(html);
+</script>
+
 <script th:inline="javascript" type="text/javascript">
     layui.use(['form', 'layer'],function () {
         var data = [[${data}]];
@@ -319,6 +106,8 @@
 
         $('html').find('textarea').attr("readOnly","readOnly");
         $('html').find('textarea').attr("disabled","disabled");
+        // 处理一下删除按钮
+        $('.delrow').css('display','none');
 
         $.each(data, function (index, value) {
             console.log(index + ">>>" + value.name);

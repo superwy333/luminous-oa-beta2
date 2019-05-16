@@ -29,8 +29,16 @@ public class FormController {
 
 
     @RequestMapping("/bxApply")
-    public String toBxApply() {
-        return "form/bx/bx_apply";
+    public ModelAndView toBxApply(Model model) {
+        ModelAndView m = new ModelAndView();
+        try {
+            DynamicForm dynamicForm = dynamicFormService.queryById(18L);
+            model.addAttribute("html",dynamicForm.getFormHtml());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        m.setViewName("form/bx/bx_apply");
+        return m;
     }
 
 

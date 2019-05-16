@@ -125,6 +125,10 @@ public class WorkFlowController{
     public ModelAndView toApprove(@RequestParam("id") String id, Model model) {
         ModelAndView m = new ModelAndView();
         try {
+            // 表单
+            DynamicForm dynamicForm = dynamicFormService.queryById(18L);
+            model.addAttribute("html",dynamicForm.getFormHtml());
+
             // 流程流转的数据
             OaTaskModel oaTaskModel = oaTaskService.queryTaskById(id);
             JSONArray jsonArray = JSONUtil.parseArray(oaTaskModel.getData());
