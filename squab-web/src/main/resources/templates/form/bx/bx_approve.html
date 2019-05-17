@@ -93,10 +93,7 @@
     layui.use(['form', 'layer'],function () {
         var data = [[${data}]];
 
-        var clickNum = 1;
-        for (var i=0;i<clickNum;i++) {
-            tbAddRow('data_5')
-        }
+
 
         $('html').find('input').attr("readOnly","readOnly");
         $('html').find('input').attr("disabled","disabled");
@@ -110,7 +107,30 @@
         $('.delrow').css('display','none');
 
         $.each(data, function (index, value) {
-            console.log(index + ">>>" + value.name);
+            // 渲染页面
+            if (value.name=='trNum') {
+                var clickNum = value.value - 1
+                var buttons = $('html').find('button');
+                $.each(buttons, function (index, value) {
+                    //console.log(value);
+                    //console.log($(value).text())
+                    if ($(value).text()=='添加一行') {
+                        for (var i=0;i<clickNum;i++) {
+                            $(value).click();
+                        }
+                        // 隐藏按钮
+                        $(value).css('display','none')
+                    }
+                })
+            }
+
+        })
+
+
+        $.each(data, function (index, value) {
+
+            // 填充数据
+            console.log(index + " >>> " + value.name + " >>> " + value.value);
             //$('input[name="' + dname + '"]').val(tsum);
             $('input[name="' + value.name + '"]').val(value.value);
             $('select[name="' + value.name + '"]').val(value.value);

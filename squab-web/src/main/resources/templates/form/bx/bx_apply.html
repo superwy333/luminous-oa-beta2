@@ -107,13 +107,30 @@
 
         $('#submit').click(function () {
             var data = $('#ff').serializeArray();
-            //console.log(JSON.stringify(data));
+            // 列表控件的处理
+            var buttons = $('html').find('button');
+            $.each(buttons, function (index, value) {
+                if ($(value).text()=='添加一行') {
+                    var table = $(value).closest('table');
+                    //console.log(table.attr('id'))
+                    var tableId = table.attr('id');
+                    var trNum = $("#" + tableId + " tbody").find("tr").length;
+                    //console.log(trNum)
+                    //req.trNum = trNum - 1
+                    var trNum = {
+                        name: 'trNum',
+                        value: trNum - 1
+                    }
+                    data.push(trNum)
+                }
+            })
 
             var req = {
                 bizKey: 'bxApply',
                 data: data
             }
-            console.log(JSON.stringify(req));
+
+            //console.log(JSON.stringify(req));
 
             $.ajax({
                 url: '/workflow/apply',

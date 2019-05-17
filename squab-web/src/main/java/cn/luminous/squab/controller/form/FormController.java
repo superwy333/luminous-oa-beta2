@@ -35,7 +35,8 @@ public class FormController {
         try {
             //DynamicForm dynamicForm = dynamicFormService.queryById(18L);
             DynamicForm dynamicForm = dynamicFormService.queryById(20L);
-            model.addAttribute("html",dynamicForm.getFormHtml());
+            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
+            model.addAttribute("html",form.getHtml());
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,19 +73,19 @@ public class FormController {
                 DynamicForm dynamicForm = new DynamicForm();
                 dynamicForm.setFormName((String) data.get("formName"));
                 dynamicForm.setFormCode((String) data.get("formCode"));
-                //dynamicForm.setFormHtml((String) data.get("template"));
-                String temp = (String) data.get("template");
-                UeForm form = UeForm.praseTemplate(temp);
-                dynamicForm.setFormHtml(form.getHtml());
+                dynamicForm.setFormHtml((String) data.get("template"));
+                //String temp = (String) data.get("template");
+                //UeForm form = UeForm.praseTemplate(temp);
+                //dynamicForm.setFormHtml(form.getHtml());
                 dynamicFormService.add(dynamicForm);
             }else { // 更新
                 DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(idStr));
                 dynamicForm.setFormName((String) data.get("formName"));
                 dynamicForm.setFormCode((String) data.get("formCode"));
-                //dynamicForm.setFormHtml((String) data.get("template"));
-                String temp = (String) data.get("template");
-                UeForm form = UeForm.praseTemplate(temp);
-                dynamicForm.setFormHtml(form.getHtml());
+                dynamicForm.setFormHtml((String) data.get("template"));
+                //String temp = (String) data.get("template");
+                //UeForm form = UeForm.praseTemplate(temp);
+                //dynamicForm.setFormHtml(form.getHtml());
                 dynamicFormService.updateByIdSelective(dynamicForm);
             }
         }catch (Exception e) {

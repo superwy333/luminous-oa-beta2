@@ -4,6 +4,7 @@ package cn.luminous.squab.controller.workflow;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
+import cn.luminous.squab.controller.form.pojo.UeForm;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
@@ -126,8 +127,9 @@ public class WorkFlowController{
         ModelAndView m = new ModelAndView();
         try {
             // 表单
-            DynamicForm dynamicForm = dynamicFormService.queryById(18L);
-            model.addAttribute("html",dynamicForm.getFormHtml());
+            DynamicForm dynamicForm = dynamicFormService.queryById(20L);
+            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
+            model.addAttribute("html",form.getHtml());
 
             // 流程流转的数据
             OaTaskModel oaTaskModel = oaTaskService.queryTaskById(id);
