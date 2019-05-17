@@ -49,11 +49,13 @@ public class FormController {
     @RequestMapping("/edit")
     public String toFormEdit(@RequestParam(value = "formId", required = false) Long formId, Model model) {
         try {
-            DynamicForm dynamicForm = dynamicFormService.queryById(formId);
-            model.addAttribute("id",dynamicForm.getId());
-            model.addAttribute("formName",dynamicForm.getFormName());
-            model.addAttribute("formCode",dynamicForm.getFormCode());
-            model.addAttribute("html",dynamicForm.getFormHtml());
+            if (!BeanUtil.isEmpty(formId)) {
+                DynamicForm dynamicForm = dynamicFormService.queryById(formId);
+                model.addAttribute("id",dynamicForm.getId());
+                model.addAttribute("formName",dynamicForm.getFormName());
+                model.addAttribute("formCode",dynamicForm.getFormCode());
+                model.addAttribute("html",dynamicForm.getFormHtml());
+            }
         }catch (Exception e) {
             // TODO return 404
             log.error("【跳转表单编辑器失败】" + e);
