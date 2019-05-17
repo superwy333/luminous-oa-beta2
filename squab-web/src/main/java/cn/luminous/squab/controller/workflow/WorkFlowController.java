@@ -127,7 +127,7 @@ public class WorkFlowController{
         ModelAndView m = new ModelAndView();
         try {
             // 表单
-            DynamicForm dynamicForm = dynamicFormService.queryById(20L);
+            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
             model.addAttribute("html",form.getHtml());
 
