@@ -60,9 +60,9 @@ layui.use(['table', 'jquery'], function () {
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
         if (layEvent === 'detail') { //流转记录
-            xadmin.open('流程记录','/workflow/qjApprove',1500,800,false);
+            xadmin.open('详情','/workflow/detail?id=' + data.id + '&type=1',1500,800,false);
         } else if (layEvent === 'edit'){
-            xadmin.open('流程记录','/workflow/qjApprove?taskId=' + data.taskId,1500,800,true);
+            xadmin.open('编辑','/workflow/detail?id=' + data.id + '&type=2',1500,800,true);
         }
     });
 });

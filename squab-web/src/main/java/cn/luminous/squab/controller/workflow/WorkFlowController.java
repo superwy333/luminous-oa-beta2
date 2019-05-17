@@ -122,6 +122,33 @@ public class WorkFlowController{
         return m;
     }
 
+    @RequestMapping("/detail")
+    public ModelAndView toDetail(@RequestParam("id") String id,
+                                 Model model,
+                                 @RequestParam("type") String type) { // type=1浏览type=2编辑
+        ModelAndView m = new ModelAndView();
+        try {
+            // 表单
+            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
+            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
+            model.addAttribute("html",form.getHtml());
+
+            // 流程流转的数据
+            OaTask oaTask = oaTaskService.queryById(Long.valueOf(id));
+            JSONArray jsonArray = JSONUtil.parseArray(oaTask.getData());
+            model.addAttribute("data",jsonArray);
+            //model.addAttribute("taskId",oaTaskModel.getTaskId());
+            model.addAttribute("id",oaTask.getId());
+            model.addAttribute("type",type);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        m.setViewName("task-detail");
+        return m;
+    }
+
+
+
     @RequestMapping("/approve")
     public ModelAndView toApprove(@RequestParam("id") String id, Model model) {
         ModelAndView m = new ModelAndView();

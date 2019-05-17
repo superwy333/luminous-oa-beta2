@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <link href="/form/css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <link href="/form/css/site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<script>  function tbAddRow(dname) {
+    var sTbid = dname + '_table';
+    var size = parseInt($('#' + dname + '_length').val());
+    var fields = $('#' + dname + '_field').val();
+    var fs = fields.split('`');
+    var table = '<tr>';
+    for (var i = 0; i < fs.length; i++) {
+        if (fs[i] && fs[i] != '') {
+            table += '<td><input class="input-medium" type="text" name=' + dname + '[' + (size + 1) + '][' + fs[i] + ']  value=""> </td>';
+        }
+    }
+    table += '<td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow show">删除</a></td>';
+    table += '</tr>';
+    $('#' + dname + '_length').val(size + 1);
+    $('#' + sTbid).append(table);
+}
+
+function fnDeleteRow(obj) {
+    var sTbid = 'test_table';
+    var oTable = document.getElementById(sTbid);
+    while (obj.tagName != 'TR') {
+        obj = obj.parentNode;
+    }
+    oTable.deleteRow(obj.rowIndex);
+    var size = $('#test_length').val();
+    $('#test_length').val(size - 1);
+}
+
+function sum_total(dname, key) {
+    var tsum = 0;
+
+    var tableId = dname + "_table";
+    var inputs = $("#" + tableId).find("input");
+//console.log(inputs);
+    $.each(inputs, function (index, value) {
+        var name = $(value).attr("name");
+        console.log(name + ">>>>" + name.indexOf(key));
+        if (name.indexOf(key) != -1) {
+            var t = parseFloat($(value).val());
+            if (!t) t = 0;
+            if (t) tsum += t * 100;
+            $(value).val(t);
+        }
+    });
+    tsum = tsum / 100;
+    var xsd = tsum.toString().split(".");
+    if (xsd.length == 1) {
+        tsum = tsum.toString() + ".00";
+
+    }
+    if (xsd.length > 1) {
+        if (xsd[1].length < 2) {
+            tsum = tsum.toString() + "0";
+        }
+    }
+    $('input[name="' + dname + "_" + key + '[total]"]').val(tsum);
+}</script>
+<p>
+<table id="test_table" cellspacing="0" class="table table-bordered table-condensed" style="width: 100%;">
+    <thead>
+    <tr>
+        <th colspan="4">test<span class="pull-right"> <button class="btn btn-small btn-success" type="button"
+                                                              onclick="tbAddRow('test')">添加一行</button></span></th>
+    </tr>
+    <tr>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+    </tr>
+    </thead>
+    <tr class="template">
+        <td><input class="input-medium" type="text" name="test[0][aaa]" value="" onblur="sum_total('test','aaa')"></td>
+        <td><input class="input-medium" type="text" name="test[0][bbb]" value="" onblur="sum_total('test','bbb')"></td>
+        <td><input class="input-medium" type="text" name="test[0][ccc]" value="" onblur="sum_total('test','ccc')"></td>
+        <td><input class="input-medium" type="text" name="test[0][ddd]" value="" onblur="sum_total('test','ddd')"></td>
+        <td><a href="javascript:void(0);" onclick="fnDeleteRow(this)" class="delrow hide">删除</a></td>
+    </tr>
+    <input type="hidden" id='test_length' value='0'><input type="hidden" id='test_field'
+                                                           value='aaa`bbb`ccc`ddd`'> </tbody>
+    <tfooter>
+        <tr>
+            <td>合计：<input class="input-small" name="test_aaa[total]" onblur="sum_total('data_5[4][]')" readonly
+                          type="text" value=""></td>
+            <td>合计：<input class="input-small" name="test_bbb[total]" onblur="sum_total('data_5[4][]')" readonly
+                          type="text" value=""></td>
+            <td>合计：<input class="input-small" name="test_ccc[total]" onblur="sum_total('data_5[4][]')" readonly
+                          type="text" value=""></td>
+            <td>合计：<input class="input-small" name="test_ddd[total]" onblur="sum_total('data_5[4][]')" readonly
+                          type="text" value=""></td>
+            <td></td>
+        </tr>
+    </tfooter>
+</table>
+</p>
+</body>
+</html>
