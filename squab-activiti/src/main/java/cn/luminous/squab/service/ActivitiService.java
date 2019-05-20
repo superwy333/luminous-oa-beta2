@@ -30,6 +30,8 @@ public interface ActivitiService {
 
     void callBackTaskToHisTask(String hisTaskId) throws Exception;
 
+    void modeDeploy(String bizKey, String modelId, Long formId) throws Exception;
+
 
 
 

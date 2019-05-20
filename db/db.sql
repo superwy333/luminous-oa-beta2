@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80015
 File Encoding         : 65001
 
-Date: 2019-05-20 13:58:17
+Date: 2019-05-20 14:01:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `biz_mapping`;
 CREATE TABLE `biz_mapping` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `biz_key` varchar(255) DEFAULT NULL,
-  `process_key` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `process_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `form_id` varchar(255) DEFAULT NULL,
   `deleted` int(10) DEFAULT NULL,
   `version` bigint(255) DEFAULT NULL,

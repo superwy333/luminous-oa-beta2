@@ -2,6 +2,9 @@ package cn.luminous.squab.controller.activiti;
 
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
+import cn.luminous.squab.form.entity.DynamicForm;
+import cn.luminous.squab.form.service.DynamicFormService;
+import cn.luminous.squab.service.ActivitiService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,7 +15,6 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.impl.persistence.entity.ModelEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +31,13 @@ import java.util.Map;
 public class ModelerController {
 
     @Autowired
-    RepositoryService repositoryService;
+    private RepositoryService repositoryService;
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+    @Autowired
+    private DynamicFormService dynamicFormService;
+    @Autowired
+    private ActivitiService activitiService;
 
     @RequestMapping("/modelList")
     public String toModelList() {
@@ -41,6 +47,19 @@ public class ModelerController {
     @RequestMapping("/modelAdd")
     public String modelAdd() {
         return "model-add";
+    }
+
+    @RequestMapping("/deploy")
+    public String toDeploy(org.springframework.ui.Model model,
+                           @RequestParam(value = "modelId") String modelId) {
+
+        // 查询表单
+        List<DynamicForm> dynamicFormList = dynamicFormService.query(new DynamicForm());
+        model.addAttribute("formList",dynamicFormList);
+        model.addAttribute("modelId",modelId);
+
+        return "model-deploy";
+
     }
 
     @PostMapping("/modelList")
@@ -116,28 +135,10 @@ public class ModelerController {
     public String deploy(@RequestBody Rq rq) {
         try {
             Map<String,String> data = (Map<String,String>) rq.getData();
-            String modelId = data.get("id");
-            //获取模型
-            Model modelData = repositoryService.getModel(modelId);
-            byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
-            if (bytes == null) {
-                return R.nok("模型数据为空，请先设计流程并成功保存，再进行发布。");
-            }
-            JsonNode modelNode = new ObjectMapper().readTree(bytes);
-            BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-            if(model.getProcesses().size()==0){
-                return R.nok("数据模型不符要求，请至少设计一条主线流程。");
-            }
-            byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
-
-            //发布流程
-            String processName = modelData.getName() + ".bpmn20.xml";
-            Deployment deployment = repositoryService.createDeployment()
-                    .name(modelData.getName())
-                    .addString(processName, new String(bpmnBytes, "UTF-8"))
-                    .deploy();
-            modelData.setDeploymentId(deployment.getId());
-            repositoryService.saveModel(modelData);
+            String modelId = data.get("modelId");
+            String bizKey = data.get("bizKey");
+            String formId = data.get("formId");
+            activitiService.modeDeploy(bizKey, modelId, Long.valueOf(formId));
         }catch (Exception e) {
             return R.nok(e.getMessage());
         }

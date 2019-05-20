@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -23,30 +23,33 @@
 <div class="layui-fluid">
     <div class="layui-row">
         <form class="layui-form" id="model-from">
+            <input type="hidden" th:value="${modelId}" name="modelId">
 
 
             <div class="layui-form-item">
-                <label for="name" class="layui-form-label">
-                    <span class="x-red">*</span>名称</label>
+                <label for="bizKey" class="layui-form-label">
+                    <span class="x-red">*</span>业务键</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="name" name="name" required="" lay-verify="required"
+                    <input type="text" id="bizKey" name="bizKey" required="" lay-verify="required"
                            autocomplete="off" class="layui-input"></div>
             </div>
 
 <!--            <div class="layui-form-item">-->
 <!--                <label for="key" class="layui-form-label">-->
-<!--                    <span class="x-red">*</span>流程key</label>-->
+<!--                    <span class="x-red">*</span>流程</label>-->
 <!--                <div class="layui-input-inline">-->
-<!--                    <input type="text" id="key" name="key" required="" lay-verify="required"-->
-<!--                           autocomplete="off" class="layui-input"></div>-->
+<!--                    <select id="key"></select>-->
+<!--                </div>-->
 <!--            </div>-->
 
             <div class="layui-form-item">
-                <label for="description" class="layui-form-label">
-                    <span class="x-red"></span>描述</label>
+                <label for="formId" class="layui-form-label">
+                    <span class="x-red">*</span>表单</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="description" name="description" required="" lay-verify=""
-                           autocomplete="off" class="layui-input"></div>
+                    <select id="formId" name="formId">
+                        <option th:each="option : ${formList}" th:value="${option.id}" th:text="${option.formName}"></option>
+
+                    </select></div>
             </div>
 
             <div class="layui-form-item">
@@ -64,17 +67,27 @@
 
         form.on('submit(add)', function (data) {
             var reqData = {
-                bizKey: 'modelAdd',
+                bizKey: 'modelDeploy',
                 data: data.field
             };
+            // var reqData = {
+            //     bizKey: 'deployModel',
+            //     data: {
+            //         id:data.id
+            //     }
+            // };
             $.ajax({
-                url: '/modeler/newModel',
+                url: '/modeler/deploy',
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
-                    window.parent.parent.location.href = data.data;
+                    if (data.code==0) {
+                        layer.msg("操作成功");
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
                 },
                 error: function (data) {
                     layer.alert("网络超时，请联系管理员");

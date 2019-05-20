@@ -1,9 +1,17 @@
 package cn.luminous.squab.service.impl;
 
+import cn.luminous.squab.entity.BizMapping;
 import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.entity.http.R;
+import cn.luminous.squab.form.entity.DynamicForm;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.ActivitiService;
+import cn.luminous.squab.service.BizMappingService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -18,6 +26,7 @@ import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,8 +34,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service("activitiService")
+@Transactional
 public class ActivitiServiceImpl implements ActivitiService {
 
+    @Autowired
+    private BizMappingService bizMappingService;
     @Autowired
     private ProcessEngine processEngine;
     @Autowired
@@ -163,5 +175,52 @@ public class ActivitiServiceImpl implements ActivitiService {
         managementService.executeCommand(new JumpCmd(instance.getId(), hisActivity.getId()));
         //return hisTask.getProcessInstanceId();
 
+    }
+
+    @Override
+    public void modeDeploy(String bizKey, String modelId, Long formId) throws Exception {
+
+        // 检验bizKey是否重复发布
+        BizMapping bizMapping = new BizMapping();
+        bizMapping.setBizKey(bizKey);
+
+        List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
+        if (bizMappingList.size()>=1) throw new Exception("bizKey已存在");
+
+        // 发布模型
+        //获取模型
+        Model modelData = repositoryService.getModel(modelId);
+        byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
+        if (bytes == null) {
+            throw new Exception("模型数据为空，请先设计流程并成功保存，再进行发布。");
+        }
+        JsonNode modelNode = new ObjectMapper().readTree(bytes);
+        BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+        if(model.getProcesses().size()==0){
+            throw new Exception("数据模型不符要求，请至少设计一条主线流程。");
+        }
+        // // 检验processKey是否重复发布
+        String processKey = model.getMainProcess().getId();
+        bizMapping = new BizMapping();
+        bizMapping.setProcessKey(processKey);
+        bizMappingList = bizMappingService.query(bizMapping);
+        if (bizMappingList.size()>=1) throw new Exception("该模型已部署");
+
+        byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
+        //发布流程
+        String processName = modelData.getName() + ".bpmn20.xml";
+        Deployment deployment = repositoryService.createDeployment()
+                .name(modelData.getName())
+                .addString(processName, new String(bpmnBytes, "UTF-8"))
+                .deploy();
+        modelData.setDeploymentId(deployment.getId());
+        repositoryService.saveModel(modelData);
+
+        // 新增bizMapping
+        bizMapping = new BizMapping();
+        bizMapping.setProcessKey(processKey);
+        bizMapping.setFormId(String.valueOf(formId));
+        bizMapping.setBizKey(bizKey);
+        bizMappingService.add(bizMapping);
     }
 }
