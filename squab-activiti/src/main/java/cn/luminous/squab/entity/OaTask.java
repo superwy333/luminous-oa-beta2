@@ -18,6 +18,8 @@ public class OaTask extends BaseDomain {
     private String procInstId;
     @Column(name = "proc_def_id")
     private String procDefId;
+    @Column(name = "proc_key")
+    private String processKey;
     @Column(name = "apply_name")
     private String applyName;
     @Column(name = "apply_code")
@@ -34,6 +36,14 @@ public class OaTask extends BaseDomain {
     private String extField4;
     @Column(name = "ext_field5")
     private String extField5;
+
+    public String getProcessKey() {
+        return processKey;
+    }
+
+    public void setProcessKey(String processKey) {
+        this.processKey = processKey;
+    }
 
     public String getApplyCode() {
         return applyCode;

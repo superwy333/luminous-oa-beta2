@@ -29,20 +29,20 @@ public class FormController {
     private DynamicFormService dynamicFormService;
 
 
-    @RequestMapping("/bxApply")
-    public ModelAndView toBxApply(Model model) {
-        ModelAndView m = new ModelAndView();
-        try {
-            //DynamicForm dynamicForm = dynamicFormService.queryById(18L);
-            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
-            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
-            model.addAttribute("html",form.getHtml());
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        m.setViewName("form/bx/bx_apply");
-        return m;
-    }
+//    @RequestMapping("/bxApply")
+//    public ModelAndView toBxApply(Model model) {
+//        ModelAndView m = new ModelAndView();
+//        try {
+//            //DynamicForm dynamicForm = dynamicFormService.queryById(18L);
+//            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
+//            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
+//            model.addAttribute("html",form.getHtml());
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        m.setViewName("form/bx/bx_apply");
+//        return m;
+//    }
 
 
 

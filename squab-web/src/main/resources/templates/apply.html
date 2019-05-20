@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <link href="/form/service/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/form/service/css/jedate.css" rel="stylesheet" type="text/css">
+    <link href="/form/service/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/form/service/css/webuploader.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            padding: 0 20px 10px 20px
+        }
+
+        h1 {
+            font-size: 16px
+        }
+
+        table, td {
+            border: 1px solid #999;
+            border-collapse: collapse
+        }
+
+        td {
+            padding: 7px 10px
+        }
+
+    </style>
+    <script src="/form/service/js/jquery-1.12.4.min.js"></script>
+    <script src="/form/service/js/jquery.jedate.min.js" type="text/javascript"></script>
+    <script src="/form/service/js/bootstrap.min.js"></script>
+    <script src="/form/service/js/webuploader.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+</head>
+<body>
+<!--<div class="page-header">-->
+<!--    <h1>预览表单-->
+<!--        <small>如无问题请保存你的设计</small>-->
+<!--    </h1>-->
+<!--</div>-->
+<div class="container">
+    <form id="ff">
+        <div id="htmlContainer" class="row ">
+
+        </div>
+    </form>
+
+    <div class="form-btn" style="text-align:center;margin-top:20px">
+        <input class="btn btn-primary btn-small" id="reset" type="reset" value="重置">
+        <input class="btn btn-success btn-small" id="submit" type="submit" value="提交"><span id="tip"
+                                                                                            style="color: #f00"></span>
+    </div>
+
+</div>
+
+<!--动态渲染表单-->
+<script th:inline="javascript">
+    var html = [[${html}]];
+    $('#htmlContainer').html(html);
+</script>
+
+<script th:inline="javascript" type="text/javascript">
+    var bizKey = [[${bizKey}]]
+    layui.use(['form', 'layer','jquery'], function () {
+
+        var uploader = WebUploader.create({
+
+            // swf文件路径
+            swf: 'static/form/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '/form/fileUpload',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#picker',
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        // 当有文件被添加进队列的时候
+        uploader.on( 'fileQueued', function( file ) {
+            $('#thelist').append( '<div style="display: inline-block;margin-left: 20px" id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name +'</h4>' +
+                // '<p class="state">等待上传...</p>' +
+                '<a class="remove-this" href="#"> <font size="1" color="red">删除</font></a>' +
+                '</div>' );
+        });
+
+        $('#thelist').on('click', '.remove-this', function() {
+            var fileItem = $(this).parent();
+            var id = $(fileItem).attr("id");
+            console.log(id)
+            uploader.removeFile(id, true);
+            $(fileItem).fadeOut(function() {
+                $(fileItem).remove();
+            });
+
+        });
+
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+
+        $('#reset').click(function () {
+            document.getElementById("ff").reset();
+        });
+
+        $('#submit').click(function () {
+            var data = $('#ff').serializeArray();
+            // 列表控件的处理
+            var buttons = $('html').find('button');
+            $.each(buttons, function (index, value) {
+                if ($(value).text()=='添加一行') {
+                    var table = $(value).closest('table');
+                    //console.log(table.attr('id'))
+                    var tableId = table.attr('id');
+                    var trNum = $("#" + tableId + " tbody").find("tr").length;
+                    //console.log(trNum)
+                    //req.trNum = trNum - 1
+                    var trNum = {
+                        name: 'trNum',
+                        value: trNum - 1
+                    }
+                    data.push(trNum)
+                }
+            })
+
+            var req = {
+                bizKey: bizKey,
+                data: data
+            }
+
+            console.log(JSON.stringify(req));
+
+            $.ajax({
+                url: '/workflow/apply',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(req),
+                success: function (data) {
+                    if (data.code==0) {
+                        layer.msg("申请成功");
+                        // 表单提交成功之后进行附件上传
+                        uploader.upload();
+                    } else {
+                        layer.alert("申请失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
+
+        });
+
+    });
+
+
+</script>
+
+</body>
+</html>

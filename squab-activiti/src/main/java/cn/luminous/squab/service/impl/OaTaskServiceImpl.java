@@ -95,7 +95,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
 
         // TODO 根据bizKey分拣得出流程定义key
-        String processKey = "bx-process";
+        String processKey = oaTask.getProcessKey();
 
         // 把oaTask的表单提交数据装入流程变量
 
@@ -114,6 +114,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         oaTask.setApplyName((String) variables.get("applyName"));
         oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
         oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
+        oaTask.setApplyCode("008");
 
         // 记录提交的表单数据
         this.add(oaTask);

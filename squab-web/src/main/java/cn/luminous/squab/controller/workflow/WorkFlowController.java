@@ -5,6 +5,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.controller.form.pojo.UeForm;
+import cn.luminous.squab.entity.BizMapping;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.http.R;
@@ -14,6 +15,7 @@ import cn.luminous.squab.form.service.DynamicFormService;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
+import cn.luminous.squab.service.BizMappingService;
 import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,6 +39,8 @@ public class WorkFlowController{
     private OaTaskService oaTaskService;
     @Autowired
     private DynamicFormService dynamicFormService;
+    @Autowired
+    private BizMappingService bizMappingService;
 
     /**
      * 跳转申请汇总页面
@@ -86,29 +90,59 @@ public class WorkFlowController{
         return "qj-add2";
     }
 
+
     /**
-     * 跳转请假审批表单
+     * 任务申请
+     * @param model
      * @return
      */
-    @RequestMapping("/qjApprove")
-    public String toQjApprove(Model model, String taskId) {
+    @GetMapping("/apply")
+    public ModelAndView apply(@RequestParam("bizKey") String bizKey, Model model) {
+        ModelAndView m = new ModelAndView();
         try {
-            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(taskId);
-            String data = oaTaskModel.getData();
-            Gson gson = new GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .create();
-            Map<String,Object> dataMap = gson.fromJson(data,Map.class);
-            model.addAttribute("taskId",oaTaskModel.getTaskId());
-            model.addAttribute("id",oaTaskModel.getId());
-            model.addAllAttributes(dataMap);
-            // TODO 把当前登陆人加入模板参数
-            model.addAttribute("currentUser","008");
+            BizMapping bizMapping = new BizMapping();
+            bizMapping.setBizKey(bizKey);
+            List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
+            bizMapping = bizMappingList.get(0);
+            DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(bizMapping.getFormId()));
+            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
+            model.addAttribute("html",form.getHtml());
+            model.addAttribute("bizKey",bizKey);
         }catch (Exception e) {
-            // TODO 跳转到404页面
+            e.printStackTrace();
         }
-        return "qj-approve";
+        m.setViewName("apply");
+        return m;
     }
+
+
+
+
+
+
+//    /**
+//     * 跳转请假审批表单
+//     * @return
+//     */
+//    @RequestMapping("/qjApprove")
+//    public String toQjApprove(Model model, String taskId) {
+//        try {
+//            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(taskId);
+//            String data = oaTaskModel.getData();
+//            Gson gson = new GsonBuilder()
+//                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+//                    .create();
+//            Map<String,Object> dataMap = gson.fromJson(data,Map.class);
+//            model.addAttribute("taskId",oaTaskModel.getTaskId());
+//            model.addAttribute("id",oaTaskModel.getId());
+//            model.addAllAttributes(dataMap);
+//            // TODO 把当前登陆人加入模板参数
+//            model.addAttribute("currentUser","008");
+//        }catch (Exception e) {
+//            // TODO 跳转到404页面
+//        }
+//        return "qj-approve";
+//    }
 
 //    @RequestMapping("/myTaskList")
 //    public String myTaskList() {
@@ -128,13 +162,17 @@ public class WorkFlowController{
                                  @RequestParam("type") String type) { // type=1浏览type=2编辑
         ModelAndView m = new ModelAndView();
         try {
+            OaTask oaTask = oaTaskService.queryById(Long.valueOf(id));
+            BizMapping bizMapping = new BizMapping();
+            bizMapping.setBizKey(oaTask.getBizKey());
+            bizMapping = bizMappingService.query(bizMapping).get(0);
             // 表单
-            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
+            DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(bizMapping.getFormId()));
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
             model.addAttribute("html",form.getHtml());
 
             // 流程流转的数据
-            OaTask oaTask = oaTaskService.queryById(Long.valueOf(id));
+
             JSONArray jsonArray = JSONUtil.parseArray(oaTask.getData());
             model.addAttribute("data",jsonArray);
             //model.addAttribute("taskId",oaTaskModel.getTaskId());
@@ -150,16 +188,20 @@ public class WorkFlowController{
 
 
     @RequestMapping("/approve")
-    public ModelAndView toApprove(@RequestParam("id") String id, Model model) {
+    public ModelAndView toApprove(@RequestParam("id") String actTaskId, Model model) {
         ModelAndView m = new ModelAndView();
         try {
+            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(actTaskId);
+            BizMapping bizMapping = new BizMapping();
+            bizMapping.setBizKey(oaTaskModel.getBizKey());
+            bizMapping = bizMappingService.query(bizMapping).get(0);
+
             // 表单
-            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
+            DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(bizMapping.getFormId()));
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
             model.addAttribute("html",form.getHtml());
 
             // 流程流转的数据
-            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(id);
             JSONArray jsonArray = JSONUtil.parseArray(oaTaskModel.getData());
             model.addAttribute("data",jsonArray);
             model.addAttribute("taskId",oaTaskModel.getTaskId());
@@ -171,7 +213,7 @@ public class WorkFlowController{
         }catch (Exception e) {
             e.printStackTrace();
         }
-        m.setViewName("form/bx/bx_approve");
+        m.setViewName("approve");
         return m;
     }
 
@@ -179,14 +221,19 @@ public class WorkFlowController{
     /**
      * 表单提交
      */
-    @RequestMapping(value = "/apply", method = RequestMethod.POST)
+    @PostMapping(value = "/apply")
     @ResponseBody
     public String apply(@RequestBody Rq rq) {
         OaTask oaTask = new OaTask();
         try {
             log.debug("【任务注册开始】入参: " + rq.toString());
-            oaTask.setBizKey(rq.getBizKey());
+            String bizKey = rq.getBizKey();
+            BizMapping bizMapping = new BizMapping();
+            bizMapping.setBizKey(bizKey);
+            bizMapping = bizMappingService.query(bizMapping).get(0);
+            oaTask.setBizKey(bizKey);
             oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
+            oaTask.setProcessKey(bizMapping.getProcessKey());
             oaTaskService.registerTask(oaTask);
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);

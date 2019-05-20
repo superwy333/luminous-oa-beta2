@@ -599,7 +599,7 @@
 
                 this.hideCalendars();
                 this.hide();
-                this.element.trigger('apply.daterangepicker', this);
+                this.element.trigger('templates.apply.daterangepicker', this);
             }
         },
 
@@ -700,7 +700,7 @@
         clickApply: function (e) {
             this.updateInputText();
             this.hide();
-            this.element.trigger('apply.daterangepicker', this);
+            this.element.trigger('templates.apply.daterangepicker', this);
         },
 
         clickCancel: function (e) {

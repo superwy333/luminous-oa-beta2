@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.OaTask">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="biz_key" property="bizKey" jdbcType="VARCHAR"/>
+        <result column="proc_key" property="processKey" jdbcType="VARCHAR"/>
         <result column="proc_inst_id" property="procInstId" jdbcType="VARCHAR"/>
         <result column="proc_def_id" property="procDefId" jdbcType="VARCHAR"/>
         <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
@@ -28,6 +29,7 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="task_id" property="taskId" jdbcType="VARCHAR"/>
         <result column="biz_key" property="bizKey" jdbcType="VARCHAR"/>
+        <result column="proc_key" property="processKey" jdbcType="VARCHAR"/>
         <result column="task_state" property="taskState" jdbcType="VARCHAR"/>
         <result column="assignee" property="assignee" jdbcType="VARCHAR"/>
         <result column="proc_inst_id" property="procInstId" jdbcType="VARCHAR"/>
@@ -52,7 +54,7 @@
 
 
     <sql id="Base_Column_List">
-        id, biz_key, proc_inst_id, proc_def_id, task_state, apply_name, apply_code, apply_time, data, create_by, create_time,
+        id, biz_key, proc_key, proc_inst_id, proc_def_id, task_state, apply_name, apply_code, apply_time, data, create_by, create_time,
         last_modify_by, last_modify_time, deleted, version, ext_field1, ext_field2, ext_field3,
         ext_field4, ext_field5
     </sql>

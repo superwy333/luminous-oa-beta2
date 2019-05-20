@@ -272,7 +272,7 @@
         },
         paperproto,
         appendChild = "appendChild",
-        apply = "apply",
+        apply = "templates.apply",
         concat = "concat",
         supportsTouch = "createTouch" in g.doc,
         E = "",

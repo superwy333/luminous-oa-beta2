@@ -10,6 +10,7 @@ public class OaTaskModel extends BaseDomain {
     private String taskName;
     private String taskState; // 0：流转中 1：已通过 2：已驳回
     private String bizKey;
+    private String processKey;
     private String data;
     private String procInstId;
     private String procDefId;
@@ -22,6 +23,14 @@ public class OaTaskModel extends BaseDomain {
     private String extField3;
     private String extField4;
     private String extField5;
+
+    public String getProcessKey() {
+        return processKey;
+    }
+
+    public void setProcessKey(String processKey) {
+        this.processKey = processKey;
+    }
 
     public String getAssignee() {
         return assignee;
