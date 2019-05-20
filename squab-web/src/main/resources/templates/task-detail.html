@@ -7,6 +7,26 @@
     <link href="/form/service/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="/form/service/css/webuploader.css" rel="stylesheet" type="text/css"/>
     <style>
+        @media print {
+            #print {
+                display: none;
+            }
+            .container {
+
+            }
+
+            #htmlContainer {
+
+            }
+
+        }
+
+        input {
+            border: none;
+        }
+        textarea {
+            border: none;
+        }
         body {
             padding: 0 20px 10px 20px
         }
@@ -32,7 +52,7 @@
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="container">
+<div id="printBody" class="container">
     <form id="ff">
         <div id="htmlContainer" class="row ">
         </div>
@@ -56,6 +76,8 @@
 </div>
 
 <div class="form-btn" style="text-align:center;margin-top:20px">
+    <input class="btn btn-success btn-small" id="print" type="button" value="打印">
+
 
     <input class="btn btn-success btn-small" id="approveSubmit" type="submit" value="提交">
 </div>
@@ -71,16 +93,25 @@
     layui.use(['form', 'layer'],function () {
         var data = [[${data}]];
 
-
-
-        $('html').find('input').attr("readOnly","readOnly");
-        $('html').find('input').attr("disabled","disabled");
+        //$('html').find('input').attr("readOnly","readOnly");
+        //$('html').find('input').attr("disabled","disabled");
+        // 这边分开区分text和checkbox,radio
+        var inputs = $('html').find('input');
+        $.each(inputs, function (index, value) {
+            if ($(value).attr('type')=='checkbox' || $(value).attr('type')=='radio') {
+                //console.log('check')
+                $(value).attr("disabled","disabled");
+            }else {
+                $(value).attr("readOnly","readOnly");
+                //console.log('text')
+            }
+        })
 
         $('html').find('select').attr("readOnly","readOnly");
-        $('html').find('select').attr("disabled","disabled");
+        //$('html').find('select').attr("disabled","disabled");
 
         $('html').find('textarea').attr("readOnly","readOnly");
-        $('html').find('textarea').attr("disabled","disabled");
+        //$('html').find('textarea').attr("disabled","disabled");
         // 处理一下删除按钮
         $('.delrow').css('display','none');
 
@@ -136,6 +167,10 @@
         $('#callBackNode').removeAttr("disabled");
         $('#approveSubmit').removeAttr("readOnly");
         $('#approveSubmit').removeAttr("disabled");
+        $('#print').removeAttr("readOnly");
+        $('#print').removeAttr("disabled");
+
+
 
         $('#approveType').change(function () {
             var data = $(this).val();
@@ -192,9 +227,19 @@
             return false;
         });
 
+        $('#print').click(function () {
+            var url = window.location.href;
+            var newWindow = window.open(url);
+            newWindow.addEventListener('load', function() { // 增加监听器 防止页面没渲染完成就打印
+                newWindow.print();
+                newWindow.close();
+            });
+
+        })
+
+
     });
 </script>
-
 <!--渲染核签记录-->
 <script th:inline="javascript">
     layui.use(['form', 'layer'],function () {
