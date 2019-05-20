@@ -60,7 +60,7 @@ layui.use(['table', 'jquery'], function () {
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
         if (layEvent === 'detail') { //流转记录
-            xadmin.open('详情','/workflow/detail?id=' + data.id + '&type=1',1600,800,false);
+            xadmin.open('详情','/workflow/detail?id=' + data.id + '&type=1&bizKey=' + data.bizKey,1600,800,false);
         } else if (layEvent === 'edit'){
             xadmin.open('编辑','/workflow/detail?id=' + data.id + '&type=2',1600,800,true);
         }

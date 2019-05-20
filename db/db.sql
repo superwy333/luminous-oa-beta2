@@ -10,10 +10,33 @@ Target Server Type    : MYSQL
 Target Server Version : 80015
 File Encoding         : 65001
 
-Date: 2019-05-07 10:55:02
+Date: 2019-05-20 13:58:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for biz_mapping
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_mapping`;
+CREATE TABLE `biz_mapping` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `biz_key` varchar(255) DEFAULT NULL,
+  `process_key` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `form_id` varchar(255) DEFAULT NULL,
+  `deleted` int(10) DEFAULT NULL,
+  `version` bigint(255) DEFAULT NULL,
+  `create_by` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `last_modify_by` varchar(255) DEFAULT NULL,
+  `last_modify_time` datetime DEFAULT NULL,
+  `ext_field1` varchar(255) DEFAULT NULL,
+  `ext_field2` varchar(255) DEFAULT NULL,
+  `ext_field3` varchar(255) DEFAULT NULL,
+  `ext_field4` varchar(255) DEFAULT NULL,
+  `ext_field5` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for dynamic_form
@@ -36,7 +59,7 @@ CREATE TABLE `dynamic_form` (
   `ext_field4` varchar(255) DEFAULT NULL,
   `ext_field5` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for oa_task
@@ -64,7 +87,7 @@ CREATE TABLE `oa_task` (
   `ext_field4` varchar(255) DEFAULT NULL,
   `ext_field5` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for oa_task_approve
@@ -90,7 +113,7 @@ CREATE TABLE `oa_task_approve` (
   `ext_field4` varchar(255) DEFAULT NULL,
   `ext_field5` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -115,4 +138,4 @@ CREATE TABLE `sys_user` (
   `ext_field4` varchar(255) DEFAULT NULL,
   `ext_field5` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
