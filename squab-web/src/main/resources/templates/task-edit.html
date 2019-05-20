@@ -37,22 +37,6 @@
         <div id="htmlContainer" class="row ">
         </div>
     </form>
-
-    <!--流转信息-->
-    <span style="margin-left: 62px">核签记录:</span>
-    <!--<span style="text-align: center;display:block;">没有数据显示</span>-->
-    <table id="approve-details" align="center">
-        <tbody>
-        <tr style="width: 1014px; height: 10px">
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">节点名称</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批人</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批结果</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批意见</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批时间</td>
-        </tr>
-        </tbody>
-    </table>
-
 </div>
 
 <div class="form-btn" style="text-align:center;margin-top:20px">
@@ -195,55 +179,6 @@
     });
 </script>
 
-<!--渲染核签记录-->
-<script th:inline="javascript">
-    layui.use(['form', 'layer'],function () {
-
-        var tdd;
-        var oaTaskId = [[${id}]]
-        var rq = {
-            data: {
-                oaTaskId: oaTaskId
-            }
-        }
-        $.ajax({
-            url: '/workflow/approveDetails',
-            method: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(rq),
-            success: function(data) {
-                console.log(data)
-                var dataArray = data.data;
-                $.each(dataArray, function (index, value) {
-                    tdd += '<tr>';
-                    tdd += '<td>';
-                    tdd += value.nodeName;
-                    tdd += '</td>';
-                    tdd += '<td>';
-                    tdd += value.approver==undefined?'':value.approver;
-                    tdd += '</td>';
-                    tdd += '<td>';
-                    tdd += value.approveResult==0?'同意':'驳回';
-                    tdd += '</td>';
-                    tdd += '<td>';
-                    tdd += value.approveContent;
-                    tdd += '</td>';
-                    tdd += '<td>';
-                    tdd += value.approveTime;
-                    tdd += '</td>';
-                    tdd += '</tr>';
-                })
-                $('#approve-details tbody').append(tdd)
-            },
-            error: function (data) {
-                layer.alert("网络超时，请联系管理员");
-            }
-
-        })
-    })
-
-</script>
 </body>
 </html>
 

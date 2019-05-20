@@ -283,7 +283,7 @@ public class WorkFlowController{
         try {
             log.debug("【查询审批记录开始】入参: " + rq.toString());
             Map<String,Object> data = (Map<String,Object>) rq.getData();
-            oaTaskApproveModelList = oaTaskService.queryTaskApproveDetails(Long.valueOf((String) data.get("oaTaskId")));
+            oaTaskApproveModelList = oaTaskService.queryTaskApproveDetails(Long.valueOf((Integer) data.get("oaTaskId")));
         }catch (Exception e) {
             log.error("【查询审批记录失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
