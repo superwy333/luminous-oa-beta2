@@ -223,4 +223,17 @@ public class ActivitiServiceImpl implements ActivitiService {
         bizMapping.setBizKey(bizKey);
         bizMappingService.add(bizMapping);
     }
+
+    @Override
+    public HistoricTaskInstance getPreviousTask(String processInstanceId) throws Exception {
+        HistoricTaskInstance perviousTask = null;
+        List<HistoricTaskInstance> list = historyService//与历史数据（历史表）相关的service
+                .createHistoricTaskInstanceQuery()//创建历史任务实例查询
+                .processInstanceId(processInstanceId)
+                .list();
+        if (list.size()>1) { // 已经审批过一次了
+            perviousTask = list.get(list.size()-2);
+        }
+        return perviousTask;
+    }
 }

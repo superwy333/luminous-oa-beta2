@@ -168,18 +168,19 @@
 <script>
     function verify() {
         var inputs = $('input');
-        console.log(inputs)
+        //console.log(inputs)
         $.each(inputs, function (index, value) {
             // 非空校验
             var notNull = $(value).attr("notnull")
             if (notNull==1 && $(value).val()=='') {
                 layer.alert("提交失败！请检查带*号必填项不能为空！")
+                console.log("false")
                 return false;
             }
-
-            // 值校验
-
         })
+        // 值校验
+        console.log("true")
+        return true
     }
 </script>
 
