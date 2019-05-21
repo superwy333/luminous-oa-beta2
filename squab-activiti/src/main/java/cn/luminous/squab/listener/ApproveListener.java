@@ -18,7 +18,6 @@ public class ApproveListener implements TaskListener {
     @Autowired
     private ActivitiService activitiService;
 
-
     {
         if (activitiService==null)
             activitiService = (ActivitiService)SpringUtil.getObject("activitiService");
