@@ -107,6 +107,11 @@
         });
 
         $('#submit').click(function () {
+            // 校验
+            if (!verify()) {
+                return false;
+            }
+
             var data = $('#ff').serializeArray();
             // 列表控件的处理
             var buttons = $('html').find('button');
@@ -158,6 +163,24 @@
     });
 
 
+</script>
+
+<script>
+    function verify() {
+        var inputs = $('input');
+        console.log(inputs)
+        $.each(inputs, function (index, value) {
+            // 非空校验
+            var notNull = $(value).attr("notnull")
+            if (notNull==1 && $(value).val()=='') {
+                layer.alert("提交失败！请检查带*号必填项不能为空！")
+                return false;
+            }
+
+            // 值校验
+
+        })
+    }
 </script>
 
 </body>

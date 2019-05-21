@@ -72,7 +72,9 @@
         act_ru_task acttask
         LEFT JOIN oa_task oatask on oatask.proc_inst_id = acttask.PROC_INST_ID_
         <where>
-            acttask.ASSIGNEE_ = #{assignee}
+            <if test="assignee !=null and assignee !=''">
+                acttask.ASSIGNEE_ = #{assignee}
+            </if>
         </where>
     </select>
 
@@ -90,7 +92,9 @@
         act_hi_taskinst acthitask
         LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
         <where>
-            acthitask.ASSIGNEE_ = #{assignee}
+            <if test="assignee !=null and assignee !=''">
+                acttask.ASSIGNEE_ = #{assignee}
+            </if>
             AND
             acthitask.END_TIME_ is not null
         </where>

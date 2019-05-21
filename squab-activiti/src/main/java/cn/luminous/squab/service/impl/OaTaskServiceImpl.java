@@ -174,7 +174,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
     @Override
     public List<OaTaskModel> queryTaskToDo() throws Exception {
         // TODO 从Shiro中获取当前登陆用户
-        String userCode = "008";
+        String userCode = null;
         return oaTaskMapper.queryTaskToDo(userCode);
     }
 
