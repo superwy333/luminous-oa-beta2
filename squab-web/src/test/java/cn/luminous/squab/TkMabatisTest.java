@@ -39,9 +39,6 @@ public class TkMabatisTest {
     public void testAdd() {
         SysUer sysUer = new SysUer();
         sysUer.setName("Lisa");
-        sysUer.setAddress("zhujiang road");
-        sysUer.setBirth(new Date());
-        sysUer.setEmail("1221401769@qq.com");
         sysUer.setPassword("666");
         int count = sysUserService.add(sysUer); // deleted默认给了0，version为空
         log.info("---result---" + count);
@@ -51,9 +48,6 @@ public class TkMabatisTest {
     public void testAddSelective() {
         SysUer sysUer = new SysUer();
         sysUer.setName("Lisa");
-        sysUer.setAddress("zhujiang road");
-        sysUer.setBirth(new Date());
-        sysUer.setEmail("1221401769@qq.com");
         sysUer.setPassword("666");
         int count = sysUserService.addSelective(sysUer); // deleted默认给了0，version为空
         log.info("---result---" + count);

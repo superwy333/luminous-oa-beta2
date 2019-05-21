@@ -1,32 +1,18 @@
-package cn.luminous.squab.entity;
+package cn.luminous.squab.model;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-import java.util.Date;
+import cn.luminous.squab.entity.BaseDomain;
 
-@Table(name = "sys_user")
-public class SysUer extends BaseDomain {
+public class SysUserModel extends BaseDomain {
 
-
-    @Column(name = "name")
     private String name;
-    @Column(name = "user_code")
     private String userCode;
-    @Column(name = "staff_id")
     private Long staffId;
-    @Column(name = "password")
     private String password;
-    @Column(name = "salt")
     private String salt;
-    @Column(name = "ext_field1")
     private String extField1;
-    @Column(name = "ext_field2")
     private String extField2;
-    @Column(name = "ext_field3")
     private String extField3;
-    @Column(name = "ext_field4")
     private String extField4;
-    @Column(name = "ext_field5")
     private String extField5;
 
     public String getName() {
