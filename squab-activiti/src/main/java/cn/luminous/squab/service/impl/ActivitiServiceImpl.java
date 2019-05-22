@@ -232,7 +232,10 @@ public class ActivitiServiceImpl implements ActivitiService {
                 .processInstanceId(processInstanceId)
                 .list();
         if (list.size()>1) { // 已经审批过一次了
-            perviousTask = list.get(list.size()-2);
+            perviousTask = list.get(list.size() - 1);
+        }
+        if (list.size()==1) {
+            perviousTask = list.get(0);
         }
         return perviousTask;
     }
