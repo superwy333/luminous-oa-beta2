@@ -25,16 +25,9 @@ public class ShiroConfig {
         //filterChainDefinitionMap.put("/**", "anon");
         filterChainDefinitionMap.put("/form/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
-    }
-
-
-    @Bean
-    public DefaultWebSecurityManager securityManager() {
-        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager(new LoginRealm());
-        return defaultWebSecurityManager;
     }
 
     @Bean
@@ -42,5 +35,13 @@ public class ShiroConfig {
         LoginRealm LoginRealm = new LoginRealm();
         return LoginRealm;
     }
+
+    @Bean
+    public DefaultWebSecurityManager securityManager() {
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager(LoginRealm());
+        return defaultWebSecurityManager;
+    }
+
+
 
 }
