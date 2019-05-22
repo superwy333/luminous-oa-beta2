@@ -18,7 +18,7 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     String rejectTask(OaTaskApprove oaTaskApprove) throws Exception; // 审批驳回，这届停止流程
 
-    List<OaTaskModel> queryTaskToDo() throws Exception; // 查询待办
+    List<OaTaskModel> queryTaskToDo(String userCode) throws Exception; // 查询待办
 
     List<OaTaskModel> queryTaskDone() throws Exception; // 查询已办
 

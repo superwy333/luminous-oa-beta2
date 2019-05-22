@@ -19,6 +19,7 @@ import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -172,9 +173,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @throws Exception
      */
     @Override
-    public List<OaTaskModel> queryTaskToDo() throws Exception {
-        // TODO 从Shiro中获取当前登陆用户
-        String userCode = null;
+    public List<OaTaskModel> queryTaskToDo(String userCode) throws Exception {
         return oaTaskMapper.queryTaskToDo(userCode);
     }
 

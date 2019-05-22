@@ -294,7 +294,9 @@ public class WorkFlowController{
         List<OaTaskModel> taskList;
         try {
             log.debug("【查询代办开始】入参: " + rq.toString());
-            taskList = oaTaskService.queryTaskToDo();
+            Subject subject = SecurityUtils.getSubject();
+            String userCode = (String) subject.getPrincipal();
+            taskList = oaTaskService.queryTaskToDo(userCode);
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
@@ -355,8 +357,8 @@ public class WorkFlowController{
         List<OaTaskModel> oaTaskModelList;
         try {
             // TODO 获取当前登陆人
-            String currentUserCode = "008";
-            oaTaskModelList = oaTaskService.queryMyTask(currentUserCode);
+            String userCode = (String)SecurityUtils.getSubject().getPrincipal();
+            oaTaskModelList = oaTaskService.queryMyTask(userCode);
             log.debug("【查询我的任务开始】入参: " + rq.toString());
         }catch (Exception e) {
             log.error("【查询我的任务失败】入参: " + rq.toString(), e);

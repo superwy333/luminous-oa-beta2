@@ -1,11 +1,14 @@
 package cn.luminous.squab.controller;
 
 
+import cn.luminous.squab.entity.SysUer;
+import cn.luminous.squab.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @Slf4j
 public class LoginController {
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @RequestMapping("/login")
     public String login() {
@@ -32,7 +38,13 @@ public class LoginController {
     }
 
     @RequestMapping("/index")
-    public String index() {
+    public String index(Model model) {
+        String userCode = (String) SecurityUtils.getSubject().getPrincipal();
+        SysUer sysUer = new SysUer();
+        sysUer.setUserCode(userCode);
+        sysUer = sysUserService.queryOne(sysUer);
+        model.addAttribute("username",sysUer.getName());
+
         return "index";
     }
 
