@@ -47,7 +47,7 @@ public class LoginRealm extends AuthorizingRealm {
         if (!MD5Util.MD5(pwd, "utf-8").equals(sysUerInDB.getPassword())) {
             throw new ShiroException("密码错误");
         }else {
-            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo("admin", "123456",getName());
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(token.getUsername(), pwd,getName());
             return info;
         }
     }

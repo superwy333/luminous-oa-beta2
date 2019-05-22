@@ -1,6 +1,10 @@
 package cn.luminous.squab;
 
+import cn.luminous.squab.entity.Department;
 import cn.luminous.squab.entity.SysUer;
+import cn.luminous.squab.model.OaTaskModel;
+import cn.luminous.squab.service.DepartmentService;
+import cn.luminous.squab.service.OaTaskService;
 import cn.luminous.squab.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -21,6 +25,10 @@ public class TkMabatisTest {
 
     @Autowired
     SysUserService sysUserService;
+    @Autowired
+    DepartmentService departmentService;
+    @Autowired
+    OaTaskService oaTaskService;
     @Autowired
     ApplicationContext ioc;
 
@@ -95,6 +103,26 @@ public class TkMabatisTest {
         sysUer.setId(2L);
         List<SysUer> sysUerList = sysUserService.queryAllUsers(sysUer);
         log.info("---result---" + sysUerList.size());
+
+    }
+
+
+
+    @Test
+    public void test333() throws Exception {
+        //List<SysUer> sysUerList = sysUserService.queryAllUsers(new SysUer());
+        Department department = departmentService.queryDepartment("tt");
+        List<OaTaskModel> oaTaskModelList = oaTaskService.queryMyTask("tt");
+        System.out.println("aaa");
+
+    }
+
+    @Test
+    public void test444() throws Exception {
+        //List<SysUer> sysUerList = sysUserService.queryAllUsers(new SysUer());
+        //Department department = departmentService.queryDepartment("tt");
+        List<OaTaskModel> oaTaskModelList = oaTaskService.queryMyTask("tt");
+        System.out.println("aaa");
 
     }
 

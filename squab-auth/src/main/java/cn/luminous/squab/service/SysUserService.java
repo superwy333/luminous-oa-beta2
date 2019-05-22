@@ -8,4 +8,6 @@ public interface SysUserService extends BaseService<SysUer> {
 
     List<SysUer> queryAllUsers(SysUer sysUer);
 
+    String getAssignee(String src, String type) throws Exception;
+
 }

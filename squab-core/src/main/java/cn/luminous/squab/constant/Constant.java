@@ -33,5 +33,28 @@ public class Constant {
 
     }
 
+    public static class ASSIGNEE_KEY {
+        /**
+         * 科室
+         */
+        public static final String KS = "ks";
+        /**
+         * 上级部门
+         */
+        public static final String SJBM = "sjbm";
+        /**
+         * 分管领导
+         */
+        public static final String FGLD = "fgld";
+        /**
+         * 总经理
+         */
+        public static final String ZJL = "zjl";
+        /**
+         * 人事备案
+         */
+        public static final String RSBA = "rsba";
+    }
+
 
 }

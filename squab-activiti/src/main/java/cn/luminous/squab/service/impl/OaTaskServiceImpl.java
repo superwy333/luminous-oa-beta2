@@ -103,8 +103,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         Map<String,Object> variables =  parseJson(oaTask.getData());
 
         // TODO 把当前登陆用户信息装入流程变量
-        variables.put("post","zy");
-        variables.put("assignee","008");
+        //variables.put("post","zy");
+        //variables.put("assignee","008");
         // ....
 
         // 启动流程
@@ -114,7 +114,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         oaTask.setApplyName((String) variables.get("applyName"));
         oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
         oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
-        oaTask.setApplyCode("008");
+        //oaTask.setApplyCode("008");
 
         // 记录提交的表单数据
         this.add(oaTask);

@@ -20,6 +20,8 @@ import cn.luminous.squab.service.OaTaskService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -234,6 +236,9 @@ public class WorkFlowController{
             oaTask.setBizKey(bizKey);
             oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
             oaTask.setProcessKey(bizMapping.getProcessKey());
+            Subject subject = SecurityUtils.getSubject();
+            String userCode = (String) subject.getPrincipal();
+            oaTask.setApplyCode(userCode);
             oaTaskService.registerTask(oaTask);
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);
