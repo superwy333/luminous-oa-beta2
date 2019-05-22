@@ -1,13 +1,16 @@
 package cn.luminous.squab.controller.activiti;
 
 
+import cn.luminous.squab.entity.BizMapping;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.service.ActivitiService;
+import cn.luminous.squab.service.BizMappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 
+import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +34,8 @@ public class DeployController {
     private RepositoryService repositoryService;
     @Autowired
     private ActivitiService activitiService;
+    @Autowired
+    private BizMappingService bizMappingService;
 
     @RequestMapping("/deployList")
     public String toModelList() {
@@ -95,7 +101,17 @@ public class DeployController {
     public String deleteDeploy(@RequestBody Rq rq) {
         try {
             Map<String,String> data = (Map<String,String>) rq.getData();
-            repositoryService.deleteDeployment(data.get("id"));
+            String deplotmentId = data.get("id");
+
+            ProcessDefinition processDefinition = repositoryService
+                    .createProcessDefinitionQuery()
+                    .deploymentId(deplotmentId)
+                    .singleResult();
+            BizMapping bizMapping = new BizMapping();
+            bizMapping.setProcessKey(processDefinition.getKey());
+            bizMapping = bizMappingService.queryOne(bizMapping);
+            bizMappingService.remove(bizMapping);
+            repositoryService.deleteDeployment(deplotmentId);
         }catch (Exception e) {
             return R.nok(e.getMessage());
         }
