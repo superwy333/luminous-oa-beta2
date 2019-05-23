@@ -25,7 +25,7 @@ layui.use(['jquery'], function(){
                         '                            <li>\n' +
                         '                                <a onclick="xadmin.add_tab(\'' + menuJsonChild[k].name +
                         '\',\'' + menuJsonChild[k].url +
-                        '\')">\n' +
+                        '\',true)">\n' +
                         '                                    <i class="iconfont">&#xe6a7;</i>\n' +
                         '                                    <cite>' + menuJsonChild[k].name +
                         '</cite></a>\n' +
