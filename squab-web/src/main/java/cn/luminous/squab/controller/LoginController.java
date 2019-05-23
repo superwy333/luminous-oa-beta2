@@ -22,6 +22,11 @@ public class LoginController {
     @Autowired
     private SysUserService sysUserService;
 
+    @RequestMapping("/")
+    public String toLogin() {
+        return "redirect:/login";
+    }
+
     @RequestMapping("/login")
     public String login() {
         Subject subject = SecurityUtils.getSubject();
