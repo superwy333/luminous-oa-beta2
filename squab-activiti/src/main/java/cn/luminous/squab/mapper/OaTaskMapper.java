@@ -6,6 +6,7 @@ import cn.luminous.squab.mybatis.imapper.IMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OaTaskMapper extends IMapper<OaTask> {
 
@@ -17,6 +18,8 @@ public interface OaTaskMapper extends IMapper<OaTask> {
     OaTaskModel queryTaskById(@Param("taskId") String taskId);
 
     List<OaTaskModel> queryMyTask(@Param("userCode") String userCode);
+
+    String callTaskNo(Map map);
 
 
 

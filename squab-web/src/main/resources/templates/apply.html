@@ -45,9 +45,8 @@
     </form>
 
     <div class="form-btn" style="text-align:center;margin-top:20px">
-        <input class="btn btn-primary btn-small" id="reset" type="reset" value="重置">
-        <input class="btn btn-success btn-small" id="submit" type="submit" value="提交"><span id="tip"
-                                                                                            style="color: #f00"></span>
+        <!--<input class="btn btn-primary btn-small" id="reset" type="reset" value="重置">-->
+        <input class="btn btn-success btn-small" id="submit" type="submit" value="提交">
     </div>
 
 </div>
@@ -60,7 +59,20 @@
 
 <script th:inline="javascript" type="text/javascript">
     var bizKey = [[${bizKey}]]
+    var taskNo = [[${taskNo}]]
+    var sysUser = [[${sysUser}]]
+    console.log(sysUser)
     layui.use(['form', 'layer','jquery'], function () {
+        var $ = layui.jquery;
+
+        $("input[name='lsh']").val(taskNo);
+        $("input[name='lsh']").attr("readOnly","readOnly");
+        $("input[name='sqr']").val(sysUser.name);
+        $("input[name='sqr']").attr("readOnly","readOnly");
+        $("input[name='gw']").val(sysUser.postName);
+        $("input[name='gw']").attr("readOnly","readOnly");
+        $("input[name='bm']").val(sysUser.deptName);
+        $("input[name='bm']").attr("readOnly","readOnly");
 
         var uploader = WebUploader.create({
 

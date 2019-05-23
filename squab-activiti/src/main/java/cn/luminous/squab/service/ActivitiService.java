@@ -35,6 +35,4 @@ public interface ActivitiService {
     HistoricTaskInstance getPreviousTask(String processInstanceId) throws Exception;
 
 
-
-
 }

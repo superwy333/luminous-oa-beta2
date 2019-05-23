@@ -34,5 +34,7 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     void callBackTaskToHisTask(String hisTaskId) throws Exception;
 
+    String getTaskNo() throws Exception;
+
 
 }

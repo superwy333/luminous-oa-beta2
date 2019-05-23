@@ -21,6 +21,33 @@
         <result column="ext_field5" property="extField5" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="ModelResultMap" type="cn.luminous.squab.model.SysUserModel">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="user_code" property="userCode" jdbcType="VARCHAR"/>
+        <result column="staff_id" property="staffId" jdbcType="BIGINT"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_modify_by" property="lastModifyBy" jdbcType="VARCHAR"/>
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP"/>
+        <result column="deleted" property="deleted" jdbcType="TINYINT"/>
+        <result column="version" property="version" jdbcType="BIGINT"/>
+        <result column="ext_field1" property="extField1" jdbcType="VARCHAR"/>
+        <result column="ext_field2" property="extField2" jdbcType="VARCHAR"/>
+        <result column="ext_field3" property="extField3" jdbcType="VARCHAR"/>
+        <result column="ext_field4" property="extField4" jdbcType="VARCHAR"/>
+        <result column="ext_field5" property="extField5" jdbcType="VARCHAR"/>
+
+        <result column="post_code" property="postCode" jdbcType="VARCHAR"/>
+        <result column="post_name" property="postName" jdbcType="VARCHAR"/>
+        <result column="dept_code" property="deptCode" jdbcType="VARCHAR"/>
+        <result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
+
+
+    </resultMap>
+
     <sql id="Base_Column_List">
         id, name, user_code, staff_id, password,salt, create_by, create_time,
         last_modify_by, last_modify_time, deleted, version, ext_field1, ext_field2, ext_field3,
@@ -38,7 +65,23 @@
         </where>
     </select>
 
-
+    <select id="queryUserInfo" resultMap="ModelResultMap" parameterType="java.lang.String">
+        SELECT
+	        post. NAME AS post_name,
+	        dept. NAME AS dept_name,
+	        sus.*
+        FROM
+	        sys_user sus
+        LEFT JOIN staffs sta ON sta.id = sus.staff_id
+        LEFT JOIN departments dept ON dept.id = sta.department_id
+        LEFT JOIN posts post ON post.id = sta.post_id
+        WHERE
+	        sus.deleted = 0
+            AND sta.deleted = 0
+            AND dept.deleted = 0
+            AND post.deleted = 0
+            AND sus.user_code = #{userCode}
+    </select>
 
 
 </mapper>

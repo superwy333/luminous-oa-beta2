@@ -241,4 +241,12 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
     public void callBackTaskToHisTask(String hisTaskId) throws Exception{
         activitiService.callBackTaskToHisTask(hisTaskId);
     }
+
+
+    @Override
+    public synchronized String getTaskNo() throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        map.put("newOrderNo","");
+        return oaTaskMapper.callTaskNo(map);
+    }
 }

@@ -5,9 +5,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.controller.form.pojo.UeForm;
-import cn.luminous.squab.entity.BizMapping;
-import cn.luminous.squab.entity.OaTask;
-import cn.luminous.squab.entity.OaTaskApprove;
+import cn.luminous.squab.entity.*;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.form.entity.DynamicForm;
@@ -15,10 +13,10 @@ import cn.luminous.squab.form.service.DynamicFormService;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
+import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.service.BizMappingService;
 import cn.luminous.squab.service.OaTaskService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import cn.luminous.squab.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -43,6 +41,8 @@ public class WorkFlowController{
     private DynamicFormService dynamicFormService;
     @Autowired
     private BizMappingService bizMappingService;
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 跳转申请汇总页面
@@ -110,6 +110,18 @@ public class WorkFlowController{
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
             model.addAttribute("html",form.getHtml());
             model.addAttribute("bizKey",bizKey);
+            // 获取流水号
+            String taskNo = oaTaskService.getTaskNo();
+            model.addAttribute("taskNo",taskNo);
+            // 获取申请人信息
+
+            String userCode = (String) SecurityUtils.getSubject().getPrincipal();
+            SysUserModel sysUserModel = sysUserService.queryUserInfo(userCode);
+            model.addAttribute("sysUser",sysUserModel);
+//            SysUer sysUer = new SysUer();
+//            sysUer.setUserCode(userCode);
+//            sysUer = sysUserService.queryOne(sysUer);
+//            model.addAttribute("username",sysUer.getName());
         }catch (Exception e) {
             e.printStackTrace();
         }

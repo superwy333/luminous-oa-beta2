@@ -149,4 +149,9 @@
     </select>
 
 
+    <select id="callTaskNo" statementType="CALLABLE" parameterType="java.util.Map" resultType="java.lang.String">
+        {call orderNo(#{newOrderNo,mode=OUT,jdbcType=VARCHAR})}
+    </select>
+
+
 </mapper>

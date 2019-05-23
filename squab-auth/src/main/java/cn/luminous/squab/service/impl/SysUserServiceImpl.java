@@ -4,6 +4,7 @@ import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.Department;
 import cn.luminous.squab.entity.SysUer;
 import cn.luminous.squab.mapper.SysUserMapper;
+import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.DepartmentService;
 import cn.luminous.squab.service.SysUserService;
@@ -73,46 +74,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         return sysUer.getUserCode();
     }
 
-
-//    private String getLeader(Department department) throws Exception{
-//        String leaderId = department.getLeader();
-//        if (leaderId!=null) {
-//            SysUer sysUer = new SysUer();
-//            sysUer.setStaffId(Long.valueOf(leaderId));
-//            sysUer = this.queryOne(sysUer);
-//            return sysUer.getUserCode();
-//        }else {
-//            Department father = getDepartmentDegree(department);
-//            SysUer sysUer = new SysUer();
-//            sysUer.setStaffId(Long.valueOf(father.getLeader()));
-//            sysUer = this.queryOne(sysUer);
-//            return sysUer.getUserCode();
-//        }
-//    }
-//
-//    private Department getDepartmentDegree(Department department) throws Exception {
-//        Integer pid = department.getPid();
-//        Department departmentInDB = departmentService.queryById(Long.valueOf(pid));
-//        if (departmentInDB.getLeader()==null) {
-//            return getDepartmentDegree(departmentInDB); // 递归
-//        }else {
-//            return departmentInDB;
-//        }
-//    }
-//
-//    /**
-//     * 获取当前部门的上级部门，即有leader的部门
-//     * 如果当前部门有leader，则直接获取当前部门
-//     * @param department
-//     * @return
-//     * @throws Exception
-//     */
-//    private Department getFather(Department department) throws Exception{
-//        if (department.getLeader()==null) {
-//            return getDepartmentDegree(department);
-//        }else {
-//            return department;
-//        }
-//    }
-
+    @Override
+    public SysUserModel queryUserInfo(String userCode) throws Exception {
+        return sysUserMapper.queryUserInfo(userCode);
+    }
 }
