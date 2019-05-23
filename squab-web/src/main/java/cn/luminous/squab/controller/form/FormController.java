@@ -21,30 +21,12 @@ import java.util.Date;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/form")
+@RequestMapping("/dynamicForm")
 @Slf4j
 public class FormController {
 
     @Autowired
     private DynamicFormService dynamicFormService;
-
-
-//    @RequestMapping("/bxApply")
-//    public ModelAndView toBxApply(Model model) {
-//        ModelAndView m = new ModelAndView();
-//        try {
-//            //DynamicForm dynamicForm = dynamicFormService.queryById(18L);
-//            DynamicForm dynamicForm = dynamicFormService.queryById(24L);
-//            UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
-//            model.addAttribute("html",form.getHtml());
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        m.setViewName("form/bx/bx_apply");
-//        return m;
-//    }
-
-
 
     @RequestMapping("/edit")
     public String toFormEdit(@RequestParam(value = "formId", required = false) Long formId, Model model) {
@@ -76,18 +58,12 @@ public class FormController {
                 dynamicForm.setFormName((String) data.get("formName"));
                 dynamicForm.setFormCode((String) data.get("formCode"));
                 dynamicForm.setFormHtml((String) data.get("template"));
-                //String temp = (String) data.get("template");
-                //UeForm form = UeForm.praseTemplate(temp);
-                //dynamicForm.setFormHtml(form.getHtml());
                 dynamicFormService.add(dynamicForm);
             }else { // 更新
                 DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(idStr));
                 dynamicForm.setFormName((String) data.get("formName"));
                 dynamicForm.setFormCode((String) data.get("formCode"));
                 dynamicForm.setFormHtml((String) data.get("template"));
-                //String temp = (String) data.get("template");
-                //UeForm form = UeForm.praseTemplate(temp);
-                //dynamicForm.setFormHtml(form.getHtml());
                 dynamicFormService.updateByIdSelective(dynamicForm);
             }
         }catch (Exception e) {
@@ -100,14 +76,8 @@ public class FormController {
 
     @RequestMapping("/previewEditForm")
     public String previewEditForm(String formeditor , Integer form_id, Model model) {
-        //long id = 18;
-        //DynamicForm dynamicForm = dynamicFormService.queryById(id);
-        //model.addAttribute("html", dynamicForm.getFormHtml());
-        //model.addAttribute("html", formeditor);
-        //model.addAttribute("name","哈哈老王");
         UeForm form = UeForm.praseTemplate(formeditor);
         model.addAttribute("html", form.getHtml());
-
         return "form/form_preview";
     }
 
@@ -153,12 +123,5 @@ public class FormController {
         System.out.println("方法一的运行时间："+String.valueOf(endTime-startTime)+"ms");
         return R.ok();
     }
-
-
-
-
-
-
-
 
 }

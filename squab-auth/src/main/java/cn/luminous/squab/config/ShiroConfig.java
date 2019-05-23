@@ -22,10 +22,17 @@ public class ShiroConfig {
         //以下是过滤链，按顺序过滤，所以/**需要放最后
         //开放的静态资源
         filterChainDefinitionMap.put("/favicon.ico", "anon");//网站图标
-        //filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/diagram-viewer/**", "anon");
+        filterChainDefinitionMap.put("/editor-app/**", "anon");
+        filterChainDefinitionMap.put("/fonts/**", "anon");
         filterChainDefinitionMap.put("/form/**", "anon");
+        filterChainDefinitionMap.put("/images/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/json/**", "anon");
+        filterChainDefinitionMap.put("/lib/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
