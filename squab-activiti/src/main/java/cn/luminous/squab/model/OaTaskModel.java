@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class OaTaskModel extends BaseDomain {
 
+    private String bizName;
     private String taskNo;
     private String taskId; //act_ru_task.ID_
     private String taskName;
@@ -24,6 +25,14 @@ public class OaTaskModel extends BaseDomain {
     private String extField3;
     private String extField4;
     private String extField5;
+
+    public String getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(String bizName) {
+        this.bizName = bizName;
+    }
 
     public String getTaskNo() {
         return taskNo;

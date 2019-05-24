@@ -12,16 +12,7 @@ layui.use(['table', 'jquery'], function () {
             {field: 'procInstId', title: 'procInstId', minWidth: 150, sort: true, fixed: 'left', hide: true},
             {field: 'procDefId', title: 'procDefId', minWidth: 150, sort: true, fixed: 'left', hide: true}
             , {field: 'taskNo', title: '申请编号', minWidth: 150, sort: true}
-            , {
-                field: 'bizKey', title: '任务类型', minWidth: 150, sort: true,
-                templet: function (d) {
-                    if (d.bizKey == 'qj') {
-                        return '请假申请';
-                    } else {
-                        return '其他';
-                    }
-                }
-            }
+            , {field: 'bizName', title: '任务类型', minWidth: 150, sort: true}
             , {field: 'applyTime', title: '填报时间', minWidth: 150, sort: true}
             , {field: 'taskState', title: '任务状态', minWidth: 150, sort: true,
                 templet: function (d) {

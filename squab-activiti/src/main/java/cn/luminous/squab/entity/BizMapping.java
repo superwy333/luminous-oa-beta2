@@ -4,6 +4,9 @@ import javax.persistence.*;
 
 @Table(name = "biz_mapping")
 public class BizMapping extends BaseDomain {
+
+    @Column(name = "biz_name")
+    private String bizName;
     @Column(name = "biz_key")
     private String bizKey;
 
@@ -27,6 +30,14 @@ public class BizMapping extends BaseDomain {
 
     @Column(name = "ext_field5")
     private String extField5;
+
+    public String getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(String bizName) {
+        this.bizName = bizName;
+    }
 
     /**
      * @return biz_key

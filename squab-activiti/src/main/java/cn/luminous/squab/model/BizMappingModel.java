@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 
 public class BizMappingModel extends BaseDomain {
+
+    private String bizName;
+
     private String bizKey;
 
     private String processKey;
@@ -21,6 +24,14 @@ public class BizMappingModel extends BaseDomain {
     private String extField4;
 
     private String extField5;
+
+    public String getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(String bizName) {
+        this.bizName = bizName;
+    }
 
     /**
      * @return biz_key

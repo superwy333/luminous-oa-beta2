@@ -280,6 +280,13 @@ public class WorkFlowController{
             Subject subject = SecurityUtils.getSubject();
             String userCode = (String) subject.getPrincipal();
             taskList = oaTaskService.queryTaskToDo(userCode);
+            // 处理一下业务类型
+            taskList.stream().forEach(oaTaskModel -> {
+                BizMapping bizMapping = new BizMapping();
+                bizMapping.setBizKey(oaTaskModel.getBizKey());
+                bizMapping = bizMappingService.queryOne(bizMapping);
+                oaTaskModel.setBizName(bizMapping.getBizName());
+            });
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
@@ -342,12 +349,16 @@ public class WorkFlowController{
             // 获取当前登陆人
             String userCode = (String)SecurityUtils.getSubject().getPrincipal();
             oaTaskModelList = oaTaskService.queryMyTask(userCode);
-            // 处理一下当前指派人
+            // 处理一下当前指派人和业务类型
             oaTaskModelList.stream().forEach(oaTaskModel -> {
                 SysUer sysUer = new SysUer();
                 sysUer.setUserCode(oaTaskModel.getAssignee());
                 sysUer = sysUserService.queryOne(sysUer);
                 oaTaskModel.setAssignee(sysUer.getName());
+                BizMapping bizMapping = new BizMapping();
+                bizMapping.setBizKey(oaTaskModel.getBizKey());
+                bizMapping = bizMappingService.queryOne(bizMapping);
+                oaTaskModel.setBizName(bizMapping.getBizName());
             });
             log.debug("【查询我的任务开始】入参: " + rq.toString());
         }catch (Exception e) {

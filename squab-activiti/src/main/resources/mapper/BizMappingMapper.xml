@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="biz_name" jdbcType="VARCHAR" property="bizName" />
     <result column="biz_key" jdbcType="VARCHAR" property="bizKey" />
     <result column="process_key" jdbcType="VARCHAR" property="processKey" />
     <result column="form_id" jdbcType="VARCHAR" property="formId" />
@@ -25,7 +26,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, biz_key, process_key, form_id, deleted, version, create_by, create_time, last_modify_by, 
+    id, biz_name,biz_key, process_key, form_id, deleted, version, create_by, create_time, last_modify_by,
     last_modify_time, ext_field1, ext_field2, ext_field3, ext_field4, ext_field5
   </sql>
 </mapper>
