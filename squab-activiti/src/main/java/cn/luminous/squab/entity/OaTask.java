@@ -8,6 +8,8 @@ import java.util.Date;
 @Table(name = "oa_task")
 public class OaTask extends BaseDomain {
 
+    @Column(name = "task_no")
+    private String taskNo;
     @Column(name = "biz_key")
     private String bizKey;
     @Column(name = "data")
@@ -36,6 +38,14 @@ public class OaTask extends BaseDomain {
     private String extField4;
     @Column(name = "ext_field5")
     private String extField5;
+
+    public String getTaskNo() {
+        return taskNo;
+    }
+
+    public void setTaskNo(String taskNo) {
+        this.taskNo = taskNo;
+    }
 
     public String getProcessKey() {
         return processKey;

@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -111,8 +112,8 @@ public class WorkFlowController{
             model.addAttribute("html",form.getHtml());
             model.addAttribute("bizKey",bizKey);
             // 获取流水号
-            String taskNo = oaTaskService.getTaskNo();
-            model.addAttribute("taskNo",taskNo);
+            //String taskNo = oaTaskService.getTaskNo();
+            //model.addAttribute("taskNo",taskNo);
             // 获取申请人信息
 
             String userCode = (String) SecurityUtils.getSubject().getPrincipal();
@@ -128,40 +129,6 @@ public class WorkFlowController{
         m.setViewName("apply");
         return m;
     }
-
-
-
-
-
-
-//    /**
-//     * 跳转请假审批表单
-//     * @return
-//     */
-//    @RequestMapping("/qjApprove")
-//    public String toQjApprove(Model model, String taskId) {
-//        try {
-//            OaTaskModel oaTaskModel = oaTaskService.queryTaskById(taskId);
-//            String data = oaTaskModel.getData();
-//            Gson gson = new GsonBuilder()
-//                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
-//                    .create();
-//            Map<String,Object> dataMap = gson.fromJson(data,Map.class);
-//            model.addAttribute("taskId",oaTaskModel.getTaskId());
-//            model.addAttribute("id",oaTaskModel.getId());
-//            model.addAllAttributes(dataMap);
-//            // TODO 把当前登陆人加入模板参数
-//            model.addAttribute("currentUser","008");
-//        }catch (Exception e) {
-//            // TODO 跳转到404页面
-//        }
-//        return "qj-approve";
-//    }
-
-//    @RequestMapping("/myTaskList")
-//    public String myTaskList() {
-//        return "myTask-list";
-//    }
 
     @RequestMapping("/myTaskList")
     public ModelAndView myTaskList() {
@@ -251,6 +218,10 @@ public class WorkFlowController{
             Subject subject = SecurityUtils.getSubject();
             String userCode = (String) subject.getPrincipal();
             oaTask.setApplyCode(userCode);
+            // 获取流水号
+            oaTask.setTaskNo(oaTaskService.getTaskNo());
+            // 填报时间
+            oaTask.setApplyTime(new Date());
             oaTaskService.registerTask(oaTask);
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);
@@ -368,9 +339,16 @@ public class WorkFlowController{
     public String myTaskList(@RequestBody Rq rq) {
         List<OaTaskModel> oaTaskModelList;
         try {
-            // TODO 获取当前登陆人
+            // 获取当前登陆人
             String userCode = (String)SecurityUtils.getSubject().getPrincipal();
             oaTaskModelList = oaTaskService.queryMyTask(userCode);
+            // 处理一下当前指派人
+            oaTaskModelList.stream().forEach(oaTaskModel -> {
+                SysUer sysUer = new SysUer();
+                sysUer.setUserCode(oaTaskModel.getAssignee());
+                sysUer = sysUserService.queryOne(sysUer);
+                oaTaskModel.setAssignee(sysUer.getName());
+            });
             log.debug("【查询我的任务开始】入参: " + rq.toString());
         }catch (Exception e) {
             log.error("【查询我的任务失败】入参: " + rq.toString(), e);

@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class OaTaskModel extends BaseDomain {
 
+    private String taskNo;
     private String taskId; //act_ru_task.ID_
     private String taskName;
     private String taskState; // 0：流转中 1：已通过 2：已驳回
@@ -23,6 +24,14 @@ public class OaTaskModel extends BaseDomain {
     private String extField3;
     private String extField4;
     private String extField5;
+
+    public String getTaskNo() {
+        return taskNo;
+    }
+
+    public void setTaskNo(String taskNo) {
+        this.taskNo = taskNo;
+    }
 
     public String getProcessKey() {
         return processKey;

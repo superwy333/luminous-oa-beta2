@@ -3,6 +3,7 @@
 <mapper namespace="cn.luminous.squab.mapper.OaTaskMapper">
     <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.OaTask">
         <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="task_no" property="taskNo" jdbcType="VARCHAR"/>
         <result column="biz_key" property="bizKey" jdbcType="VARCHAR"/>
         <result column="proc_key" property="processKey" jdbcType="VARCHAR"/>
         <result column="proc_inst_id" property="procInstId" jdbcType="VARCHAR"/>
@@ -27,6 +28,7 @@
 
     <resultMap id="ModelResultMap" type="cn.luminous.squab.model.OaTaskModel">
         <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="task_no" property="taskNo" jdbcType="VARCHAR"/>
         <result column="task_id" property="taskId" jdbcType="VARCHAR"/>
         <result column="biz_key" property="bizKey" jdbcType="VARCHAR"/>
         <result column="proc_key" property="processKey" jdbcType="VARCHAR"/>
@@ -54,13 +56,14 @@
 
 
     <sql id="Base_Column_List">
-        id, biz_key, proc_key, proc_inst_id, proc_def_id, task_state, apply_name, apply_code, apply_time, data, create_by, create_time,
+        id, task_no,biz_key, proc_key, proc_inst_id, proc_def_id, task_state, apply_name, apply_code, apply_time, data, create_by, create_time,
         last_modify_by, last_modify_time, deleted, version, ext_field1, ext_field2, ext_field3,
         ext_field4, ext_field5
     </sql>
 
     <select id="queryTaskToDo" resultMap="ModelResultMap" parameterType="java.lang.String">
         SELECT
+        oatask.task_no AS task_no,
         acttask.id_ AS task_id,
         oatask.proc_inst_id,
         oatask.proc_def_id,
@@ -122,6 +125,7 @@
     <select id="queryMyTask" resultMap="ModelResultMap" parameterType="java.lang.String">
         SELECT
         task.id,
+        task.task_no AS task_no,
         task.proc_def_id,
         task.proc_inst_id,
         task.biz_key,
@@ -136,6 +140,7 @@
         UNION
         SELECT
         task.id,
+        task.task_no AS task_no,
         task.proc_def_id,
         task.proc_inst_id,
         task.biz_key,

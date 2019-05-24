@@ -112,10 +112,9 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
         oaTask.setProcInstId(processInstance.getProcessInstanceId());
         oaTask.setProcDefId(processInstance.getProcessDefinitionId());
-        oaTask.setApplyName((String) variables.get("applyName"));
-        oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
+        oaTask.setApplyName((String) variables.get("sqr"));
+        //oaTask.setApplyTime(DateUtil.parse((String) variables.get("applyTime")));
         oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
-        //oaTask.setApplyCode("008");
 
         // 记录提交的表单数据
         this.add(oaTask);
