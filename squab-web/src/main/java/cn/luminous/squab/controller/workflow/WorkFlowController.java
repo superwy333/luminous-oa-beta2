@@ -351,10 +351,13 @@ public class WorkFlowController{
             oaTaskModelList = oaTaskService.queryMyTask(userCode);
             // 处理一下当前指派人和业务类型
             oaTaskModelList.stream().forEach(oaTaskModel -> {
-                SysUer sysUer = new SysUer();
-                sysUer.setUserCode(oaTaskModel.getAssignee());
-                sysUer = sysUserService.queryOne(sysUer);
-                oaTaskModel.setAssignee(sysUer.getName());
+
+                if (oaTaskModel.getAssignee()!=null) {
+                    SysUer sysUer = new SysUer();
+                    sysUer.setUserCode(oaTaskModel.getAssignee());
+                    sysUer = sysUserService.queryOne(sysUer);
+                    oaTaskModel.setAssignee(sysUer.getName());
+                }
                 BizMapping bizMapping = new BizMapping();
                 bizMapping.setBizKey(oaTaskModel.getBizKey());
                 bizMapping = bizMappingService.queryOne(bizMapping);
