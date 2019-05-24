@@ -2,6 +2,7 @@ package cn.luminous.squab.controller;
 
 
 import cn.luminous.squab.entity.SysUer;
+import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -44,12 +45,16 @@ public class LoginController {
 
     @RequestMapping("/index")
     public String index(Model model) {
-        String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-        SysUer sysUer = new SysUer();
-        sysUer.setUserCode(userCode);
-        sysUer = sysUserService.queryOne(sysUer);
-        model.addAttribute("username",sysUer.getName());
-
+        try {
+            String userCode = (String) SecurityUtils.getSubject().getPrincipal();
+            SysUer sysUer = new SysUer();
+            sysUer.setUserCode(userCode);
+            SysUserModel sysUserModel = sysUserService.queryUserInfo(userCode);
+            model.addAttribute("username",sysUserModel.getName());
+            model.addAttribute("post",sysUserModel.getPostName());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         return "index";
     }
 
