@@ -311,7 +311,7 @@ public class WorkFlowController{
             log.error("【查询已办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
-        return R.ok(taskList);
+        return R.ok(taskList, taskList.size());
 
     }
 
@@ -345,10 +345,12 @@ public class WorkFlowController{
     @ResponseBody
     public String myTaskList(@RequestBody Rq rq) {
         List<OaTaskModel> oaTaskModelList;
+        Integer queryCount;
         try {
             // 获取当前登陆人
             String userCode = (String)SecurityUtils.getSubject().getPrincipal();
-            oaTaskModelList = oaTaskService.queryMyTask(userCode);
+            oaTaskModelList = oaTaskService.queryMyTaskPage(userCode, rq.getPage(), rq.getLimit());
+            queryCount = oaTaskService.queryMyTaskPage(userCode, null, null).size();
             // 处理一下当前指派人和业务类型
             oaTaskModelList.stream().forEach(oaTaskModel -> {
 
@@ -368,7 +370,7 @@ public class WorkFlowController{
             log.error("【查询我的任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
-        return R.ok(oaTaskModelList);
+        return R.ok(oaTaskModelList, queryCount);
     }
 
 

@@ -83,14 +83,14 @@
 
     <select id="queryTaskDone" resultMap="ModelResultMap" parameterType="java.lang.String">
         SELECT
-	    acthitask.id_ AS task_his_id,
-	    acthitask.NAME_ AS task_name,
-	    oatask.proc_inst_id,
-	    oatask.proc_def_id,
-	    oatask.apply_name,
-	    oatask.apply_Time,
-	    oatask.biz_key,
-	    oatask. DATA
+        acthitask.id_ AS task_his_id,
+        acthitask.NAME_ AS task_name,
+        oatask.proc_inst_id,
+        oatask.proc_def_id,
+        oatask.apply_name,
+        oatask.apply_Time,
+        oatask.biz_key,
+        oatask. DATA
         FROM
         act_hi_taskinst acthitask
         LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
@@ -122,7 +122,11 @@
 
     </select>
 
-    <select id="queryMyTask" resultMap="ModelResultMap" parameterType="java.lang.String">
+    <select id="queryMyTask" resultMap="ModelResultMap" parameterType="java.util.Map">
+        SELECT
+        aaa.*
+        FROM
+        (
         SELECT
         task.id,
         task.task_no AS task_no,
@@ -134,9 +138,10 @@
         actTask.assignee_ AS assignee
         FROM
         oa_task task
-        LEFT JOIN act_ru_task actTask on actTask.proc_inst_id_ = task.proc_inst_id
-        WHERE task.task_state = 0
-        AND task.apply_code = #{userCode}
+        LEFT JOIN act_ru_task actTask ON actTask.proc_inst_id_ = task.proc_inst_id
+        WHERE
+        task.task_state = 0
+        AND task.apply_code = #{condition.userCode}
         UNION
         SELECT
         task.id,
@@ -146,11 +151,21 @@
         task.biz_key,
         task.apply_time,
         task.task_state,
-        null AS assignee
+        NULL AS assignee
         FROM
         oa_task task
-        WHERE (task.task_state = 1 or task.task_state = 2)
-        AND task.apply_code = #{userCode}
+        WHERE
+        (
+        task.task_state = 1
+        OR task.task_state = 2
+        )
+        AND task.apply_code = #{condition.userCode}
+        ) aaa
+        ORDER BY
+        aaa.apply_time DESC
+        <if test="condition.page==0 or (condition.page !=null and condition.page !='')">
+            LIMIT #{condition.page}, #{condition.limit}
+        </if>
     </select>
 
 

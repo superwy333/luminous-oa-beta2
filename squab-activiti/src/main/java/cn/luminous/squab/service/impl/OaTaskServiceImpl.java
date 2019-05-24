@@ -219,8 +219,14 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @throws Exception
      */
     @Override
-    public List<OaTaskModel> queryMyTask(String userCode) throws Exception {
-        return oaTaskMapper.queryMyTask(userCode);
+    public List<OaTaskModel> queryMyTaskPage(String userCode, Integer page, Integer limit) throws Exception {
+        Map<String,Object> condition = new HashMap<>();
+        condition.put("userCode",userCode);
+        if (page!=null) {
+            condition.put("page",(page-1) * limit);
+            condition.put("limit",limit);
+        }
+        return oaTaskMapper.queryMyTask(condition);
     }
 
     @Override

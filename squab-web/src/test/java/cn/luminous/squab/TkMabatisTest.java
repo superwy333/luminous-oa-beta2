@@ -112,7 +112,7 @@ public class TkMabatisTest {
     public void test333() throws Exception {
         //List<SysUer> sysUerList = sysUserService.queryAllUsers(new SysUer());
         Department department = departmentService.queryDepartment("tt");
-        List<OaTaskModel> oaTaskModelList = oaTaskService.queryMyTask("tt");
+        //List<OaTaskModel> oaTaskModelList = oaTaskService.queryMyTask("tt");
         System.out.println("aaa");
 
     }
@@ -121,7 +121,7 @@ public class TkMabatisTest {
     public void test444() throws Exception {
         //List<SysUer> sysUerList = sysUserService.queryAllUsers(new SysUer());
         //Department department = departmentService.queryDepartment("tt");
-        List<OaTaskModel> oaTaskModelList = oaTaskService.queryMyTask("tt");
+        //List<OaTaskModel> oaTaskModelList = oaTaskService.queryMyTask("tt");
         System.out.println("aaa");
 
     }

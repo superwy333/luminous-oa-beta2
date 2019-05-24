@@ -7,6 +7,7 @@ layui.use(['table', 'jquery'], function () {
         // , height: 'full-200'
         , url: '/workflow/myTaskList' //数据接口
         , page: true //开启分页
+        ,limit: 10
         , cols: [[ //表头
             {field: 'id', title: 'ID', minWidth: 150, sort: true, fixed: 'left', hide: true},
             {field: 'procInstId', title: 'procInstId', minWidth: 150, sort: true, fixed: 'left', hide: true},

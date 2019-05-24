@@ -17,7 +17,11 @@ public interface OaTaskMapper extends IMapper<OaTask> {
 
     OaTaskModel queryTaskById(@Param("taskId") String taskId);
 
-    List<OaTaskModel> queryMyTask(@Param("userCode") String userCode);
+//    List<OaTaskModel> queryMyTask(@Param("userCode") String userCode,
+//                                  @Param("page") Integer page,
+//                                  @Param("limit") Integer limit);
+
+    List<OaTaskModel> queryMyTask(@Param("condition") Map<String,Object> condition);
 
     String callTaskNo(Map map);
 
