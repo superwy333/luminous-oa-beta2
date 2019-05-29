@@ -246,6 +246,9 @@ public class WorkFlowController{
             oaTaskApprove.setApprover((String) data.get("currentUser"));
             oaTaskApprove.setApproveTime(new Date());
             oaTaskApprove.setOaTaskId(((Integer)data.get("oaTaskId")).longValue());
+            String userCode = (String) SecurityUtils.getSubject().getPrincipal();
+            oaTaskApprove.setApprover(userCode);
+
             if (Constant.BIZ_KEY.PASS.equals(rq.getBizKey())) { // 流程通过
                 oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);
                 oaTaskService.approveTask(oaTaskApprove);
@@ -255,6 +258,7 @@ public class WorkFlowController{
                     oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.REJECT);
                     oaTaskService.rejectTask(oaTaskApprove);
                 }else { // 退回到历史节点
+                    // TODO 这边不写审批记录 是个BUG
                     oaTaskService.callBackTaskToHisTask(hisTaskId);
                 }
             }
@@ -330,6 +334,14 @@ public class WorkFlowController{
             log.debug("【查询审批记录开始】入参: " + rq.toString());
             Map<String,Object> data = (Map<String,Object>) rq.getData();
             oaTaskApproveModelList = oaTaskService.queryTaskApproveDetails(Long.valueOf((Integer) data.get("oaTaskId")));
+            // 处理审批人名字
+            oaTaskApproveModelList.stream().forEach(oaTaskApproveModel -> {
+                SysUer sysUer = new SysUer();
+                sysUer.setUserCode(oaTaskApproveModel.getApprover());
+                sysUer = sysUserService.queryOne(sysUer);
+                oaTaskApproveModel.setApprover(sysUer.getName());
+
+            });
         }catch (Exception e) {
             log.error("【查询审批记录失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
