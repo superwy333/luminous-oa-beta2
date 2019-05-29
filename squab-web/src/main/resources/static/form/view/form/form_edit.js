@@ -40,7 +40,7 @@ $('#preview').click(function () {
         document.saveform.target = "mywin";
         window.open('', 'mywin', "menubar=0,toolbar=0,status=0,resizable=1,left=0,top=0,scrollbars=1,width=" + (screen.availWidth - 10) + ",height=" + (screen.availHeight - 50) + "\"");
 
-        document.saveform.action = "/form/previewEditForm";
+        document.saveform.action = "/dynamicForm/previewEditForm";
         document.saveform.submit(); //提交表单
     } else {
         alert('表单内容不能为空！');
