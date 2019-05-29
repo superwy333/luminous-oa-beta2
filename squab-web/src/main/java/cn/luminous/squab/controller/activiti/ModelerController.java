@@ -138,7 +138,8 @@ public class ModelerController {
             String modelId = data.get("modelId");
             String bizKey = data.get("bizKey");
             String formId = data.get("formId");
-            activitiService.modeDeploy(bizKey, modelId, Long.valueOf(formId));
+            String bizName = data.get("bizName");
+            activitiService.modeDeploy(bizKey, modelId, Long.valueOf(formId), bizName);
         }catch (Exception e) {
             return R.nok(e.getMessage());
         }

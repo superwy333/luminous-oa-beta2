@@ -30,7 +30,7 @@ public interface ActivitiService {
 
     void callBackTaskToHisTask(String hisTaskId) throws Exception;
 
-    void modeDeploy(String bizKey, String modelId, Long formId) throws Exception;
+    void modeDeploy(String bizKey, String modelId, Long formId, String bizName) throws Exception;
 
     HistoricTaskInstance getPreviousTask(String processInstanceId) throws Exception;
 

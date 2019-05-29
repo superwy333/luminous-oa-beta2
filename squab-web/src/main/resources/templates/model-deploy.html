@@ -25,6 +25,14 @@
         <form class="layui-form" id="model-from">
             <input type="hidden" th:value="${modelId}" name="modelId">
 
+            <div class="layui-form-item">
+                <label for="bizName" class="layui-form-label">
+                    <span class="x-red">*</span>业务名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="bizName" name="bizName" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input"></div>
+            </div>
+
 
             <div class="layui-form-item">
                 <label for="bizKey" class="layui-form-label">

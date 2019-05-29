@@ -178,11 +178,12 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public void modeDeploy(String bizKey, String modelId, Long formId) throws Exception {
+    public void modeDeploy(String bizKey, String modelId, Long formId, String bizName) throws Exception {
 
         // 检验bizKey是否重复发布
         BizMapping bizMapping = new BizMapping();
         bizMapping.setBizKey(bizKey);
+        bizMapping.setBizName(bizName);
 
         List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
         if (bizMappingList.size()>=1) throw new Exception("bizKey已存在");
