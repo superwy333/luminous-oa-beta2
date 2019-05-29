@@ -188,14 +188,14 @@ body{
     transition: all 0.3s;
 }
 .left-nav a:hover{
-    background: #009688 !important;
+    background: #5D80A4 !important;
     color: #fff;
-    border-color:  #04564e !important;
+    border-color:  #5D80A4 !important;
 }
 .left-nav a.active{
-    background: #009688 !important;
+    background: #5D80A4 !important;
     color: #fff;
-    border-color:  #04564e !important;
+    border-color:  #5D80A4 !important;
 }
 .left-nav #nav li a cite{
     font-size: 14px;

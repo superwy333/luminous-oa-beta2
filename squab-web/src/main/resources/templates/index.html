@@ -25,44 +25,21 @@
 </head>
 <body class="index">
 <!-- 顶部开始 -->
-<div class="container">
+<div class="container" style="background-color: #5D80A4">
     <div class="logo">
         <a href="./index.html">文商旅福田物业OA</a></div>
     <div class="left_open">
         <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
     </div>
-    <!--<ul class="layui-nav left fast-add" lay-filter="">-->
-    <!--<li class="layui-nav-item">-->
-    <!--<a href="javascript:;">+新增</a>-->
-    <!--<dl class="layui-nav-child">-->
-    <!--&lt;!&ndash; 二级菜单 &ndash;&gt;-->
-    <!--<dd>-->
-    <!--<a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">-->
-    <!--<i class="iconfont">&#xe6a2;</i>弹出最大化</a></dd>-->
-    <!--<dd>-->
-    <!--<a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">-->
-    <!--<i class="iconfont">&#xe6a8;</i>弹出自动宽高</a></dd>-->
-    <!--<dd>-->
-    <!--<a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">-->
-    <!--<i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>-->
-    <!--<dd>-->
-    <!--<a onclick="xadmin.add_tab('在tab打开','member-list.html')">-->
-    <!--<i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>-->
-    <!--<dd>-->
-    <!--<a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">-->
-    <!--<i class="iconfont">&#xe6b8;</i>在tab打开刷新</a></dd>-->
-    <!--</dl>-->
-    <!--</li>-->
-    <!--</ul>-->
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
             <a href="javascript:;" th:text="${username}"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-                <dd>
-                    <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>
-                <dd>
-                    <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+<!--                <dd>-->
+<!--                    <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>-->
+<!--                <dd>-->
+<!--                    <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>-->
                 <dd>
                     <a href="/loginout">退出</a></dd>
             </dl>
@@ -74,7 +51,7 @@
 <!-- 顶部结束 -->
 <!-- 中部开始 -->
 <!-- 左侧菜单开始 -->
-<div class="left-nav">
+<div class="left-nav" style="background-color: white !important;">
     <div id="side-nav">
         <ul id="nav"></ul>
     </div>
@@ -82,9 +59,9 @@
 <!-- <div class="x-slide_left"></div> -->
 <!-- 左侧菜单结束 -->
 <!-- 右侧主体开始 -->
-<div class="page-content">
+<div class="page-content" style="margin-left: 10px;margin-top: 5px">
     <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
-        <ul class="layui-tab-title">
+        <ul class="layui-tab-title" style="background-color: white">
             <li class="home">
                 <i class="layui-icon">&#xe68e;</i>我的桌面
             </li>
@@ -96,24 +73,27 @@
                 <dd data-type="all">关闭全部</dd>
             </dl>
         </div>
+
+
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class="layui-row layui-col-space15">
-                    <div class="layui-col-md12">
-                        <div class="layui-card">
-                            <div class="layui-card-body ">
-                                <blockquote class="layui-elem-quote">欢迎<span th:text="${post}"></span>：
-                                    <span th:text="${username}">test</span>！当前时间: <span id="current-time"></span>
-                                    <script type="text/javascript">
-                                        setInterval(function () {
-                                            var now = (new Date()).toLocaleString();
-                                            $('#current-time').html(now);
-                                        }, 1000);
-                                    </script>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
+                    <!--                    <div class="layui-col-md12">-->
+                    <!--                        <div class="layui-card">-->
+                    <!--                            <div class="layui-card-body ">-->
+                    <!--                                <blockquote class="layui-elem-quote">欢迎<span th:text="${post}"></span>：-->
+                    <!--                                    <span th:text="${username}">test</span>！当前时间: <span id="current-time"></span>-->
+                    <!--                                    <script type="text/javascript">-->
+                    <!--                                        setInterval(function () {-->
+                    <!--                                            var now = (new Date()).toLocaleString();-->
+                    <!--                                            $('#current-time').html(now);-->
+                    <!--                                        }, 1000);-->
+                    <!--                                    </script>-->
+                    <!--                                </blockquote>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="layui-col-md12"></div>
 
                     <div class="layui-col-md12">
                         <div class="layui-card">
@@ -162,7 +142,7 @@
                     <div class="layui-col-md6">
                         <div class="layui-card">
                             <div class="layui-card-header">通知公告</div>
-                            <div class="layui-card-body ">
+                            <div class="layui-card-body" style="height: 340px">
 
                                 <table class="layui-table" lay-skin="line" style="height: 100px">
                                     <tbody>
@@ -183,27 +163,6 @@
                         <div class="layui-card">
                             <div class="layui-card-header">代办任务</div>
                             <div class="layui-card-body ">
-
-<!--                                <div class="layui-inline layui-show-xs-block">-->
-<!--                                    <input class="layui-input" autocomplete="off" placeholder="开始日" name="start"-->
-<!--                                           id="start"></div>-->
-<!--                                <div class="layui-inline layui-show-xs-block">-->
-<!--                                    <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">-->
-<!--                                </div>-->
-<!--                                <div class="layui-inline layui-show-xs-block">-->
-<!--                                    <input type="text" name="taskNo" placeholder="申请编号" autocomplete="off"-->
-<!--                                           class="layui-input">-->
-<!--                                </div>-->
-<!--                                <div class="layui-inline layui-show-xs-block">-->
-<!--                                    <input type="text" name="bizKey" placeholder="任务类型" autocomplete="off"-->
-<!--                                           class="layui-input">-->
-<!--                                </div>-->
-<!--                                <div class="layui-inline layui-show-xs-block">-->
-<!--                                    <input id="createBy" type="text" name="applyName" placeholder="填报人"-->
-<!--                                           autocomplete="off"-->
-<!--                                           class="layui-input">-->
-<!--                                </div>-->
-<!--                                <button class="layui-btn" id="reload"><i class="layui-icon">&#xe615;</i></button>-->
                                 <div class="layui-card-body ">
                                     <table id="taskTodo" lay-filter="taskTodo"></table>
 
@@ -318,6 +277,8 @@
 
             </div>
         </div>
+
+
         <div id="tab_show"></div>
     </div>
 </div>
