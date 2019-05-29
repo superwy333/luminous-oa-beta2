@@ -35,44 +35,92 @@
 <div class="container">
     <form id="ff">
         <div id="htmlContainer" class="row ">
-
-
-
         </div>
-
     </form>
 
+    <!--流转信息-->
+    <span style="margin-left: 62px">核签记录:</span>
+    <!--<span style="text-align: center;display:block;">没有数据显示</span>-->
+    <table id="approve-details" align="center">
+        <tbody>
+        <tr style="width: 1014px; height: 10px">
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">节点名称</td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批人</td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批结果</td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批意见</td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批时间</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--审批表单-->
     <form id="approve">
-        <div class="row ">
-            <table align="center" class="table table-bordered" data-sort="sortDisabled">
-                <tr>
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>
-                    <td>
-                        <select id="approveType" style="width: 150px">
-                            <option value="approvePass">同意</option>
-                            <option value="approveReject">回退</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr id="callBackNodeRow" style="display: none">
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">回退节点:</td>
-                    <td>
-                        <select id="callBackNode" style="width: 150px">
-                            <option value="start">发起人</option>
-                            <option th:each="option : ${callBackNodes}" th:value="${option.nodeId}" th:text="${option.name}"></option>
-                        </select>
-                    </td>
+        <span style="margin-left: 62px">审批:</span>
+        <table align="center" data-sort="sortDisabled" style="width: 1016px">
+            <tr>
+                <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>
+                <td>
+                    <select id="approveType" style="width: 150px">
+                        <option value="approvePass">同意</option>
+                        <option value="approveReject">回退</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="callBackNodeRow" style="display: none">
+                <td style="-ms-word-break: break-all;" valign="top" width="166">回退节点:</td>
+                <td>
+                    <select id="callBackNode" style="width: 150px">
+                        <option value="start">发起人</option>
+                        <option th:each="option : ${callBackNodes}" th:value="${option.nodeId}" th:text="${option.name}"></option>
+                    </select>
+                </td>
 
-                </tr>
-                <tr>
-                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核意见:</td>
-                    <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea
-                            id='approveContent' name='approveContent' style='width: 685px; height: 84px; margin: 0px;'
-                            value=''></textarea></td>
-                </tr>
-            </table>
-        </div>
+            </tr>
+            <tr>
+                <td style="-ms-word-break: break-all;" valign="top" width="166">签核意见:</td>
+                <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea
+                        id='approveContent' name='approveContent' style='width: 685px; height: 84px; margin: 0px;'
+                        value=''></textarea></td>
+            </tr>
+        </table>
+
+
     </form>
+
+
+
+<!--    <form id="approve">-->
+<!--        <div class="row ">-->
+<!--            <span style="margin-left: 62px">审批:</span>-->
+<!--            <table align="center" class="table table-bordered" data-sort="sortDisabled" style="width: 1016px">-->
+<!--                <tr>-->
+<!--                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>-->
+<!--                    <td>-->
+<!--                        <select id="approveType" style="width: 150px">-->
+<!--                            <option value="approvePass">同意</option>-->
+<!--                            <option value="approveReject">回退</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr id="callBackNodeRow" style="display: none">-->
+<!--                    <td style="-ms-word-break: break-all;" valign="top" width="166">回退节点:</td>-->
+<!--                    <td>-->
+<!--                        <select id="callBackNode" style="width: 150px">-->
+<!--                            <option value="start">发起人</option>-->
+<!--                            <option th:each="option : ${callBackNodes}" th:value="${option.nodeId}" th:text="${option.name}"></option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核意见:</td>-->
+<!--                    <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea-->
+<!--                            id='approveContent' name='approveContent' style='width: 685px; height: 84px; margin: 0px;'-->
+<!--                            value=''></textarea></td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </form>-->
 </div>
 
 <div class="form-btn" style="text-align:center;margin-top:20px">
@@ -109,7 +157,7 @@
         // $('html').find('input').attr("disabled","disabled");
 
         $('html').find('select').attr("readOnly","readOnly");
-        //$('html').find('select').attr("disabled","disabled");
+        $('html').find('select').attr("disabled","disabled");
 
         $('html').find('textarea').attr("readOnly","readOnly");
         //$('html').find('textarea').attr("disabled","disabled");
@@ -217,6 +265,56 @@
         });
 
     });
+</script>
+
+<!--渲染核签记录-->
+<script th:inline="javascript">
+    layui.use(['form', 'layer'],function () {
+
+        var tdd;
+        var oaTaskId = [[${id}]]
+        var rq = {
+            data: {
+                oaTaskId: oaTaskId
+            }
+        }
+        $.ajax({
+            url: '/workflow/approveDetails',
+            method: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(rq),
+            success: function(data) {
+                console.log(data)
+                var dataArray = data.data;
+                $.each(dataArray, function (index, value) {
+                    tdd += '<tr>';
+                    tdd += '<td>';
+                    tdd += value.nodeName;
+                    tdd += '</td>';
+                    tdd += '<td>';
+                    tdd += value.approver==undefined?'':value.approver;
+                    tdd += '</td>';
+                    tdd += '<td>';
+                    tdd += value.approveResult==0?'同意':'驳回';
+                    tdd += '</td>';
+                    tdd += '<td>';
+                    tdd += value.approveContent;
+                    tdd += '</td>';
+                    tdd += '<td>';
+                    tdd += value.approveTime;
+                    tdd += '</td>';
+                    tdd += '</tr>';
+                })
+                $('#approve-details tbody').append(tdd)
+            },
+            error: function (data) {
+                layer.alert("网络超时，请联系管理员");
+            }
+
+        })
+    })
+
 </script>
 
 </body>
