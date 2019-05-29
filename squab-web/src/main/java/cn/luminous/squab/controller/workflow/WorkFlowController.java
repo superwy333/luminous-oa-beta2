@@ -275,11 +275,13 @@ public class WorkFlowController{
     @ResponseBody
     public String taskToDo(@RequestBody Rq rq) {
         List<OaTaskModel> taskList;
+        Integer queryCount;
         try {
             log.debug("【查询代办开始】入参: " + rq.toString());
             Subject subject = SecurityUtils.getSubject();
             String userCode = (String) subject.getPrincipal();
-            taskList = oaTaskService.queryTaskToDo(userCode);
+            taskList = oaTaskService.queryTaskToDoPage(userCode, rq.getPage(), rq.getLimit());
+            queryCount = oaTaskService.queryTaskToDoPage(userCode, null, null).size();
             // 处理一下业务类型
             taskList.stream().forEach(oaTaskModel -> {
                 BizMapping bizMapping = new BizMapping();
@@ -291,7 +293,7 @@ public class WorkFlowController{
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
-        return R.ok(taskList);
+        return R.ok(taskList, queryCount);
 
     }
 

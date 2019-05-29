@@ -81,6 +81,29 @@
         </where>
     </select>
 
+    <select id="queryTaskToDoPage" resultMap="ModelResultMap" parameterType="java.util.Map">
+        SELECT
+        oatask.task_no AS task_no,
+        acttask.id_ AS task_id,
+        oatask.proc_inst_id,
+        oatask.proc_def_id,
+        oatask.apply_name,
+        oatask.apply_Time,
+        oatask.biz_key,
+        oatask.data
+        FROM
+        act_ru_task acttask
+        LEFT JOIN oa_task oatask on oatask.proc_inst_id = acttask.PROC_INST_ID_
+        <where>
+            <if test="condition.assignee !=null and condition.assignee !=''">
+                acttask.ASSIGNEE_ = #{condition.assignee}
+            </if>
+        </where>
+        <if test="condition.page==0 or (condition.page !=null and condition.page !='')">
+            LIMIT #{condition.page}, #{condition.limit}
+        </if>
+    </select>
+
     <select id="queryTaskDone" resultMap="ModelResultMap" parameterType="java.lang.String">
         SELECT
         acthitask.id_ AS task_his_id,

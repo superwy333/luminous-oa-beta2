@@ -176,6 +176,16 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         return oaTaskMapper.queryTaskToDo(userCode);
     }
 
+    @Override
+    public List<OaTaskModel> queryTaskToDoPage(String userCode, Integer page, Integer limit) throws Exception {
+        Map<String,Object> condition = new HashMap<>();
+        condition.put("assignee", userCode);
+        if (page!=null) {
+            condition.put("page",(page-1) * limit);
+            condition.put("limit",limit);
+        }
+        return oaTaskMapper.queryTaskToDoPage(condition);
+    }
 
     /**
      * 查询已办任务
