@@ -43,8 +43,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
      */
     @Override
     public String getAssignee(String src, String type) throws Exception {
+        SysUer sysUer1 = new SysUer();
+        sysUer1.setName(src);
+        sysUer1 = queryOne(sysUer1);
         // 先查询组织架构树
-        Department department = departmentService.queryDepartment(src);
+        Department department = departmentService.queryDepartment(sysUer1.getUserCode());
         String nextAssignee;
         Long staffId;
         if (department == null) throw new Exception("当前申请人无部门，请联系管理员");

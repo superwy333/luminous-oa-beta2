@@ -110,7 +110,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         variables.put("dept",sysUserModel.getDeptName());
 
         // 是否是部门直属人员
-        Department department = departmentService.queryDepartment(userCode);
+        Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
         if (department.getPid()==0) {
             variables.put("bmzs",true);
         }else {
