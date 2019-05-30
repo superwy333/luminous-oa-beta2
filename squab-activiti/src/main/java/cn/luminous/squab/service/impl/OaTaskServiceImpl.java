@@ -4,19 +4,21 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
+import cn.luminous.squab.entity.Department;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
+import cn.luminous.squab.entity.SysUer;
 import cn.luminous.squab.mapper.OaTaskApproveMapper;
 import cn.luminous.squab.mapper.OaTaskMapper;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
+import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
-import cn.luminous.squab.service.ActivitiService;
-import cn.luminous.squab.service.OaTaskApproveService;
-import cn.luminous.squab.service.OaTaskService;
+import cn.luminous.squab.service.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,10 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
     private OaTaskApproveService oaTaskApproveService;
     @Autowired
     private ActivitiService activitiService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @Override
     protected IMapper<OaTask> getBaseMapper() {
@@ -91,18 +97,32 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
         // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
 
-        // TODO 根据bizKey分拣得出流程定义key
+        // 根据bizKey分拣得出流程定义key
         String processKey = oaTask.getProcessKey();
 
         // 把oaTask的表单提交数据装入流程变量
-
-        //Map<String,Object> variables =  JSONUtil.parseObj(oaTask.getData());
         Map<String, Object> variables = parseJson(oaTask.getData());
 
-        // TODO 把当前登陆用户信息装入流程变量
-        //variables.put("post","zy");
-        //variables.put("assignee","008");
-        // ....
+        // 把当前登陆用户信息装入流程变量
+        String userCode = (String) SecurityUtils.getSubject().getPrincipal();
+        SysUserModel sysUserModel = sysUserService.queryUserInfo(userCode);
+        variables.put("post",sysUserModel.getPostName());
+        variables.put("dept",sysUserModel.getDeptName());
+
+        // 是否是部门直属人员
+        Department department = departmentService.queryDepartment(userCode);
+        if (department.getPid()==0) {
+            variables.put("bmzs",true);
+        }else {
+            variables.put("bmzs",false);
+        }
+
+        //  是否含有分管领导
+        if (department.getLeaderBranch()!=null) {
+            variables.put("hasfgld",true);
+        }else {
+            variables.put("hasfgld",false);
+        }
 
         // 启动流程
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);

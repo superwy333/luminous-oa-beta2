@@ -53,16 +53,26 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
                 staffId = Long.valueOf(department.getLeader());
                 break;
             case Constant.ASSIGNEE_KEY.SJBM:
-                staffId = department.getParentLeader();
+                if (department.getPid()==0) {
+                    staffId = Long.valueOf(department.getLeader());
+                }else {
+                    staffId = department.getParentLeader();
+                }
                 break;
             case Constant.ASSIGNEE_KEY.FGLD:
                 staffId = Long.valueOf(department.getLeaderBranch());
                 break;
             case Constant.ASSIGNEE_KEY.RSBA:
-                staffId = 3L;
+                staffId = 24L;
                 break;
             case Constant.ASSIGNEE_KEY.ZJL:
                 staffId = 2L;
+                break;
+            case Constant.ASSIGNEE_KEY.CW:
+                staffId = 6L;
+                break;
+            case Constant.ASSIGNEE_KEY.CN:
+                staffId = 10L;
                 break;
             default:
                 staffId = 1L;

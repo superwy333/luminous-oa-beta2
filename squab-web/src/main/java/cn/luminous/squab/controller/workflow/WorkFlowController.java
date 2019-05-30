@@ -247,7 +247,10 @@ public class WorkFlowController{
             oaTaskApprove.setApproveTime(new Date());
             oaTaskApprove.setOaTaskId(((Integer)data.get("oaTaskId")).longValue());
             String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-            oaTaskApprove.setApprover(userCode);
+            SysUer sysUer = new SysUer();
+            sysUer.setName(userCode);
+            sysUer = sysUserService.queryOne(sysUer);
+            oaTaskApprove.setApprover(sysUer.getUserCode());
 
             if (Constant.BIZ_KEY.PASS.equals(rq.getBizKey())) { // 流程通过
                 oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);

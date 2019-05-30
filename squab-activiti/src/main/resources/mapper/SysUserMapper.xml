@@ -80,8 +80,10 @@
             AND sta.deleted = 0
             AND dept.deleted = 0
             AND post.deleted = 0
-            AND sus.user_code = #{userCode}
+            AND sus.name = #{userCode}
     </select>
+
+
 
 
 </mapper>
