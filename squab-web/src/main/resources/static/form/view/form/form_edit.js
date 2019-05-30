@@ -86,7 +86,7 @@ $('#save').click(function () {
         //异步提交数据
         $.ajax({
             type: 'POST',
-            url: '/form/saveOrUpdateForm',
+            url: '/dynamicForm/saveOrUpdateForm',
             data: JSON.stringify(rqData),
             contentType: "application/json; charset=utf-8",
             dataType: 'json',

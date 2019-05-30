@@ -105,9 +105,6 @@ public class ListCtrl extends FormField {
      * 解析listctrl
      * 2018-01-25 listctrl对单位和默认值的拼装
      *
-     * @param listCtrilData ueform中 data里的listctrl 整个json
-     * @param type          1-编辑模式 2-纯浏览模式 采用parse替换
-     * @param value         填充的值,可以为空
      * @return
      */
     private String parseListCtrl(ListCtrl lc, int type, JSONObject listCtrlValue) {
@@ -118,6 +115,10 @@ public class ListCtrl extends FormField {
                 "function tbAddRow(dname) {\n" +
                 "        var sTbid = dname + \"_table\";\n" +
                 "        var trNum = $(\"#\" + sTbid + \" tbody\").find(\"tr\").length;\n" +
+                "if (trNum>5) {\n" +
+                "                        alert(\"最多添加5项\");\n" +
+                "                        return false                        " +
+                "                    }" +
                 "\n" +
                 "        $(\"#\" + sTbid + \" .template\")\n" +
                 "        //连同事件一起复制\n" +

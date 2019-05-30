@@ -54,6 +54,16 @@ public class Constant {
          * 人事备案
          */
         public static final String RSBA = "rsba";
+
+        /**
+         * 财务
+         */
+        public static final String CW = "cw";
+
+        /**
+         * 出纳
+         */
+        public static final String CN = "cn";
     }
 
 

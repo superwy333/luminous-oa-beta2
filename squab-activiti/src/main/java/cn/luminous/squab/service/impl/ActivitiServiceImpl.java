@@ -183,7 +183,6 @@ public class ActivitiServiceImpl implements ActivitiService {
         // 检验bizKey是否重复发布
         BizMapping bizMapping = new BizMapping();
         bizMapping.setBizKey(bizKey);
-        bizMapping.setBizName(bizName);
 
         List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
         if (bizMappingList.size()>=1) throw new Exception("bizKey已存在");
@@ -222,6 +221,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         bizMapping.setProcessKey(processKey);
         bizMapping.setFormId(String.valueOf(formId));
         bizMapping.setBizKey(bizKey);
+        bizMapping.setBizName(bizName);
         bizMappingService.add(bizMapping);
     }
 
