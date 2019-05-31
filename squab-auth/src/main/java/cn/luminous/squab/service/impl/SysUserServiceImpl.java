@@ -7,6 +7,7 @@ import cn.luminous.squab.mapper.SysUserMapper;
 import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.DepartmentService;
+import cn.luminous.squab.service.SysConfDictitemService;
 import cn.luminous.squab.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private SysConfDictitemService sysConfDictitemService;
 
     @Override
     protected IMapper<SysUer> getBaseMapper() {

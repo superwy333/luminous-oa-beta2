@@ -3,6 +3,7 @@ package cn.luminous.squab.listener;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.OaTaskService;
+import cn.luminous.squab.service.SysConfDictitemService;
 import cn.luminous.squab.service.SysUserService;
 import cn.luminous.squab.util.SpringUtil;
 import org.activiti.engine.delegate.DelegateTask;

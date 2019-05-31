@@ -66,5 +66,19 @@ public class Constant {
         public static final String CN = "cn";
     }
 
+    /**
+     * 数据字典相关常量
+     */
+    public static class SYS_DICT_CODE {
+
+        /**
+         * 流程有关的动态人员分配
+         */
+        public static final String DYNAMIC_APPROVER = "dynamicApprover";
+
+
+
+    }
+
 
 }
