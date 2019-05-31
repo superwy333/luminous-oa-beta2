@@ -225,7 +225,8 @@ public class WorkFlowController{
             oaTaskService.registerTask(oaTask);
         }catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);
-            return R.nok(e.getMessage());
+            //return R.nok(e.getMessage());
+            return R.nok("没有发起流程的权限，请联系管理员！" + e.getMessage());
         }
         return R.ok();
     }
@@ -287,8 +288,11 @@ public class WorkFlowController{
             log.debug("【查询代办开始】入参: " + rq.toString());
             Subject subject = SecurityUtils.getSubject();
             String userCode = (String) subject.getPrincipal();
-            taskList = oaTaskService.queryTaskToDoPage(userCode, rq.getPage(), rq.getLimit());
-            queryCount = oaTaskService.queryTaskToDoPage(userCode, null, null).size();
+            SysUer sysUer = new SysUer();
+            sysUer.setName(userCode);
+            sysUer = sysUserService.queryOne(sysUer);
+            taskList = oaTaskService.queryTaskToDoPage(sysUer.getUserCode(), rq.getPage(), rq.getLimit());
+            queryCount = oaTaskService.queryTaskToDoPage(sysUer.getUserCode(), null, null).size();
             // 处理一下业务类型
             taskList.stream().forEach(oaTaskModel -> {
                 BizMapping bizMapping = new BizMapping();

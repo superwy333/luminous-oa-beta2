@@ -1,48 +1,75 @@
 {
   "success": true,
   "code": "200",
-  "result": [{
-    "name": "我的工作台",
-    "child": [{
-    "name": "我发起的",
-    "url": "/workflow/myTaskList"
-    }, {
-      "name": "我的待办",
-      "url": "/workflow/taskTodoList"
-    }]
-  },{
-    "name": "填报申请",
-    "child": [{
-      "name": "报销申请",
-      "url": "/workflow/applyList"
-    }]
-  },{
-    "name": "表单管理",
-    "child": [
-      {
-        "name": "表单管理",
-        "url": ""
-      }
-    ]
-  },{
-    "name": "流程管理",
-    "child": [{
-      "name": "模型管理",
-      "url": "/modeler/modelList"
-    }, {
-      "name": "部署管理",
-      "url": "/deploy/deployList"
-    }]
-  },{
-    "name": "系统管理",
-    "child": [{
-      "name": "用户管理",
-      "url": "workingTask"
-    }, {
-      "name": "角色管理",
-      "url": "workingTask"
+  "result": [
+    {
+      "name": "我的工作台",
+      "child": [
+        {
+          "name": "我发起的",
+          "url": "/workflow/myTaskList"
+        },
+        {
+          "name": "我的待办",
+          "url": "/workflow/taskTodoList"
+        }
+      ]
+    },
+    {
+      "name": "填报申请",
+      "child": [
+        {
+          "name": "报销申请",
+          "url": "/workflow/applyList"
+        },
+        {
+          "name": "请假申请",
+          "url": "/workflow/apply?bizKey=qjApply"
+        },
+        {
+          "name": "费用报销",
+          "url": "/workflow/apply?bizKey=fybx"
+        },
+        {
+          "name": "紧急物资采购",
+          "url": "/workflow/apply?bizKey=jjwzcg"
+        }
+      ]
+    },
+    {
+      "name": "表单管理",
+      "child": [
+        {
+          "name": "表单管理",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "name": "流程管理",
+      "child": [
+        {
+          "name": "模型管理",
+          "url": "/modeler/modelList"
+        },
+        {
+          "name": "部署管理",
+          "url": "/deploy/deployList"
+        }
+      ]
+    },
+    {
+      "name": "系统管理",
+      "child": [
+        {
+          "name": "用户管理",
+          "url": "workingTask"
+        },
+        {
+          "name": "角色管理",
+          "url": "workingTask"
+        }
+      ]
     }
-
-    ]
-  }]
+  ]
 }
