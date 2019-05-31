@@ -1,10 +1,6 @@
 package cn.luminous.squab.service.impl;
 
 import cn.luminous.squab.entity.BizMapping;
-import cn.luminous.squab.entity.OaTask;
-import cn.luminous.squab.entity.http.R;
-import cn.luminous.squab.form.entity.DynamicForm;
-import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.BizMappingService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -57,30 +53,33 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     /**
      * 启动流程
+     *
      * @param processKey 流程定义key
-     * @param variables 流程变量
+     * @param variables  流程变量
      * @return
      * @throws Exception
      */
     @Override
     public ProcessInstance startProcess(String processKey, Map<String, Object> variables) throws Exception {
         return processEngine.getRuntimeService()
-                .startProcessInstanceByKey(processKey,variables); // 流程实例id传act_re_procdef.KEY
+                .startProcessInstanceByKey(processKey, variables); // 流程实例id传act_re_procdef.KEY
     }
 
     /**
      * 获取流程变量
+     *
      * @param actTaskId
      * @return
      * @throws Exception
      */
     @Override
-    public Map<String, Object> getVariables(String actTaskId) throws Exception{
+    public Map<String, Object> getVariables(String actTaskId) throws Exception {
         return taskService.getVariables(actTaskId);
     }
 
     /**
      * 完成任务
+     *
      * @param actTaskId
      * @throws Exception
      */
@@ -93,6 +92,7 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     /**
      * 完成任务
+     *
      * @param actTaskId
      * @param variables
      * @throws Exception
@@ -110,21 +110,22 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     /**
      * 当前任务流程实例是否已经结束
+     *
      * @param procInstId
      * @return
      */
     @Override
-    public Boolean isEnd(String procInstId) throws Exception{
+    public Boolean isEnd(String procInstId) throws Exception {
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
-        if (processInstance==null) { // 结束
+        if (processInstance == null) { // 结束
             return true;
-        }else { // 未结束
+        } else { // 未结束
             return false;
         }
     }
 
     @Override
-    public InputStream getDiagramOrgin(String deployId) throws Exception{
+    public InputStream getDiagramOrgin(String deployId) throws Exception {
         //Model modelData = repositoryService.getModel(modelId);
 //        Deployment deployment = repositoryService
 //                .createDeploymentQuery()
@@ -138,13 +139,13 @@ public class ActivitiServiceImpl implements ActivitiService {
         Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
 
         ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-        ProcessDefinitionEntity definitionEntity = (ProcessDefinitionEntity)repositoryService.getProcessDefinition(procDefId);
+        ProcessDefinitionEntity definitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(procDefId);
         InputStream imageStream = diagramGenerator.
                 generateDiagram(bpmnModel,
                         "png",
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        "宋体","宋体","宋体",
+                        "宋体", "宋体", "宋体",
                         null,
                         1.0);
         return imageStream;
@@ -152,6 +153,7 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     /**
      * 根据流程实例id获取流程流转经过的节点，即可以回退的节点
+     *
      * @param processInstanceId
      * @return
      * @throws Exception
@@ -185,7 +187,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         bizMapping.setBizKey(bizKey);
 
         List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
-        if (bizMappingList.size()>=1) throw new Exception("bizKey已存在");
+        //if (bizMappingList.size() >= 1) throw new Exception("bizKey已存在");
 
         // 发布模型
         //获取模型
@@ -196,7 +198,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         }
         JsonNode modelNode = new ObjectMapper().readTree(bytes);
         BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-        if(model.getProcesses().size()==0){
+        if (model.getProcesses().size() == 0) {
             throw new Exception("数据模型不符要求，请至少设计一条主线流程。");
         }
         // // 检验processKey是否重复发布
@@ -204,7 +206,8 @@ public class ActivitiServiceImpl implements ActivitiService {
         bizMapping = new BizMapping();
         bizMapping.setProcessKey(processKey);
         bizMappingList = bizMappingService.query(bizMapping);
-        if (bizMappingList.size()>=1) throw new Exception("该模型已部署");
+        //if (bizMappingList.size()>=1) throw new Exception("该模型已部署");
+
 
         byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
         //发布流程
@@ -216,13 +219,16 @@ public class ActivitiServiceImpl implements ActivitiService {
         modelData.setDeploymentId(deployment.getId());
         repositoryService.saveModel(modelData);
 
-        // 新增bizMapping
-        bizMapping = new BizMapping();
-        bizMapping.setProcessKey(processKey);
-        bizMapping.setFormId(String.valueOf(formId));
-        bizMapping.setBizKey(bizKey);
-        bizMapping.setBizName(bizName);
-        bizMappingService.add(bizMapping);
+        if (bizMappingList.size() < 1) {
+            // 新增bizMapping
+            bizMapping = new BizMapping();
+            bizMapping.setProcessKey(processKey);
+            bizMapping.setFormId(String.valueOf(formId));
+            bizMapping.setBizKey(bizKey);
+            bizMapping.setBizName(bizName);
+            bizMappingService.add(bizMapping);
+        }
+
     }
 
     @Override
@@ -232,10 +238,10 @@ public class ActivitiServiceImpl implements ActivitiService {
                 .createHistoricTaskInstanceQuery()//创建历史任务实例查询
                 .processInstanceId(processInstanceId)
                 .list();
-        if (list.size()>1) { // 已经审批过一次了
+        if (list.size() > 1) { // 已经审批过一次了
             perviousTask = list.get(list.size() - 1);
         }
-        if (list.size()==1) {
+        if (list.size() == 1) {
             perviousTask = list.get(0);
         }
         return perviousTask;

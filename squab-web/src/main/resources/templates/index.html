@@ -287,8 +287,12 @@
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->
 <script>
+    layui.use(['table', 'jquery'], function () {
+        var $ = layui.jquery
+        $('#reload').click();
+    })
     //location.reload()
-    $('#reload').click();
+
 </script>
 
 <!--动态加载左侧菜单-->

@@ -110,7 +110,9 @@ public class DeployController {
             BizMapping bizMapping = new BizMapping();
             bizMapping.setProcessKey(processDefinition.getKey());
             bizMapping = bizMappingService.queryOne(bizMapping);
-            bizMappingService.remove(bizMapping);
+            if (bizMapping!=null) {
+                bizMappingService.remove(bizMapping);
+            }
             repositoryService.deleteDeployment(deplotmentId);
         }catch (Exception e) {
             return R.nok(e.getMessage());

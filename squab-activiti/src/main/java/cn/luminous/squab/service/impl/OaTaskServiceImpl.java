@@ -109,6 +109,10 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         variables.put("post",sysUserModel.getPostName());
         variables.put("dept",sysUserModel.getDeptName());
 
+        // 当前申请人
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        variables.put("sqr",username);
+
         // 是否是部门直属人员
         Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
         if (department.getPid()==0) {
