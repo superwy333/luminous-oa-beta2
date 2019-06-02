@@ -379,7 +379,9 @@ public class WorkFlowController{
                     SysUer sysUer = new SysUer();
                     sysUer.setUserCode(oaTaskModel.getAssignee());
                     sysUer = sysUserService.queryOne(sysUer);
-                    oaTaskModel.setAssignee(sysUer.getName());
+                    if (sysUer!=null) {
+                        oaTaskModel.setAssignee(sysUer.getName());
+                    }
                 }
                 BizMapping bizMapping = new BizMapping();
                 bizMapping.setBizKey(oaTaskModel.getBizKey());

@@ -33,6 +33,10 @@
         {
           "name": "紧急物资采购",
           "url": "/workflow/apply?bizKey=jjwzcg"
+        },
+        {
+          "name": "测试人员指定",
+          "url": "/workflow/apply?bizKey=testAssignee"
         }
       ]
     },
