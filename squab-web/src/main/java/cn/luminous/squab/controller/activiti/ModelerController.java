@@ -145,4 +145,18 @@ public class ModelerController {
         }
         return R.ok();
     }
+
+    @PostMapping("/updateDeploy")
+    @ResponseBody
+    public String update(@RequestBody Rq rq) {
+        try {
+            Map<String,String> data = (Map<String,String>) rq.getData();
+            String modelId = data.get("modelId");
+            activitiService.modeDeploy(modelId);
+        }catch (Exception e) {
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
+
+    }
 }

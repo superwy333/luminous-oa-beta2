@@ -92,7 +92,31 @@ layui.use(['table', 'jquery'], function () {
                 }
             });
         }else if (layEvent === 'update') {
-            alert('更新...............')
+            var reqData = {
+                bizKey: 'updateDeploy',
+                data: {
+                    modelId:data.id
+                }
+            };
+            $.ajax({
+                url: '/modeler/updateDeploy',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(reqData),
+                success: function (data) {
+                    if (data.code==0) {
+                        layer.msg("操作成功");
+                        //window.location.reload();
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
+
         }
     });
 });

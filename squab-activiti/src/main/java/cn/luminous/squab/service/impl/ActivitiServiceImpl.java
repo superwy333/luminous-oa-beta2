@@ -180,15 +180,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public void modeDeploy(String bizKey, String modelId, Long formId, String bizName) throws Exception {
-
-        // 检验bizKey是否重复发布
-        BizMapping bizMapping = new BizMapping();
-        bizMapping.setBizKey(bizKey);
-
-        List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
-        //if (bizMappingList.size() >= 1) throw new Exception("bizKey已存在");
-
+    public String modeDeploy(String modelId) throws Exception {
         // 发布模型
         //获取模型
         Model modelData = repositoryService.getModel(modelId);
@@ -201,14 +193,6 @@ public class ActivitiServiceImpl implements ActivitiService {
         if (model.getProcesses().size() == 0) {
             throw new Exception("数据模型不符要求，请至少设计一条主线流程。");
         }
-        // // 检验processKey是否重复发布
-        String processKey = model.getMainProcess().getId();
-        bizMapping = new BizMapping();
-        bizMapping.setProcessKey(processKey);
-        bizMappingList = bizMappingService.query(bizMapping);
-        //if (bizMappingList.size()>=1) throw new Exception("该模型已部署");
-
-
         byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
         //发布流程
         String processName = modelData.getName() + ".bpmn20.xml";
@@ -218,6 +202,26 @@ public class ActivitiServiceImpl implements ActivitiService {
                 .deploy();
         modelData.setDeploymentId(deployment.getId());
         repositoryService.saveModel(modelData);
+        return model.getMainProcess().getId();
+    }
+
+    @Override
+    public void modeDeploy(String bizKey, String modelId, Long formId, String bizName) throws Exception {
+
+        // 检验bizKey是否重复发布
+        BizMapping bizMapping = new BizMapping();
+        bizMapping.setBizKey(bizKey);
+
+        List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
+        //if (bizMappingList.size() >= 1) throw new Exception("bizKey已存在");
+
+        // 发布模型
+        //获取模型
+        String processKey = this.modeDeploy(modelId);
+        bizMapping = new BizMapping();
+        bizMapping.setProcessKey(processKey);
+        bizMappingList = bizMappingService.query(bizMapping);
+        //if (bizMappingList.size()>=1) throw new Exception("该模型已部署");
 
         if (bizMappingList.size() < 1) {
             // 新增bizMapping
