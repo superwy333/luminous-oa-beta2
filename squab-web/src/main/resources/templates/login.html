@@ -21,25 +21,28 @@
 <body class="login-bg">
 
 <div class="login layui-anim layui-anim-up">
-    <div class="message">文商旅福田物业OA登陆</div>
-    <div id="darkbannerwrap"></div>
+    <!--    <div class="message">文商旅福田物业OA登陆</div>-->
+    <!--    <div id="darkbannerwrap"></div>-->
 
-    <form method="post" action="/login" class="layui-form">
+    <h2 style="text-align: center; font-size: 24px; color: #0071c8">文商旅福田物业OA管理系统</h2>
+    <form method="post" action="/login" class="layui-form" style="margin-top: 60px">
         <input id="username" name="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
         <hr class="hr15">
         <input id="password" name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
         <hr class="hr15">
-        <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <input value="登录" lay-submit lay-filter="login" style="width:100%;background-color: #0071c8" type="submit">
         <hr class="hr20">
         <span style="color: red" th:text="${msg}"></span>
     </form>
+
+
 </div>
 
 <script>
     $(function () {
-        layui.use(['form','jquery'], function () {
+        layui.use(['form', 'jquery'], function () {
             var form = layui.form
-                ,$ = layui.jquery
+                , $ = layui.jquery
             // layer.msg('玩命卖萌中', function(){
             //   //关闭后的操作
             //   });
