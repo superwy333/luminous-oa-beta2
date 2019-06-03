@@ -234,7 +234,7 @@ public class WorkFlowController{
     /**
      * 审批
      */
-    @RequestMapping(value = "/approve", method = RequestMethod.POST)
+    @PostMapping(value = "/approve")
     @ResponseBody
     public String approve(@RequestBody Rq rq) {
         OaTask oaTask = new OaTask();

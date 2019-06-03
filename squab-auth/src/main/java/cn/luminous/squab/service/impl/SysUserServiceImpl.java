@@ -10,6 +10,7 @@ import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.DepartmentService;
 import cn.luminous.squab.service.SysConfDictitemService;
 import cn.luminous.squab.service.SysUserService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -104,6 +105,29 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         SysUer sysUer = new SysUer();
         sysUer.setStaffId(staffId);
         return queryOne(sysUer);
+    }
+
+    @Override
+    public void parseVariables(String userName, Map<String, Object> variables) throws Exception{
+        SysUserModel sysUserModel = this.queryUserInfo(userName);
+        variables.put("post",sysUserModel.getPostName());
+        variables.put("dept",sysUserModel.getDeptName());
+        // 当前主办人
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        variables.put("sqr",username);
+        // 是否是部门直属人员
+        Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
+        if (department.getPid()==0) {
+            variables.put("bmzs",true);
+        }else {
+            variables.put("bmzs",false);
+        }
+        //  是否含有分管领导
+        if (department.getLeaderBranch()!=null) {
+            variables.put("hasfgld",true);
+        }else {
+            variables.put("hasfgld",false);
+        }
     }
 
     /**

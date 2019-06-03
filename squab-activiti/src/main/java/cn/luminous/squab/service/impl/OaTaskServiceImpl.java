@@ -105,33 +105,34 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
         // 把当前登陆用户信息装入流程变量
         String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-        SysUserModel sysUserModel = sysUserService.queryUserInfo(userCode);
-        variables.put("post",sysUserModel.getPostName());
-        variables.put("dept",sysUserModel.getDeptName());
-
-        // 这边做个测试，把assignees放到一个map里面，看看再流程中能否直接取出来
-//        Map<String,Object> assignees = new HashMap<>();
-//        assignees.put("kz","王大大");
-//        variables.put("assignees",assignees);
-
-        // 当前申请人
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        variables.put("sqr",username);
-
-        // 是否是部门直属人员
-        Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
-        if (department.getPid()==0) {
-            variables.put("bmzs",true);
-        }else {
-            variables.put("bmzs",false);
-        }
-
-        //  是否含有分管领导
-        if (department.getLeaderBranch()!=null) {
-            variables.put("hasfgld",true);
-        }else {
-            variables.put("hasfgld",false);
-        }
+        sysUserService.parseVariables(userCode, variables);
+//        SysUserModel sysUserModel = sysUserService.queryUserInfo(userCode);
+//        variables.put("post",sysUserModel.getPostName());
+//        variables.put("dept",sysUserModel.getDeptName());
+//
+//        // 这边做个测试，把assignees放到一个map里面，看看再流程中能否直接取出来
+////        Map<String,Object> assignees = new HashMap<>();
+////        assignees.put("kz","王大大");
+////        variables.put("assignees",assignees);
+//
+//        // 当前申请人
+//        String username = (String) SecurityUtils.getSubject().getPrincipal();
+//        variables.put("sqr",username);
+//
+//        // 是否是部门直属人员
+//        Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
+//        if (department.getPid()==0) {
+//            variables.put("bmzs",true);
+//        }else {
+//            variables.put("bmzs",false);
+//        }
+//
+//        //  是否含有分管领导
+//        if (department.getLeaderBranch()!=null) {
+//            variables.put("hasfgld",true);
+//        }else {
+//            variables.put("hasfgld",false);
+//        }
 
         // 启动流程
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
@@ -159,6 +160,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         String actTaskId = oaTaskApprove.getActTaskId();
         // 完成任务
         Map<String, Object> variables = activitiService.getVariables(actTaskId);
+        String userCode = (String) SecurityUtils.getSubject().getPrincipal();
+        sysUserService.parseVariables(userCode, variables);
         activitiService.completeTask(actTaskId, variables);
         // 记录审批信息
         oaTaskApproveService.add(oaTaskApprove);

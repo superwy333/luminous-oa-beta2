@@ -49,18 +49,22 @@ public class ApproveListener implements TaskListener {
                     Constant.ASSIGNEE_KEY.SJBM.equals(assigneeConfig) ||
                     Constant.ASSIGNEE_KEY.FGLD.equals(assigneeConfig)
             ) { // 只有上面三种情况才需要动态设置负责人
-                if (previousTask == null) { // 第一个节点
-                    // 获取当前登陆人作为组织架构树的查询条件
-                    Subject subject = SecurityUtils.getSubject();
-                    String userCode = (String) subject.getPrincipal();
-                    assignee = sysUserService.getAssignee(userCode, assigneeConfig);
-                } else { // 后续节点
-                    // 获取任务的提交人作为组织架构树的查询条件
-                    OaTask oaTask = new OaTask();
-                    oaTask.setProcInstId(delegateTask.getProcessInstanceId());
-                    oaTask = oaTaskService.queryOne(oaTask);
-                    assignee = sysUserService.getAssignee(oaTask.getApplyCode(), assigneeConfig);
-                }
+//                if (previousTask == null) { // 第一个节点
+//                    // 获取当前登陆人作为组织架构树的查询条件
+//                    Subject subject = SecurityUtils.getSubject();
+//                    String userCode = (String) subject.getPrincipal();
+//                    assignee = sysUserService.getAssignee(userCode, assigneeConfig);
+//                } else { // 后续节点
+//                    // 获取任务的提交人作为组织架构树的查询条件
+//                    OaTask oaTask = new OaTask();
+//                    oaTask.setProcInstId(delegateTask.getProcessInstanceId());
+//                    oaTask = oaTaskService.queryOne(oaTask);
+//                    assignee = sysUserService.getAssignee(oaTask.getApplyCode(), assigneeConfig);
+//                }
+                // 获取当前登陆人作为组织架构树的查询条件
+                Subject subject = SecurityUtils.getSubject();
+                String userCode = (String) subject.getPrincipal();
+                assignee = sysUserService.getAssignee(userCode, assigneeConfig);
                 delegateTask.setAssignee(assignee);
             } else {
                 assignee = assigneeConfig;

@@ -18,4 +18,6 @@ public interface SysUserService extends BaseService<SysUer> {
 
     SysUer queryBiStaffId(Long staffId);
 
+    void parseVariables(String userName, Map<String,Object> variables) throws Exception;
+
 }
