@@ -91,6 +91,8 @@ layui.use(['table', 'jquery'], function () {
                     layer.alert("网络超时，请联系管理员");
                 }
             });
+        }else if (layEvent === 'update') {
+            alert('更新...............')
         }
     });
 });

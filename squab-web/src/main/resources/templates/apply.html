@@ -118,11 +118,58 @@
             document.getElementById("ff").reset();
         });
 
+        // function verify() {
+        //     var inputs = $('input');
+        //     //console.log(inputs)
+        //     $.each(inputs, function (index, value) {
+        //         // 非空校验
+        //         var notNull = $(value).attr("notnull")
+        //         if (notNull==1 && $(value).val()=='') {
+        //             layer.alert("提交失败！请检查带*号必填项不能为空！", function () {
+        //                 console.log("false")
+        //                 return false;
+        //             })
+        //
+        //         }
+        //     })
+        //     // 值校验
+        //     console.log("true")
+        //     return true
+        // }
+
+        window.checkNotNull = function() {
+            var inputs = $('input');
+            //console.log(inputs)
+            var checkResult = true;
+            $.each(inputs, function (index, value) {
+                // 非空校验
+                var notNull = $(value).attr("notnull")
+                if (notNull==1 && $(value).val()=='') {
+                    layer.alert("提交失败！请检查带*号必填项不能为空！")
+                    console.log("false")
+                    checkResult = false;
+                    return false;
+                }
+            })
+            // 值校验
+            if (checkResult) {
+                return true
+            } else {
+                return false
+            }
+
+        }
+
         $('#submit').click(function () {
-            // 校验
-            if (!verify()) {
+            //校验
+            var verify = checkNotNull();
+            console.log('verify：' + verify)
+            if (!verify) {
+                console.log("exit!!!!")
                 return false;
             }
+            //return false;
+
 
             var data = $('#ff').serializeArray();
             // 列表控件的处理
@@ -184,25 +231,5 @@
 
 
 </script>
-
-<script>
-    function verify() {
-        var inputs = $('input');
-        //console.log(inputs)
-        $.each(inputs, function (index, value) {
-            // 非空校验
-            var notNull = $(value).attr("notnull")
-            if (notNull==1 && $(value).val()=='') {
-                layer.alert("提交失败！请检查带*号必填项不能为空！")
-                console.log("false")
-                return false;
-            }
-        })
-        // 值校验
-        console.log("true")
-        return true
-    }
-</script>
-
 </body>
 </html>
