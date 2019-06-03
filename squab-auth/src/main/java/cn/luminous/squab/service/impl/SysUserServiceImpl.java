@@ -113,8 +113,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         variables.put("post",sysUserModel.getPostName());
         variables.put("dept",sysUserModel.getDeptName());
         // 当前主办人
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        variables.put("sqr",username);
+        //String username = (String) SecurityUtils.getSubject().getPrincipal();
+        variables.put("sqr",userName);
         // 是否是部门直属人员
         Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
         if (department.getPid()==0) {
