@@ -1,31 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.luminous.squab.mapper.SysConfDictitemMapper">
-  <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.SysConfDictitem">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="dic_item_name" jdbcType="VARCHAR" property="dicItemName" />
-    <result column="dic_item_level" jdbcType="VARCHAR" property="dicItemLevel" />
-    <result column="dic_item_parent" jdbcType="VARCHAR" property="dicItemParent" />
-    <result column="dic_item_code" jdbcType="VARCHAR" property="dicItemCode" />
-    <result column="dic_item_value" jdbcType="VARCHAR" property="dicItemValue" />
-    <result column="dic_item_desc" jdbcType="VARCHAR" property="dicItemDesc" />
-    <result column="is_enabled" jdbcType="INTEGER" property="isEnabled" />
-    <result column="version" jdbcType="BIGINT" property="version" />
-    <result column="deleted" jdbcType="INTEGER" property="deleted" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy" />
-    <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, dic_item_name, dic_item_level, dic_item_parent, dic_item_code, dic_item_value, 
-    dic_item_desc, is_enabled, version, deleted, create_by, create_time, last_modify_by, 
-    last_modify_time
-  </sql>
+    <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.SysConfDictitem">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="dic_item_name" jdbcType="VARCHAR" property="dicItemName"/>
+        <result column="dic_item_level" jdbcType="VARCHAR" property="dicItemLevel"/>
+        <result column="dic_item_parent" jdbcType="VARCHAR" property="dicItemParent"/>
+        <result column="dic_item_code" jdbcType="VARCHAR" property="dicItemCode"/>
+        <result column="dic_item_value" jdbcType="VARCHAR" property="dicItemValue"/>
+        <result column="dic_item_desc" jdbcType="VARCHAR" property="dicItemDesc"/>
+        <result column="is_enabled" jdbcType="INTEGER" property="isEnabled"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="deleted" jdbcType="INTEGER" property="deleted"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy"/>
+        <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, dic_item_name, dic_item_level, dic_item_parent, dic_item_code, dic_item_value,
+        dic_item_desc, is_enabled, version, deleted, create_by, create_time, last_modify_by,
+        last_modify_time
+    </sql>
+
+    <select id="queryByParentCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT
+          dict1.*
+      FROM
+          sys_conf_dictitem dict1
+      INNER JOIN sys_conf_dictitem dict2 ON dict1.dic_item_parent = dict2.id
+      WHERE
+          dict1.deleted = 0
+      AND dict1.dic_item_level = 1
+      AND dict2.deleted = 0
+      AND dict2.dic_item_level = 0
+      AND dict2.dic_item_code = #{parentCode}
+  </select>
+
+    <select id="queryByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT
+          dict1.*
+      FROM
+          sys_conf_dictitem dict1
+      INNER JOIN sys_conf_dictitem dict2 ON dict1.dic_item_parent = dict2.id
+      WHERE
+          dict1.deleted = 0
+      AND dict1.dic_item_level = 1
+      AND dict2.deleted = 0
+      AND dict2.dic_item_level = 0
+      AND dict2.dic_item_code = #{parentCode}
+      AND dict1.dic_item_code = #{itemCode}
+  </select>
+
+
 </mapper>

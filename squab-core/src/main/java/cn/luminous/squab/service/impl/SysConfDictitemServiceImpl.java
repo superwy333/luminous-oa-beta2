@@ -7,6 +7,8 @@ import cn.luminous.squab.service.SysConfDictitemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("sysConfDictitemService")
 public class SysConfDictitemServiceImpl extends BaseServiceImpl<SysConfDictitem> implements SysConfDictitemService {
 
@@ -16,5 +18,15 @@ public class SysConfDictitemServiceImpl extends BaseServiceImpl<SysConfDictitem>
     @Override
     protected IMapper<SysConfDictitem> getBaseMapper() {
         return this.sysConfDictitemMapper;
+    }
+
+    @Override
+    public List<SysConfDictitem> queryByParentCode(String parentCode) {
+        return sysConfDictitemMapper.queryByParentCode(parentCode);
+    }
+
+    @Override
+    public SysConfDictitem queryByCode(String parentCode, String itemCode) {
+        return sysConfDictitemMapper.queryByCode(parentCode, itemCode);
     }
 }

@@ -110,9 +110,9 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         variables.put("dept",sysUserModel.getDeptName());
 
         // 这边做个测试，把assignees放到一个map里面，看看再流程中能否直接取出来
-        Map<String,Object> assignees = new HashMap<>();
-        assignees.put("kz","王大大");
-        variables.put("assignees",assignees);
+//        Map<String,Object> assignees = new HashMap<>();
+//        assignees.put("kz","王大大");
+//        variables.put("assignees",assignees);
 
         // 当前申请人
         String username = (String) SecurityUtils.getSubject().getPrincipal();

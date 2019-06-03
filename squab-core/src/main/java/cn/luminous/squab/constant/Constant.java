@@ -64,6 +64,23 @@ public class Constant {
          * 出纳
          */
         public static final String CN = "cn";
+
+        /**
+         * 仓库汇总
+         */
+        public static final String CKHZ = "ckhz";
+        /**
+         * 仓库初审核
+         */
+        public static final String CGCSH = "cgcsh";
+        /**
+         * 采购管理部
+         */
+        public static final String CGGLB = "cgglb";
+        /**
+         * 仓库发货
+         */
+        public static final String CKFH = "ckfh";
     }
 
     /**
@@ -74,7 +91,7 @@ public class Constant {
         /**
          * 流程有关的动态人员分配
          */
-        public static final String DYNAMIC_APPROVER = "dynamicApprover";
+        public static final String DYNAMIC_APPROVER = "dynamic_approver";
 
 
 
