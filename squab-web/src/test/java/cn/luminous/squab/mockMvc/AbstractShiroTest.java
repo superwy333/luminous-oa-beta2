@@ -1,5 +1,4 @@
 package cn.luminous.squab.mockMvc;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.mgt.SecurityManager;
