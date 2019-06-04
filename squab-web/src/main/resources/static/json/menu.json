@@ -24,7 +24,7 @@
         },
         {
           "name": "请假申请",
-          "url": "/workflow/apply?bizKey=qjApply"
+          "url": "/workflow/apply?bizKey=qj-process"
         },
         {
           "name": "费用报销",
