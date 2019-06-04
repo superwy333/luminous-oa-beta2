@@ -39,17 +39,17 @@ public class ModelerController {
     @Autowired
     private ActivitiService activitiService;
 
-    @RequestMapping("/modelList")
+    @GetMapping("/modelList")
     public String toModelList() {
         return "model-list";
     }
 
-    @RequestMapping("/modelAdd")
+    @GetMapping("/modelAdd")
     public String modelAdd() {
         return "model-add";
     }
 
-    @RequestMapping("/deploy")
+    @GetMapping("/deploy")
     public String toDeploy(org.springframework.ui.Model model,
                            @RequestParam(value = "modelId") String modelId) {
 
@@ -66,18 +66,18 @@ public class ModelerController {
     @ResponseBody
     public String modelList(@RequestBody Rq rq) {
         List<Model> modelList;
+        Long count;
         try {
             log.debug("【查询模型开始】入参: " + rq.toString());
-            // TODO 分页的处理
-            Integer page = 1;
-            Integer limit = 10;
+            Integer page = rq.getPage();
+            Integer limit = rq.getLimit();
             modelList = repositoryService.createModelQuery().listPage(limit * (page - 1), limit);
-            long count = repositoryService.createModelQuery().count();
+            count = repositoryService.createModelQuery().count();
         }catch (Exception e) {
             log.error("【查询模型失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
-        return R.ok(modelList);
+        return R.ok(modelList, count.intValue());
     }
 
     @PostMapping("/newModel")
