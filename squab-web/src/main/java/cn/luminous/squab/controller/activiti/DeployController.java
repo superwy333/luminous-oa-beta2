@@ -9,7 +9,6 @@ import cn.luminous.squab.service.BizMappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
-
 import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -46,12 +43,12 @@ public class DeployController {
     public String toDeployDiagram(@RequestParam(name = "deployId") String deployId,
                                   Model model) {
         String imgSrc = "/deploy/getDiagram?id=" + deployId;
-        model.addAttribute("imgSrc",imgSrc);
+        model.addAttribute("imgSrc", imgSrc);
 //        model.addAttribute("deployId",deployId);
         return "deploy-diagram";
     }
 
-    @RequestMapping(value = "/getDiagram",method = RequestMethod.GET)
+    @RequestMapping(value = "/getDiagram", method = RequestMethod.GET)
     public void getDiagram(@RequestParam(name = "id") String id,
                            HttpServletRequest request,
                            HttpServletResponse response) {
@@ -63,15 +60,15 @@ public class DeployController {
             while ((len = imageStream.read(b, 0, 1024)) != -1) {
                 response.getOutputStream().write(b, 0, len);
             }
-        }catch (Exception e) {
-            log.error("获取流程图失败，原因："+ e);
-        }finally {
+        } catch (Exception e) {
+            log.error("获取流程图失败，原因：" + e);
+        } finally {
             try {
-                if (imageStream!=null) {
+                if (imageStream != null) {
                     imageStream.close();
                 }
-            }catch (IOException e) {
-                log.error("关闭输入流失败，原因："+ e);
+            } catch (IOException e) {
+                log.error("关闭输入流失败，原因：" + e);
             }
         }
     }
@@ -89,7 +86,7 @@ public class DeployController {
             deploymentList = repositoryService.createDeploymentQuery()
                     .listPage(limit * (page - 1), limit);
             long count = repositoryService.createDeploymentQuery().count();
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("【查询部署失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
@@ -100,28 +97,36 @@ public class DeployController {
     @ResponseBody
     public String deleteDeploy(@RequestBody Rq rq) {
         try {
-            Map<String,String> data = (Map<String,String>) rq.getData();
+            Map<String, String> data = (Map<String, String>) rq.getData();
             String deplotmentId = data.get("id");
 
             ProcessDefinition processDefinition = repositoryService
                     .createProcessDefinitionQuery()
                     .deploymentId(deplotmentId)
                     .singleResult();
-            BizMapping bizMapping = new BizMapping();
-            bizMapping.setProcessKey(processDefinition.getKey());
-            bizMapping = bizMappingService.queryOne(bizMapping);
-            if (bizMapping!=null) {
-                bizMappingService.remove(bizMapping);
+
+            String processKey = processDefinition.getKey();
+
+            List<ProcessDefinition> processDefinitionList = repositoryService
+                    .createProcessDefinitionQuery()
+                    .processDefinitionKey(processKey)
+                    .list();
+
+            if (processDefinitionList.size() <= 1) { // 如果有相同的key的流程数量不止一个，则不删除bizMapping
+                BizMapping bizMapping = new BizMapping();
+                bizMapping.setProcessKey(processKey);
+                bizMapping = bizMappingService.queryOne(bizMapping);
+                if (bizMapping != null) {
+                    bizMappingService.remove(bizMapping);
+                }
             }
             repositoryService.deleteDeployment(deplotmentId);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return R.nok(e.getMessage());
         }
         return R.ok();
 
     }
-
-
 
 
 }

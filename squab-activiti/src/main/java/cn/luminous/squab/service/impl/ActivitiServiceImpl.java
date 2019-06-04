@@ -206,6 +206,40 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
+    public String updateDeploy(String modelId) throws Exception {
+        // 发布模型
+        //获取模型
+        Model modelData = repositoryService.getModel(modelId);
+        byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
+        if (bytes == null) {
+            throw new Exception("模型数据为空，请先设计流程并成功保存，再进行发布。");
+        }
+        JsonNode modelNode = new ObjectMapper().readTree(bytes);
+        BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+        if (model.getProcesses().size() == 0) {
+            throw new Exception("数据模型不符要求，请至少设计一条主线流程。");
+        }
+        String processKey = model.getMainProcess().getId();
+        BizMapping bizMapping = new BizMapping();
+        bizMapping.setProcessKey(processKey);
+        BizMapping bizMappingInDB = bizMappingService.queryOne(bizMapping);
+        if (bizMappingInDB == null) {
+            throw new Exception("该模型还未发布，无法更新");
+        }
+        byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
+        //发布流程
+        String processName = modelData.getName() + ".bpmn20.xml";
+        Deployment deployment = repositoryService.createDeployment()
+                .name(modelData.getName())
+                .addString(processName, new String(bpmnBytes, "UTF-8"))
+                .deploy();
+        modelData.setDeploymentId(deployment.getId());
+        repositoryService.saveModel(modelData);
+        return model.getMainProcess().getId();
+    }
+
+
+    @Override
     public void modeDeploy(String bizKey, String modelId, Long formId, String bizName) throws Exception {
 
         // 检验bizKey是否重复发布
@@ -213,7 +247,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         bizMapping.setBizKey(bizKey);
 
         List<BizMapping> bizMappingList = bizMappingService.query(bizMapping);
-        //if (bizMappingList.size() >= 1) throw new Exception("bizKey已存在");
+        if (bizMappingList.size() >= 1) throw new Exception("该业务已经存在，请使用更新功能");
 
         // 发布模型
         //获取模型

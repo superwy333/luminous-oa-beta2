@@ -34,6 +34,8 @@ public interface ActivitiService {
 
     String modeDeploy(String modelId) throws Exception;
 
+    String updateDeploy(String modelId) throws Exception;
+
     HistoricTaskInstance getPreviousTask(String processInstanceId) throws Exception;
 
 

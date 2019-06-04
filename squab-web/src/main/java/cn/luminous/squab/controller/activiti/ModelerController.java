@@ -152,7 +152,7 @@ public class ModelerController {
         try {
             Map<String,String> data = (Map<String,String>) rq.getData();
             String modelId = data.get("modelId");
-            activitiService.modeDeploy(modelId);
+            activitiService.updateDeploy(modelId);
         }catch (Exception e) {
             return R.nok(e.getMessage());
         }
