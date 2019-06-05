@@ -42,7 +42,8 @@ public class LoginRealm extends AuthorizingRealm {
         String pwd = new String(token.getPassword());
         SysUer sysUer = new SysUer();
         sysUer.setName(token.getUsername());
-        SysUer sysUerInDB = sysUserService.queryOne(sysUer);
+        //SysUer sysUerInDB = sysUserService.queryOne(sysUer);
+        SysUer sysUerInDB = sysUserService.query(sysUer).get(0);
         if (sysUerInDB==null) throw new ShiroException("用户名不存在");
         if (!MD5Util.MD5(pwd, "utf-8").equals(sysUerInDB.getPassword())) {
             throw new ShiroException("密码错误");
