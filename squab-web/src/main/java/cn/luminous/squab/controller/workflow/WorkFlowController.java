@@ -187,6 +187,7 @@ public class WorkFlowController{
             model.addAttribute("data",jsonArray);
             model.addAttribute("taskId",oaTaskModel.getTaskId());
             model.addAttribute("id",oaTaskModel.getId());
+            model.addAttribute("lsh",oaTaskModel.getTaskNo());
 
             // 审批需要的数据
             List<OaTaskNodeModel> oaTaskNodeModelList = oaTaskService.getCallBackNodes(oaTaskModel.getProcInstId());

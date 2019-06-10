@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Component
-@WebFilter(urlPatterns = "/**", filterName = "disablejsession")
+/**
+ * 没有，先去掉
+ */
+//@Component
+//@WebFilter(urlPatterns = "/**", filterName = "disablejsession")
 public class Disablejsession implements Filter {
 
     @Override

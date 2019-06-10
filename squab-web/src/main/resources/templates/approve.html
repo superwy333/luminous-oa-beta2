@@ -40,7 +40,6 @@
 
     <!--流转信息-->
     <span style="margin-left: 62px">核签记录:</span>
-    <!--<span style="text-align: center;display:block;">没有数据显示</span>-->
     <table id="approve-details" align="center">
         <tbody>
         <tr style="width: 1014px; height: 10px">
@@ -83,51 +82,11 @@
                         value=''></textarea></td>
             </tr>
         </table>
-
-
     </form>
-
-
-
-<!--    <form id="approve">-->
-<!--        <div class="row ">-->
-<!--            <span style="margin-left: 62px">审批:</span>-->
-<!--            <table align="center" class="table table-bordered" data-sort="sortDisabled" style="width: 1016px">-->
-<!--                <tr>-->
-<!--                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>-->
-<!--                    <td>-->
-<!--                        <select id="approveType" style="width: 150px">-->
-<!--                            <option value="approvePass">同意</option>-->
-<!--                            <option value="approveReject">回退</option>-->
-<!--                        </select>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                <tr id="callBackNodeRow" style="display: none">-->
-<!--                    <td style="-ms-word-break: break-all;" valign="top" width="166">回退节点:</td>-->
-<!--                    <td>-->
-<!--                        <select id="callBackNode" style="width: 150px">-->
-<!--                            <option value="start">发起人</option>-->
-<!--                            <option th:each="option : ${callBackNodes}" th:value="${option.nodeId}" th:text="${option.name}"></option>-->
-<!--                        </select>-->
-<!--                    </td>-->
-
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td style="-ms-word-break: break-all;" valign="top" width="166">签核意见:</td>-->
-<!--                    <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea-->
-<!--                            id='approveContent' name='approveContent' style='width: 685px; height: 84px; margin: 0px;'-->
-<!--                            value=''></textarea></td>-->
-<!--                </tr>-->
-<!--            </table>-->
-<!--        </div>-->
-<!--    </form>-->
 </div>
 
 <div class="form-btn" style="text-align:center;margin-top:20px">
-
     <input class="btn btn-success btn-small" id="approveSubmit" type="submit" value="提交">
-    <!--<span id="tip" style="color: #f00"></span>-->
-    <!--<input class="btn btn-primary btn-small" id="reject" type="reset" value="退回申请人">-->
 </div>
 
 
@@ -143,13 +102,16 @@
 
         var inputs = $('html').find('input');
         $.each(inputs, function (index, value) {
-            if ($(value).attr('type')=='checkbox' || $(value).attr('type')=='radio') {
-                //console.log('check')
-                $(value).attr("disabled","disabled");
-            }else {
-                $(value).attr("readOnly","readOnly");
-                //console.log('text')
-            }
+            // if ($(value).attr('type')=='checkbox' || $(value).attr('type')=='radio') {
+            //     //console.log('check')
+            //     $(value).attr("disabled","disabled");
+            // }else {
+            //     $(value).attr("readOnly","readOnly");
+            //     $(value).attr("disabled","disabled");
+            //     //console.log('text')
+            // }
+            $(value).attr("readOnly","readOnly");
+            $(value).attr("disabled","disabled");
         })
 
 
@@ -206,6 +168,13 @@
             $('select[name="' + value1.name + '"]').val(value1.value);
             $('textarea[name="' + value1.name + '"]').val(value1.value);
         })
+
+        // 手工渲染的数据
+        var lsh = [[${lsh}]];
+        $('input[name="lsh"]').val(lsh);
+
+
+
 
         // 移除需要操作的input和select的disabled和readOnly
         $('#approveContent').removeAttr("readOnly");

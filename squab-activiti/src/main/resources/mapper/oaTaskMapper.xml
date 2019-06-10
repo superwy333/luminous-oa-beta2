@@ -135,7 +135,8 @@
         oatask.apply_name,
         oatask.apply_Time,
         oatask.biz_key,
-        oatask.data
+        oatask.data,
+        oatask.task_no
         FROM
         act_ru_task acttask
         LEFT JOIN oa_task oatask on oatask.proc_inst_id = acttask.PROC_INST_ID_
