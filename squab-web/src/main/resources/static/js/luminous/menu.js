@@ -3,9 +3,12 @@ layui.use(['jquery'], function(){
     var menuHtml = '';
 
     $.ajax({
-        url: 'json/menu.json',
-        type: 'GET',
+        url: '/menu',
+        type: 'POST',
         dataType: 'json',
+        data:{
+            userCode: 'tt'
+        },
         success: function (data) {
             // 菜单数据渲染
             var menuJson = data.result;

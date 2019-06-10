@@ -2,7 +2,7 @@ package cn.luminous.squab.constant;
 
 
 /**
- *  常量
+ * 常量
  */
 public class Constant {
 
@@ -93,8 +93,26 @@ public class Constant {
          */
         public static final String DYNAMIC_APPROVER = "dynamic_approver";
 
+    }
 
+    public static class BIZ_MAPPING_AUTH_TYPE {
+        /**
+         * 所有
+         */
+        public static final String ALL = "0";
 
+        /**
+         * 指定人
+         */
+        public static final String BY_USER = "1";
+        /**
+         * 指定部门
+         */
+        public static final String BY_DEPT = "2";
+        /**
+         * 指定岗位
+         */
+        public static final String BY_POST = "3";
     }
 
 

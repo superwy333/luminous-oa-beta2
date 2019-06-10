@@ -20,4 +20,6 @@ public interface SysUserService extends BaseService<SysUer> {
 
     void parseVariables(String userName, Map<String,Object> variables) throws Exception;
 
+    List<Map<String,String>> getProcessMenus(String userCode) throws Exception;
+
 }

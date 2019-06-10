@@ -44,6 +44,8 @@
         <result column="post_name" property="postName" jdbcType="VARCHAR"/>
         <result column="dept_code" property="deptCode" jdbcType="VARCHAR"/>
         <result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
+        <result column="post_id" property="postId" jdbcType="BIGINT"/>
+        <result column="dept_id" property="deptId" jdbcType="BIGINT"/>
 
 
     </resultMap>
@@ -67,6 +69,8 @@
 
     <select id="queryUserInfo" resultMap="ModelResultMap" parameterType="java.lang.String">
         SELECT
+            post. ID AS post_id,
+            dept. ID AS dept_id,
 	        post. NAME AS post_name,
 	        dept. NAME AS dept_name,
 	        sus.*
@@ -82,8 +86,6 @@
             AND post.deleted = 0
             AND sus.name = #{userCode}
     </select>
-
-
 
 
 </mapper>

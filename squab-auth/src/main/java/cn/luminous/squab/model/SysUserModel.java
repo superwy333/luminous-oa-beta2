@@ -15,11 +15,29 @@ public class SysUserModel extends BaseDomain {
     private String extField4;
     private String extField5;
 
+    private Long postId;
     private String postCode;
     private String postName;
 
+    private Long deptId;
     private String deptCode;
     private String deptName;
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
 
     public String getPostCode() {
         return postCode;

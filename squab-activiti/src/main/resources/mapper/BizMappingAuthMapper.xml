@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.luminous.squab.mapper.BizMappingAuthMapper">
+    <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.BizMappingAuth">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="biz_mapping_id" jdbcType="BIGINT" property="bizMappingId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="post_id" jdbcType="BIGINT" property="postId"/>
+        <result column="deleted" jdbcType="INTEGER" property="deleted"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy"/>
+        <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime"/>
+        <result column="ext_field1" jdbcType="VARCHAR" property="extField1"/>
+        <result column="ext_field2" jdbcType="VARCHAR" property="extField2"/>
+        <result column="ext_field3" jdbcType="VARCHAR" property="extField3"/>
+        <result column="ext_field4" jdbcType="VARCHAR" property="extField4"/>
+        <result column="ext_field5" jdbcType="VARCHAR" property="extField5"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, biz_mapping_id, type, dept_id,post_id, user_id, deleted, version, create_by, create_time,
+        last_modify_by, last_modify_time, ext_field1, ext_field2, ext_field3, ext_field4,
+        ext_field5
+    </sql>
+</mapper>

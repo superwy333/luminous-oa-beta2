@@ -1,19 +1,18 @@
 package cn.luminous.squab.service.impl;
 
 import cn.luminous.squab.constant.Constant;
+import cn.luminous.squab.entity.BizMapping;
+import cn.luminous.squab.entity.BizMappingAuth;
 import cn.luminous.squab.entity.Department;
-import cn.luminous.squab.entity.SysConfDictitem;
 import cn.luminous.squab.entity.SysUer;
 import cn.luminous.squab.mapper.SysUserMapper;
 import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
-import cn.luminous.squab.service.DepartmentService;
-import cn.luminous.squab.service.SysConfDictitemService;
-import cn.luminous.squab.service.SysUserService;
-import org.apache.shiro.SecurityUtils;
+import cn.luminous.squab.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
 
     @Autowired
     private SysConfDictitemService sysConfDictitemService;
+
+    @Autowired
+    private BizMappingAuthService bizMappingAuthService;
+
+    @Autowired
+    private BizMappingService bizMappingService;
 
     @Override
     protected IMapper<SysUer> getBaseMapper() {
@@ -108,25 +113,25 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
     }
 
     @Override
-    public void parseVariables(String userName, Map<String, Object> variables) throws Exception{
+    public void parseVariables(String userName, Map<String, Object> variables) throws Exception {
         SysUserModel sysUserModel = this.queryUserInfo(userName);
-        variables.put("post",sysUserModel.getPostName());
-        variables.put("dept",sysUserModel.getDeptName());
+        variables.put("post", sysUserModel.getPostName());
+        variables.put("dept", sysUserModel.getDeptName());
         // 当前主办人
         //String username = (String) SecurityUtils.getSubject().getPrincipal();
-        variables.put("sqr",userName);
+        variables.put("sqr", userName);
         // 是否是部门直属人员
         Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
-        if (department.getPid()==0) {
-            variables.put("bmzs",true);
-        }else {
-            variables.put("bmzs",false);
+        if (department.getPid() == 0) {
+            variables.put("bmzs", true);
+        } else {
+            variables.put("bmzs", false);
         }
         //  是否含有分管领导
-        if (department.getLeaderBranch()!=null) {
-            variables.put("hasfgld",true);
-        }else {
-            variables.put("hasfgld",false);
+        if (department.getLeaderBranch() != null) {
+            variables.put("hasfgld", true);
+        } else {
+            variables.put("hasfgld", false);
         }
     }
 
@@ -149,9 +154,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         // 需要进行动态设置负责人的节点
         // 科室 ks
         staffId = Long.valueOf(department.getLeader());
-        if (staffId==null) throw new Exception(department.getName() + "没有设置leader， 请联系管理员！");
+        if (staffId == null) throw new Exception(department.getName() + "没有设置leader， 请联系管理员！");
         SysUer leader = queryBiStaffId(staffId);
-        assignees.put("ks",leader.getUserCode());
+        assignees.put("ks", leader.getUserCode());
         // 上级部门 sjbm
         if (department.getPid() == 0) {
             staffId = Long.valueOf(department.getLeader());
@@ -164,34 +169,76 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         return null;
     }
 
-//    private void setAssignees(String type, Map<String, String> assignees) {
-//        switch (type) {
-//            case Constant.ASSIGNEE_KEY.KS:
-//                staffId = Long.valueOf(department.getLeader());
-//                break;
-//            case Constant.ASSIGNEE_KEY.SJBM:
-//                if (department.getPid() == 0) {
-//                    staffId = Long.valueOf(department.getLeader());
-//                } else {
-//                    staffId = department.getParentLeader();
-//                }
-//                break;
-//            case Constant.ASSIGNEE_KEY.FGLD:
-//                break;
-//            case Constant.ASSIGNEE_KEY.RSBA:
-//                break;
-//            case Constant.ASSIGNEE_KEY.ZJL:
-//                break;
-//            case Constant.ASSIGNEE_KEY.CW:
-//                break;
-//            case Constant.ASSIGNEE_KEY.CN:
-//                break;
-//            case Constant.ASSIGNEE_KEY.CGGLB:
-//                break;
-//            default:
-//                break;
-//        }
-//
-//    }
+    @Override
+    public List<Map<String, String>> getProcessMenus(String userCode) throws Exception {
+        SysUer sysUer = new SysUer();
+        sysUer.setUserCode(userCode);
+        sysUer = queryOne(sysUer);
+
+        /**
+         * type
+         * 0-全部
+         * 1-指定人
+         * 2-指定部门
+         * 3-指定岗位
+         */
+
+        // 找到所有人员都有的权限
+        BizMappingAuth queryAll = new BizMappingAuth();
+        queryAll.setType(Constant.BIZ_MAPPING_AUTH_TYPE.ALL);
+        List<BizMappingAuth> queryAllList = bizMappingAuthService.query(queryAll);
+
+        SysUserModel sysUserModel = queryUserInfo(sysUer.getName());
+        // 找到指定人员有的权限
+        BizMappingAuth queryByUser = new BizMappingAuth();
+        queryByUser.setType(Constant.BIZ_MAPPING_AUTH_TYPE.BY_USER);
+        queryByUser.setUserId(sysUer.getId());
+        List<BizMappingAuth> queryByUserList = bizMappingAuthService.query(queryByUser);
+        // 找到这个人所属部门的权限
+        BizMappingAuth queryByDept = new BizMappingAuth();
+        queryByDept.setType(Constant.BIZ_MAPPING_AUTH_TYPE.BY_DEPT);
+        queryByDept.setDeptId(sysUserModel.getDeptId());
+        List<BizMappingAuth> queryByDeptList = bizMappingAuthService.query(queryByUser);
+
+        // 找到这个人岗位的权限
+        BizMappingAuth queryByPost = new BizMappingAuth();
+        queryByPost.setType(Constant.BIZ_MAPPING_AUTH_TYPE.BY_POST);
+        queryByPost.setPostId(sysUserModel.getPostId());
+        List<BizMappingAuth> queryByPostList = bizMappingAuthService.query(queryByUser);
+
+        List<Map<String,String>> bizKeyList = new ArrayList<>();
+        parseBizList(queryAllList, bizKeyList);
+        parseBizList(queryByUserList, bizKeyList);
+        parseBizList(queryByDeptList, bizKeyList);
+        parseBizList(queryByPostList, bizKeyList);
+
+
+        return bizKeyList;
+    }
+
+    private void parseBizList(List<BizMappingAuth> src, List<Map<String, String>> bizKeyList) {
+        src.stream().forEach(bizMappingAuth -> {
+            BizMapping bizMapping = bizMappingService
+                    .queryById(bizMappingAuth.getBizMappingId());
+            Map<String, String> item = new HashMap<>();
+            item.put("name", bizMapping.getBizName());
+            item.put("url", "/workflow/apply?bizKey=" + bizMapping.getBizKey());
+            bizKeyList.add(item);
+        });
+        // 去重
+        removeDuplicate(bizKeyList);
+    }
+
+    private List removeDuplicate(List<Map<String, String>> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = list.size() - 1; j > i; j--) {
+                if (list.get(j).get("url").equals(list.get(i).get("url"))) {
+                    list.remove(j);
+                }
+
+            }
+        }
+        return list;
+    }
 
 }
