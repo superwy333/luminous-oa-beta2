@@ -4,7 +4,6 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
-import cn.luminous.squab.entity.Department;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
 import cn.luminous.squab.entity.SysUer;
@@ -13,7 +12,6 @@ import cn.luminous.squab.mapper.OaTaskMapper;
 import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
-import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.*;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -104,8 +102,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         Map<String, Object> variables = parseJson(oaTask.getData());
 
         // 把当前登陆用户信息装入流程变量
-        String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-        sysUserService.parseVariables(userCode, variables);
+        SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+        sysUserService.parseVariables(currentUser.getUserCode(), variables);
 
         // 启动流程
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
@@ -132,8 +130,8 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         String actTaskId = oaTaskApprove.getActTaskId();
         // 完成任务
         Map<String, Object> variables = activitiService.getVariables(actTaskId);
-        String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-        sysUserService.parseVariables(userCode, variables);
+        SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+        sysUserService.parseVariables(currentUser.getUserCode(), variables);
         activitiService.completeTask(actTaskId, variables);
         // 记录审批信息
         oaTaskApproveService.add(oaTaskApprove);

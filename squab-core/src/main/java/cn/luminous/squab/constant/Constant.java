@@ -115,5 +115,19 @@ public class Constant {
         public static final String BY_POST = "3";
     }
 
+    /**
+     * 使用用户姓名登陆还是工号登陆
+     */
+    public static class LOGIN_TYPE {
+        /**
+         * 用户姓名
+         */
+        public static final String USER_NAME = "0";
+        /**
+         * 工号
+         */
+        public static final String USER_CODE = "1";
+    }
+
 
 }

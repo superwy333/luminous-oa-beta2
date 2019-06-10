@@ -24,7 +24,6 @@ public class LoginRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //从凭证中获得用户名
-        //String userCode = (String) SecurityUtils.getSubject().getPrincipal();
         return null;
     }
 
@@ -41,14 +40,13 @@ public class LoginRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String pwd = new String(token.getPassword());
         SysUer sysUer = new SysUer();
-        sysUer.setName(token.getUsername());
-        //SysUer sysUerInDB = sysUserService.queryOne(sysUer);
+        sysUer.setUserCode(token.getUsername());
         SysUer sysUerInDB = sysUserService.query(sysUer).get(0);
         if (sysUerInDB==null) throw new ShiroException("用户名不存在");
         if (!MD5Util.MD5(pwd, "utf-8").equals(sysUerInDB.getPassword())) {
             throw new ShiroException("密码错误");
         }else {
-            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(token.getUsername(), pwd,getName());
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(sysUerInDB, pwd,getName());
             return info;
         }
     }

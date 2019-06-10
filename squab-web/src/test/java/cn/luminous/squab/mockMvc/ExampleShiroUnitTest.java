@@ -1,12 +1,15 @@
 package cn.luminous.squab.mockMvc;
 
+import cn.luminous.squab.entity.SysUer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.junit.After;
 import org.junit.Test;
-import static org.easymock.EasyMock.*;
+
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
 
 public class ExampleShiroUnitTest extends AbstractShiroTest {
 
@@ -30,8 +33,8 @@ public class ExampleShiroUnitTest extends AbstractShiroTest {
         } catch (AuthenticationException e) {
             e.printStackTrace();
         }
-        String userName = (String) SecurityUtils.getSubject().getPrincipal();
-        System.out.println("userName>>>>>>>>>>>> " + userName);
+        SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+        System.out.println("userName>>>>>>>>>>>> " + currentUser.getName());
     }
 
     @After

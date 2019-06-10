@@ -3,6 +3,7 @@ package cn.luminous.squab.listener;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.entity.OaTask;
 import cn.luminous.squab.entity.OaTaskApprove;
+import cn.luminous.squab.entity.SysUer;
 import cn.luminous.squab.service.ActivitiService;
 import cn.luminous.squab.service.OaTaskApproveService;
 import cn.luminous.squab.service.OaTaskService;
@@ -62,9 +63,8 @@ public class ApproveListener implements TaskListener {
 //                    assignee = sysUserService.getAssignee(oaTask.getApplyCode(), assigneeConfig);
 //                }
                 // 获取当前登陆人作为组织架构树的查询条件
-                Subject subject = SecurityUtils.getSubject();
-                String userCode = (String) subject.getPrincipal();
-                assignee = sysUserService.getAssignee(userCode, assigneeConfig);
+                SysUer currentUser = (SysUer)SecurityUtils.getSubject().getPrincipal();
+                assignee = sysUserService.getAssignee(currentUser.getUserCode(), assigneeConfig);
                 delegateTask.setAssignee(assignee);
             } else {
                 assignee = assigneeConfig;

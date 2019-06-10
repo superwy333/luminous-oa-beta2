@@ -5,7 +5,10 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.controller.form.pojo.UeForm;
-import cn.luminous.squab.entity.*;
+import cn.luminous.squab.entity.BizMapping;
+import cn.luminous.squab.entity.OaTask;
+import cn.luminous.squab.entity.OaTaskApprove;
+import cn.luminous.squab.entity.SysUer;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.form.entity.DynamicForm;
@@ -26,7 +29,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,7 @@ import java.util.Map;
 @RequestMapping("/workflow")
 @Controller
 @Slf4j
-public class WorkFlowController{
+public class WorkFlowController {
 
     @Autowired
     private OaTaskService oaTaskService;
@@ -47,6 +49,7 @@ public class WorkFlowController{
 
     /**
      * 跳转申请汇总页面
+     *
      * @return
      */
     @RequestMapping("/applyList")
@@ -58,6 +61,7 @@ public class WorkFlowController{
 
     /**
      * 跳转我的待办
+     *
      * @return
      */
     @RequestMapping("/taskTodoList")
@@ -72,6 +76,7 @@ public class WorkFlowController{
 
     /**
      * 跳转请假申请表单
+     *
      * @return
      */
     @RequestMapping("/qjAdd")
@@ -82,6 +87,7 @@ public class WorkFlowController{
     /**
      * 跳转请假申请表单
      * 使用自定义表单
+     *
      * @return
      */
     @RequestMapping("/qjAdd2")
@@ -89,13 +95,14 @@ public class WorkFlowController{
         long id = 12;
         DynamicForm dynamicForm = dynamicFormService.queryById(id);
         model.addAttribute("html", dynamicForm.getFormHtml());
-        model.addAttribute("name","哈哈老王");
+        model.addAttribute("name", "哈哈老王");
         return "qj-add2";
     }
 
 
     /**
      * 任务申请
+     *
      * @param model
      * @return
      */
@@ -109,21 +116,16 @@ public class WorkFlowController{
             bizMapping = bizMappingList.get(0);
             DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(bizMapping.getFormId()));
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
-            model.addAttribute("html",form.getHtml());
-            model.addAttribute("bizKey",bizKey);
+            model.addAttribute("html", form.getHtml());
+            model.addAttribute("bizKey", bizKey);
             // 获取流水号
             //String taskNo = oaTaskService.getTaskNo();
             //model.addAttribute("taskNo",taskNo);
             // 获取申请人信息
-
-            String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-            SysUserModel sysUserModel = sysUserService.queryUserInfo(userCode);
-            model.addAttribute("sysUser",sysUserModel);
-//            SysUer sysUer = new SysUer();
-//            sysUer.setUserCode(userCode);
-//            sysUer = sysUserService.queryOne(sysUer);
-//            model.addAttribute("username",sysUer.getName());
-        }catch (Exception e) {
+            SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+            SysUserModel sysUserModel = sysUserService.queryUserInfo(currentUser.getUserCode());
+            model.addAttribute("sysUser", sysUserModel);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         m.setViewName("apply");
@@ -150,22 +152,21 @@ public class WorkFlowController{
             // 表单
             DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(bizMapping.getFormId()));
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
-            model.addAttribute("html",form.getHtml());
+            model.addAttribute("html", form.getHtml());
 
             // 流程流转的数据
 
             JSONArray jsonArray = JSONUtil.parseArray(oaTask.getData());
-            model.addAttribute("data",jsonArray);
+            model.addAttribute("data", jsonArray);
             //model.addAttribute("taskId",oaTaskModel.getTaskId());
-            model.addAttribute("id",oaTask.getId());
-            model.addAttribute("type",type);
-        }catch (Exception e) {
+            model.addAttribute("id", oaTask.getId());
+            model.addAttribute("type", type);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         m.setViewName("task-detail");
         return m;
     }
-
 
 
     @RequestMapping("/approve")
@@ -180,19 +181,19 @@ public class WorkFlowController{
             // 表单
             DynamicForm dynamicForm = dynamicFormService.queryById(Long.valueOf(bizMapping.getFormId()));
             UeForm form = UeForm.praseTemplate(dynamicForm.getFormHtml());
-            model.addAttribute("html",form.getHtml());
+            model.addAttribute("html", form.getHtml());
 
             // 流程流转的数据
             JSONArray jsonArray = JSONUtil.parseArray(oaTaskModel.getData());
-            model.addAttribute("data",jsonArray);
-            model.addAttribute("taskId",oaTaskModel.getTaskId());
-            model.addAttribute("id",oaTaskModel.getId());
-            model.addAttribute("lsh",oaTaskModel.getTaskNo());
+            model.addAttribute("data", jsonArray);
+            model.addAttribute("taskId", oaTaskModel.getTaskId());
+            model.addAttribute("id", oaTaskModel.getId());
+            model.addAttribute("lsh", oaTaskModel.getTaskNo());
 
             // 审批需要的数据
             List<OaTaskNodeModel> oaTaskNodeModelList = oaTaskService.getCallBackNodes(oaTaskModel.getProcInstId());
-            model.addAttribute("callBackNodes",oaTaskNodeModelList);
-        }catch (Exception e) {
+            model.addAttribute("callBackNodes", oaTaskNodeModelList);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         m.setViewName("approve");
@@ -216,15 +217,14 @@ public class WorkFlowController{
             oaTask.setBizKey(bizKey);
             oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
             oaTask.setProcessKey(bizMapping.getProcessKey());
-            Subject subject = SecurityUtils.getSubject();
-            String userCode = (String) subject.getPrincipal();
-            oaTask.setApplyCode(userCode);
+            SysUer currentUser = (SysUer)SecurityUtils.getSubject().getPrincipal();
+            oaTask.setApplyCode(currentUser.getUserCode());
             // 获取流水号
             oaTask.setTaskNo(oaTaskService.getTaskNo());
             // 填报时间
             oaTask.setApplyTime(new Date());
             oaTaskService.registerTask(oaTask);
-        }catch (Exception e) { // 统一再controller层捕获异常
+        } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);
             //return R.nok(e.getMessage());
             return R.nok("没有发起流程的权限，请联系管理员！" + e.getMessage());
@@ -241,33 +241,30 @@ public class WorkFlowController{
         OaTask oaTask = new OaTask();
         try {
             log.debug("【审批开始】入参: " + rq.toString());
-            Map<String,Object> data = (Map<String,Object>) rq.getData();
+            Map<String, Object> data = (Map<String, Object>) rq.getData();
             OaTaskApprove oaTaskApprove = new OaTaskApprove();
             oaTaskApprove.setActTaskId((String) data.get("actTaskId"));
             oaTaskApprove.setApproveContent((String) data.get("approveContent"));
             oaTaskApprove.setApprover((String) data.get("currentUser"));
             oaTaskApprove.setApproveTime(new Date());
-            oaTaskApprove.setOaTaskId(((Integer)data.get("oaTaskId")).longValue());
-            String userCode = (String) SecurityUtils.getSubject().getPrincipal();
-            SysUer sysUer = new SysUer();
-            sysUer.setName(userCode);
-            sysUer = sysUserService.queryOne(sysUer);
-            oaTaskApprove.setApprover(sysUer.getUserCode());
+            oaTaskApprove.setOaTaskId(((Integer) data.get("oaTaskId")).longValue());
+            SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+            oaTaskApprove.setApprover(currentUser.getUserCode());
 
             if (Constant.BIZ_KEY.PASS.equals(rq.getBizKey())) { // 流程通过
                 oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);
                 oaTaskService.approveTask(oaTaskApprove);
-            }else if (Constant.BIZ_KEY.REJECT.equals(rq.getBizKey())) { // 流程驳回
+            } else if (Constant.BIZ_KEY.REJECT.equals(rq.getBizKey())) { // 流程驳回
                 String hisTaskId = (String) data.get("callBackNode"); // 流程回退的历史任务id
                 if ("start".equals(hisTaskId)) { // 退回发起人
                     oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.REJECT);
                     oaTaskService.rejectTask(oaTaskApprove);
-                }else { // 退回到历史节点
+                } else { // 退回到历史节点
                     // TODO 这边不写审批记录 是个BUG
                     oaTaskService.callBackTaskToHisTask(hisTaskId);
                 }
             }
-        }catch (Exception e) { // 统一再controller层捕获异常
+        } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【审批失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
@@ -277,6 +274,7 @@ public class WorkFlowController{
 
     /**
      * 我的代办列表
+     *
      * @param rq
      * @return
      */
@@ -287,13 +285,9 @@ public class WorkFlowController{
         Integer queryCount;
         try {
             log.debug("【查询代办开始】入参: " + rq.toString());
-            Subject subject = SecurityUtils.getSubject();
-            String userCode = (String) subject.getPrincipal();
-            SysUer sysUer = new SysUer();
-            sysUer.setName(userCode);
-            sysUer = sysUserService.queryOne(sysUer);
-            taskList = oaTaskService.queryTaskToDoPage(sysUer.getUserCode(), rq.getPage(), rq.getLimit());
-            queryCount = oaTaskService.queryTaskToDoPage(sysUer.getUserCode(), null, null).size();
+            SysUer currentUser = (SysUer)SecurityUtils.getSubject().getPrincipal();
+            taskList = oaTaskService.queryTaskToDoPage(currentUser.getUserCode(), rq.getPage(), rq.getLimit());
+            queryCount = oaTaskService.queryTaskToDoPage(currentUser.getUserCode(), null, null).size();
             // 处理一下业务类型
             taskList.stream().forEach(oaTaskModel -> {
                 BizMapping bizMapping = new BizMapping();
@@ -301,7 +295,7 @@ public class WorkFlowController{
                 bizMapping = bizMappingService.queryOne(bizMapping);
                 oaTaskModel.setBizName(bizMapping.getBizName());
             });
-        }catch (Exception e) { // 统一再controller层捕获异常
+        } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
@@ -311,6 +305,7 @@ public class WorkFlowController{
 
     /**
      * 我的已办列表
+     *
      * @param rq
      * @return
      */
@@ -321,7 +316,7 @@ public class WorkFlowController{
         try {
             log.debug("【查询已办开始】入参: " + rq.toString());
             taskList = oaTaskService.queryTaskDone();
-        }catch (Exception e) { // 统一再controller层捕获异常
+        } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询已办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
@@ -331,6 +326,7 @@ public class WorkFlowController{
 
     /**
      * 审批流转记录
+     *
      * @param rq
      * @return
      */
@@ -340,7 +336,7 @@ public class WorkFlowController{
         List<OaTaskApproveModel> oaTaskApproveModelList;
         try {
             log.debug("【查询审批记录开始】入参: " + rq.toString());
-            Map<String,Object> data = (Map<String,Object>) rq.getData();
+            Map<String, Object> data = (Map<String, Object>) rq.getData();
             oaTaskApproveModelList = oaTaskService.queryTaskApproveDetails(Long.valueOf((Integer) data.get("oaTaskId")));
             // 处理审批人名字
             oaTaskApproveModelList.stream().forEach(oaTaskApproveModel -> {
@@ -350,7 +346,7 @@ public class WorkFlowController{
                 oaTaskApproveModel.setApprover(sysUer.getName());
 
             });
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("【查询审批记录失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
@@ -360,6 +356,7 @@ public class WorkFlowController{
 
     /**
      * 我的申请
+     *
      * @param rq
      * @return
      */
@@ -370,17 +367,17 @@ public class WorkFlowController{
         Integer queryCount;
         try {
             // 获取当前登陆人
-            String userCode = (String)SecurityUtils.getSubject().getPrincipal();
-            oaTaskModelList = oaTaskService.queryMyTaskPage(userCode, rq.getPage(), rq.getLimit());
-            queryCount = oaTaskService.queryMyTaskPage(userCode, null, null).size();
+            SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+            oaTaskModelList = oaTaskService.queryMyTaskPage(currentUser.getUserCode(), rq.getPage(), rq.getLimit());
+            queryCount = oaTaskService.queryMyTaskPage(currentUser.getUserCode(), null, null).size();
             // 处理一下当前指派人和业务类型
             oaTaskModelList.stream().forEach(oaTaskModel -> {
 
-                if (oaTaskModel.getAssignee()!=null) {
+                if (oaTaskModel.getAssignee() != null) {
                     SysUer sysUer = new SysUer();
                     sysUer.setUserCode(oaTaskModel.getAssignee());
                     sysUer = sysUserService.queryOne(sysUer);
-                    if (sysUer!=null) {
+                    if (sysUer != null) {
                         oaTaskModel.setAssignee(sysUer.getName());
                     }
                 }
@@ -390,13 +387,12 @@ public class WorkFlowController{
                 oaTaskModel.setBizName(bizMapping.getBizName());
             });
             log.debug("【查询我的任务开始】入参: " + rq.toString());
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("【查询我的任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
         return R.ok(oaTaskModelList, queryCount);
     }
-
 
 
 }

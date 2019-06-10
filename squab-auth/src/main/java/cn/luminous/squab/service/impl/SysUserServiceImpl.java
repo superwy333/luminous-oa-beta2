@@ -57,7 +57,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
     @Override
     public String getAssignee(String src, String type) throws Exception {
         SysUer sysUer1 = new SysUer();
-        sysUer1.setName(src);
+        sysUer1.setUserCode(src);
         sysUer1 = queryOne(sysUer1);
         // 先查询组织架构树
         Department department = departmentService.queryDepartment(sysUer1.getUserCode());
@@ -113,13 +113,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
     }
 
     @Override
-    public void parseVariables(String userName, Map<String, Object> variables) throws Exception {
-        SysUserModel sysUserModel = this.queryUserInfo(userName);
+    public void parseVariables(String userCode, Map<String, Object> variables) throws Exception {
+        SysUserModel sysUserModel = this.queryUserInfo(userCode);
         variables.put("post", sysUserModel.getPostName());
         variables.put("dept", sysUserModel.getDeptName());
         // 当前主办人
-        //String username = (String) SecurityUtils.getSubject().getPrincipal();
-        variables.put("sqr", userName);
+        variables.put("sqr", sysUserModel.getName());
         // 是否是部门直属人员
         Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
         if (department.getPid() == 0) {
