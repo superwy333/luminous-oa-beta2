@@ -166,6 +166,7 @@ public class LoginController {
             process.getChild().add(processItem2);
             result.add(process);
         } catch (Exception e) {
+            log.error("菜单获取失败,失败原因：" + e);
             R.nok("菜单获取失败，请联系管理管！" + e.getMessage());
         }
         menu.put("success", true);

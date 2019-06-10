@@ -187,7 +187,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         queryAll.setType(Constant.BIZ_MAPPING_AUTH_TYPE.ALL);
         List<BizMappingAuth> queryAllList = bizMappingAuthService.query(queryAll);
 
-        SysUserModel sysUserModel = queryUserInfo(sysUer.getName());
+        SysUserModel sysUserModel = queryUserInfo(sysUer.getUserCode());
         // 找到指定人员有的权限
         BizMappingAuth queryByUser = new BizMappingAuth();
         queryByUser.setType(Constant.BIZ_MAPPING_AUTH_TYPE.BY_USER);
