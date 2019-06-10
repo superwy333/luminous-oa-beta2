@@ -40,14 +40,14 @@
 
     <!--流转信息-->
     <span style="margin-left: 62px">核签记录:</span>
-    <table id="approve-details" align="center">
+    <table width="748px" id="approve-details" align="center">
         <tbody>
-        <tr style="width: 1014px; height: 10px">
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">节点名称</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批人</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批结果</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批意见</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批时间</td>
+        <tr style="height: 10px">
+            <td  style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">节点名称</td>
+            <td  style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批人</td>
+            <td  style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批结果</td>
+            <td  style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批意见</td>
+            <td  style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批时间</td>
         </tr>
         </tbody>
     </table>
@@ -55,7 +55,7 @@
     <!--审批表单-->
     <form id="approve">
         <span style="margin-left: 62px">审批:</span>
-        <table align="center" data-sort="sortDisabled" style="width: 1016px">
+        <table width="748px" align="center" data-sort="sortDisabled" id="approve-table">
             <tr>
                 <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>
                 <td>
@@ -94,6 +94,13 @@
 <script th:inline="javascript">
     var html = [[${html}]];
     $('#htmlContainer').html(html);
+
+    // 渲染核签记录以及审批记录
+    var width = $('#htmlContainer').find('table').css('width')
+    //alert(width)
+    $('#approve-details').css('width',width);
+    $('#approve-table').css('width',width);
+
 </script>
 
 <script th:inline="javascript" type="text/javascript">
