@@ -170,7 +170,7 @@ public class WorkFlowController {
     }
 
 
-    @RequestMapping("/approve")
+    @GetMapping("/approve")
     public ModelAndView toApprove(@RequestParam("id") String actTaskId, Model model) {
         ModelAndView m = new ModelAndView();
         try {
@@ -194,6 +194,12 @@ public class WorkFlowController {
             // 审批需要的数据
             List<OaTaskNodeModel> oaTaskNodeModelList = oaTaskService.getCallBackNodes(oaTaskModel.getProcInstId());
             model.addAttribute("callBackNodes", oaTaskNodeModelList);
+
+            // 附件
+            OaTaskAttachment oaTaskAttachment = new OaTaskAttachment();
+            oaTaskAttachment.setOaTaskId(oaTaskModel.getId());
+            List<OaTaskAttachment> oaTaskAttachmentList = oaTaskAttachmentService.query(oaTaskAttachment);
+            model.addAttribute("oaTaskAttachmentList", oaTaskAttachmentList);
         } catch (Exception e) {
             e.printStackTrace();
         }
