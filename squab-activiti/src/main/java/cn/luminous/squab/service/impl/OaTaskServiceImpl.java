@@ -91,7 +91,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @throws Exception
      */
     @Override
-    public String registerTask(OaTask oaTask) throws Exception {
+    public OaTask registerTask(OaTask oaTask) throws Exception {
 
         // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
 
@@ -114,7 +114,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
 
         // 记录提交的表单数据
         this.add(oaTask);
-        return null;
+        return oaTask;
     }
 
 

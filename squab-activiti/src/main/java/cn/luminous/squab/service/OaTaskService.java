@@ -12,7 +12,7 @@ import java.util.List;
 public interface OaTaskService extends BaseService<OaTask> {
 
 
-    String registerTask(OaTask oaTask) throws Exception; //  启动流程
+    OaTask registerTask(OaTask oaTask) throws Exception; //  启动流程
 
     String approveTask(OaTaskApprove oaTaskApprove) throws Exception; // 审批通过，完成当前任务
 

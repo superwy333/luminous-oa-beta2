@@ -122,14 +122,10 @@
         })
 
 
-        // $('html').find('input').attr("readOnly","readOnly");
-        // $('html').find('input').attr("disabled","disabled");
-
         $('html').find('select').attr("readOnly","readOnly");
         $('html').find('select').attr("disabled","disabled");
-
         $('html').find('textarea').attr("readOnly","readOnly");
-        //$('html').find('textarea').attr("disabled","disabled");
+
         // 处理一下删除按钮
         $('.delrow').css('display','none');
 
@@ -139,8 +135,6 @@
                 var clickNum = value.value - 1
                 var buttons = $('html').find('button');
                 $.each(buttons, function (index, value) {
-                    //console.log(value);
-                    //console.log($(value).text())
                     if ($(value).text()=='添加一行') {
                         for (var i=0;i<clickNum;i++) {
                             $(value).click();

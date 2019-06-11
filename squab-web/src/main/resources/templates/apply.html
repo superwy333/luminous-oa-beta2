@@ -32,17 +32,27 @@
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
 </head>
 <body>
-<!--<div class="page-header">-->
-<!--    <h1>预览表单-->
-<!--        <small>如无问题请保存你的设计</small>-->
-<!--    </h1>-->
-<!--</div>-->
 <div class="container">
     <form id="ff">
         <div id="htmlContainer" class="row ">
 
         </div>
     </form>
+
+    <table width="748px" align="center" data-sort="sortDisabled" id="fileUpload">
+        <tr>
+            <td style="-ms-word-break: break-all;" valign="top" width="88">附件上传</td>
+            <td>
+                <div id="uploader" class="wu-example">
+                    <div class="btns">
+                        <div id="picker">选择文件</div>
+                    </div>
+                    <!--用来存放文件信息-->
+                    <div id="thelist" class="uploader-list"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <div class="form-btn" style="text-align:center;margin-top:20px">
         <!--<input class="btn btn-primary btn-small" id="reset" type="reset" value="重置">-->
@@ -55,6 +65,9 @@
 <script th:inline="javascript">
     var html = [[${html}]];
     $('#htmlContainer').html(html);
+
+    var width = $('#htmlContainer').find('table').css('width')
+    $('#fileUpload').css('width', width);
 </script>
 
 <script th:inline="javascript" type="text/javascript">
@@ -62,52 +75,47 @@
     var taskNo = [[${taskNo}]]
     var sysUser = [[${sysUser}]]
     console.log(sysUser)
-    layui.use(['form', 'layer','jquery'], function () {
+    layui.use(['form', 'layer', 'jquery'], function () {
         var $ = layui.jquery;
 
         $("input[name='lsh']").val(taskNo);
-        $("input[name='lsh']").attr("readOnly","readOnly");
+        $("input[name='lsh']").attr("readOnly", "readOnly");
         $("input[name='sqr']").val(sysUser.name);
-        $("input[name='sqr']").attr("readOnly","readOnly");
+        $("input[name='sqr']").attr("readOnly", "readOnly");
         $("input[name='gw']").val(sysUser.postName);
-        $("input[name='gw']").attr("readOnly","readOnly");
+        $("input[name='gw']").attr("readOnly", "readOnly");
         $("input[name='bm']").val(sysUser.deptName);
-        $("input[name='bm']").attr("readOnly","readOnly");
+        $("input[name='bm']").attr("readOnly", "readOnly");
 
         var uploader = WebUploader.create({
-
             // swf文件路径
             swf: 'static/form/Uploader.swf',
-
             // 文件接收服务端。
-            server: '/form/fileUpload',
-
+            server: '/dynamicForm/fileUpload',
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
             pick: '#picker',
-
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
             resize: false
         });
 
         // 当有文件被添加进队列的时候
-        uploader.on( 'fileQueued', function( file ) {
-            $('#thelist').append( '<div style="display: inline-block;margin-left: 20px" id="' + file.id + '" class="item">' +
-                '<h4 class="info">' + file.name +'</h4>' +
+        uploader.on('fileQueued', function (file) {
+            $('#thelist').append('<div style="display: inline-block;margin-left: 20px" id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name + '</h4>' +
                 // '<p class="state">等待上传...</p>' +
                 '<a class="remove-this" href="#"> <font size="1" color="red">删除</font></a>' +
-                '</div>' );
+                '</div>');
         });
 
-        $('#thelist').on('click', '.remove-this', function() {
+        $('#thelist').on('click', '.remove-this', function () {
             var fileItem = $(this).parent();
             var id = $(fileItem).attr("id");
             console.log(id)
             uploader.removeFile(id, true);
-            $(fileItem).fadeOut(function() {
+            $(fileItem).fadeOut(function () {
                 $(fileItem).remove();
             });
-
         });
 
         $ = layui.jquery;
@@ -117,34 +125,14 @@
         $('#reset').click(function () {
             document.getElementById("ff").reset();
         });
-
-        // function verify() {
-        //     var inputs = $('input');
-        //     //console.log(inputs)
-        //     $.each(inputs, function (index, value) {
-        //         // 非空校验
-        //         var notNull = $(value).attr("notnull")
-        //         if (notNull==1 && $(value).val()=='') {
-        //             layer.alert("提交失败！请检查带*号必填项不能为空！", function () {
-        //                 console.log("false")
-        //                 return false;
-        //             })
-        //
-        //         }
-        //     })
-        //     // 值校验
-        //     console.log("true")
-        //     return true
-        // }
-
-        window.checkNotNull = function() {
+        window.checkNotNull = function () {
             var inputs = $('input');
             //console.log(inputs)
             var checkResult = true;
             $.each(inputs, function (index, value) {
                 // 非空校验
                 var notNull = $(value).attr("notnull")
-                if (notNull==1 && $(value).val()=='') {
+                if (notNull == 1 && $(value).val() == '') {
                     layer.alert("提交失败！请检查带*号必填项不能为空！")
                     console.log("false")
                     checkResult = false;
@@ -168,19 +156,19 @@
                 console.log("exit!!!!")
                 return false;
             }
+
+
             //return false;
-
-
             var data = $('#ff').serializeArray();
             // 列表控件的处理
             var buttons = $('html').find('button');
             $.each(buttons, function (index, value) {
-                if ($(value).text()=='添加一行') {
+                if ($(value).text() == '添加一行') {
                     var table = $(value).closest('table');
                     //console.log(table.attr('id'))
                     var tableId = table.attr('id');
                     var trNum = $("#" + tableId + " tbody").find("tr").length;
-                    if (trNum>=5) {
+                    if (trNum >= 5) {
                         layer.alert("最多添加5项");
                     }
                     //console.log(trNum)
@@ -207,15 +195,21 @@
                 dataType: 'json',
                 data: JSON.stringify(req),
                 success: function (data) {
-                    if (data.code==0) {
-                        layer.msg("申请成功", function () { // 申请成功直接关闭当前申请页面
-                            var id = $(window.frameElement).attr('tab-id');
-                            console.log("id" + id)
-                            parent.element.tabDelete('xbs_tab', id);
-
-                        });
-                        // 表单提交成功之后进行附件上传
+                    if (data.code == 0) {
+                        // 附件上传
+                        var oaTaskId = data.data.id
+                        console.log('oaTaskId: ' + oaTaskId)
+                        uploader.on('uploadBeforeSend', function (obj, data, headers) {
+                            data.oaTaskId = oaTaskId
+                        })
                         uploader.upload();
+                        layer.msg('申请成功',{
+                            anim: 0
+                        },function () {
+                            // 表单提交成功之后进行附件上传
+                            var id = $(window.frameElement).attr('tab-id');
+                            parent.element.tabDelete('xbs_tab', id);
+                        })
                     } else {
                         layer.alert("申请失败，失败原因：" + data.msg);
                     }

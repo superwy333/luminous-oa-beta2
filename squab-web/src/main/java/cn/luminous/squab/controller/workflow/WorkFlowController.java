@@ -208,6 +208,7 @@ public class WorkFlowController {
     @ResponseBody
     public String apply(@RequestBody Rq rq) {
         OaTask oaTask = new OaTask();
+        OaTask oaTaskAfterRegister;
         try {
             log.debug("【任务注册开始】入参: " + rq.toString());
             String bizKey = rq.getBizKey();
@@ -223,13 +224,13 @@ public class WorkFlowController {
             oaTask.setTaskNo(oaTaskService.getTaskNo());
             // 填报时间
             oaTask.setApplyTime(new Date());
-            oaTaskService.registerTask(oaTask);
+            oaTaskAfterRegister = oaTaskService.registerTask(oaTask);
         } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);
             //return R.nok(e.getMessage());
             return R.nok("没有发起流程的权限，请联系管理员！" + e.getMessage());
         }
-        return R.ok();
+        return R.ok(oaTaskAfterRegister);
     }
 
     /**

@@ -27,16 +27,16 @@
     <h2 style="text-align: center; font-size: 24px; color: #0071c8">文商旅福田物业OA管理系统</h2>
     <form method="post" action="/login" class="layui-form" style="margin-top: 60px">
 
+        <select name="loginType" class="layui-select">
+            <!--<option value="0">请选择使用用户姓名登陆或工号登陆(默认用户姓名登陆)</option>-->
+            <option value="0">使用用户姓名登陆</option>
+            <option value="1">使用工号登陆</option>
+        </select>
+        <hr class="hr15">
         <input id="username" name="username" placeholder="用户名或工号" type="text" lay-verify="required" class="layui-input">
         <hr class="hr15">
         <input id="password" name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
         <hr class="hr15">
-        <select name="loginType" class="layui-select">
-            <option value="0">请选择使用用户姓名登陆或工号登陆(默认用户姓名登陆)</option>
-            <option value="0">用户名</option>
-            <option value="1">工号</option>
-        </select>
-        <hr class="hr20">
         <input value="登录" lay-submit lay-filter="login" style="width:100%;background-color: #0071c8" type="submit">
         <hr class="hr20">
         <span style="color: red" th:text="${msg}"></span>

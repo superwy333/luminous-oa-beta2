@@ -8,7 +8,6 @@ import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.form.entity.DynamicForm;
 import cn.luminous.squab.form.service.DynamicFormService;
 import cn.luminous.squab.model.DynamicFormModel;
-import cn.luminous.squab.model.OaTaskModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,13 +119,13 @@ public class FormController {
     @RequestMapping("/fileUpload")
     @ResponseBody
     @CrossOrigin
-    public String fileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public String fileUpload(@RequestParam("file") MultipartFile file,
+                             @RequestParam("oaTaskId") Long oaTaskId) throws IOException {
 
 
         //用来检测程序运行时间
         long startTime = System.currentTimeMillis();
         System.out.println("fileName：" + file.getOriginalFilename());
-
         try {
             //获取输出流
             OutputStream os = new FileOutputStream("D:/" + new Date().getTime() + file.getOriginalFilename());
