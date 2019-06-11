@@ -110,44 +110,6 @@ public class FormController {
     }
 
 
-    /**
-     * 通过流的方式上传文件
-     * 测试文件上传功能
-     *
-     * @RequestParam("file") 将name=file控件得到的文件封装成CommonsMultipartFile 对象
-     */
-    @RequestMapping("/fileUpload")
-    @ResponseBody
-    @CrossOrigin
-    public String fileUpload(@RequestParam("file") MultipartFile file,
-                             @RequestParam("oaTaskId") Long oaTaskId) throws IOException {
 
-
-        //用来检测程序运行时间
-        long startTime = System.currentTimeMillis();
-        System.out.println("fileName：" + file.getOriginalFilename());
-        try {
-            //获取输出流
-            OutputStream os = new FileOutputStream("D:/" + new Date().getTime() + file.getOriginalFilename());
-            //获取输入流 CommonsMultipartFile 中可以直接得到文件的流
-            InputStream is = file.getInputStream();
-            int temp;
-            //一个一个字节的读取并写入
-            while ((temp = is.read()) != (-1)) {
-                os.write(temp);
-            }
-            os.flush();
-            os.close();
-            is.close();
-
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return R.nok();
-        }
-        long endTime = System.currentTimeMillis();
-        System.out.println("方法一的运行时间：" + String.valueOf(endTime - startTime) + "ms");
-        return R.ok();
-    }
 
 }

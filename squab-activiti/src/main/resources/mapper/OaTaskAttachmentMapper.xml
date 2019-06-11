@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.luminous.squab.mapper.OaTaskAttachmentMapper">
+  <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.OaTaskAttachment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="oa_task_id" jdbcType="BIGINT" property="oaTaskId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_format" jdbcType="VARCHAR" property="fileFormat" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="deleted" jdbcType="INTEGER" property="deleted" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy" />
+    <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+    <result column="ext_field1" jdbcType="VARCHAR" property="extField1" />
+    <result column="ext_field2" jdbcType="VARCHAR" property="extField2" />
+    <result column="ext_field3" jdbcType="VARCHAR" property="extField3" />
+    <result column="ext_field4" jdbcType="VARCHAR" property="extField4" />
+    <result column="ext_field5" jdbcType="VARCHAR" property="extField5" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, oa_task_id, file_name, file_format, url, deleted, version, create_by, create_time, 
+    last_modify_by, last_modify_time, ext_field1, ext_field2, ext_field3, ext_field4, 
+    ext_field5
+  </sql>
+</mapper>

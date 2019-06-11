@@ -5,10 +5,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
 import cn.luminous.squab.controller.form.pojo.UeForm;
-import cn.luminous.squab.entity.BizMapping;
-import cn.luminous.squab.entity.OaTask;
-import cn.luminous.squab.entity.OaTaskApprove;
-import cn.luminous.squab.entity.SysUer;
+import cn.luminous.squab.entity.*;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.form.entity.DynamicForm;
@@ -17,18 +14,18 @@ import cn.luminous.squab.model.OaTaskApproveModel;
 import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
 import cn.luminous.squab.model.SysUserModel;
-import cn.luminous.squab.service.BizMappingService;
-import cn.luminous.squab.service.OaTaskService;
-import cn.luminous.squab.service.SysUserService;
+import cn.luminous.squab.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +43,10 @@ public class WorkFlowController {
     private BizMappingService bizMappingService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private OaTaskAttachmentService oaTaskAttachmentService;
+    @Autowired
+    private SysConfDictitemService sysConfDictitemService;
 
     /**
      * 跳转申请汇总页面
@@ -218,7 +219,7 @@ public class WorkFlowController {
             oaTask.setBizKey(bizKey);
             oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
             oaTask.setProcessKey(bizMapping.getProcessKey());
-            SysUer currentUser = (SysUer)SecurityUtils.getSubject().getPrincipal();
+            SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
             oaTask.setApplyCode(currentUser.getUserCode());
             // 获取流水号
             oaTask.setTaskNo(oaTaskService.getTaskNo());
@@ -286,7 +287,7 @@ public class WorkFlowController {
         Integer queryCount;
         try {
             log.debug("【查询代办开始】入参: " + rq.toString());
-            SysUer currentUser = (SysUer)SecurityUtils.getSubject().getPrincipal();
+            SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
             taskList = oaTaskService.queryTaskToDoPage(currentUser.getUserCode(), rq.getPage(), rq.getLimit());
             queryCount = oaTaskService.queryTaskToDoPage(currentUser.getUserCode(), null, null).size();
             // 处理一下业务类型
@@ -393,6 +394,67 @@ public class WorkFlowController {
             return R.nok(e.getMessage());
         }
         return R.ok(oaTaskModelList, queryCount);
+    }
+
+
+    /**
+     * 通过流的方式上传文件
+     * 测试文件上传功能
+     *
+     * @RequestParam("file") 将name=file控件得到的文件封装成CommonsMultipartFile 对象
+     */
+    @RequestMapping("/oaTaskAttachment")
+    @ResponseBody
+    @CrossOrigin
+    public String fileUpload(@RequestParam("file") MultipartFile file,
+                             @RequestParam("oaTaskId") Long oaTaskId) throws IOException {
+
+
+        //用来检测程序运行时间
+        long startTime = System.currentTimeMillis();
+        System.out.println("fileName：" + file.getOriginalFilename());
+        try {
+            // 查询oaTask
+            OaTask oaTask = oaTaskService.queryById(oaTaskId);
+            // 查询文件上传路径配置
+            SysConfDictitem sysConfDictitem = sysConfDictitemService.queryByCode("attachment_uploader_config", "upload_url");
+            String baseUrl = sysConfDictitem.getDicItemValue();
+            baseUrl = baseUrl.replaceAll("/", "");
+            // 文件名字
+            String fileName = file.getOriginalFilename();
+            String directionName = baseUrl + "/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/" + oaTask.getTaskNo();
+            File folder = new File(directionName);
+            if (!(folder.isDirectory())) {
+                folder.mkdirs();
+            }
+            String fullUrl = directionName + "/" + fileName;
+            //获取输出流
+            OutputStream os = new FileOutputStream(fullUrl);
+            //获取输入流 CommonsMultipartFile 中可以直接得到文件的流
+            InputStream is = file.getInputStream();
+            int temp;
+            //一个一个字节的读取并写入
+            while ((temp = is.read()) != (-1)) {
+                os.write(temp);
+            }
+            os.flush();
+            os.close();
+            is.close();
+
+            // 保存数据库
+            OaTaskAttachment oaTaskAttachment = new OaTaskAttachment();
+            oaTaskAttachment.setFileName(fileName);
+            oaTaskAttachment.setOaTaskId(oaTaskId);
+            oaTaskAttachment.setUrl(fullUrl);
+            oaTaskAttachmentService.add(oaTaskAttachment);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return R.nok();
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("方法一的运行时间：" + String.valueOf(endTime - startTime) + "ms");
+        return R.ok();
     }
 
 
