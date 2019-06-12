@@ -45,7 +45,7 @@
             <td>
                 <div id="thelist" class="uploader-list" th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
                     <div style="display: inline-block;margin-left: 20px" class="item">
-                        <a th:href="'http://localhost:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}" target="_blank" th:text=${oaTaskAttachment.fileName}></a>
+                        <a th:href="'http://192.168.1.101:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}" target="_blank" th:text=${oaTaskAttachment.fileName}></a>
                     </div>
                 </div>
             </td>

@@ -54,7 +54,7 @@
                         <div style="display: inline-block;margin-left: 20px" class="item"
                              th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
                             <div th:id="${oaTaskAttachment.id}">
-                                <a th:href="'http://localhost:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}"
+                                <a th:href="'http://192.168.1.101:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}"
                                    target="_blank" th:text=${oaTaskAttachment.fileName}></a>
                                 <a class="remove-that" href="#"> <font size="1" color="red">删除</font></a>
                             </div>
