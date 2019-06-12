@@ -19,8 +19,12 @@ import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.apache.commons.io.FileUtils;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.apache.shiro.web.session.mgt.WebSessionManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.CORBA.ObjectHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -327,6 +331,12 @@ public class ActivitiTest {
 
 
 
+    }
+
+    @Test
+    public void testShiroSessionManager() {
+        Object obj = ioc.getBean(DefaultWebSecurityManager.class);
+        System.out.println(obj);
     }
 
 

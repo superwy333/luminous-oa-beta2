@@ -3,6 +3,7 @@ package cn.luminous.squab.config;
 import cn.luminous.squab.realm.LoginRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
@@ -46,6 +47,9 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager(LoginRealm());
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        defaultWebSecurityManager.setSessionManager(sessionManager);
         return defaultWebSecurityManager;
     }
 
