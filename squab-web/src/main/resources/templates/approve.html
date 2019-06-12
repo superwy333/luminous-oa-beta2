@@ -238,7 +238,8 @@
                 success: function (data) {
                     if (data.code == 0) {
                         layer.msg('操作成功', {
-                            anim: 0
+                            anim: 0,
+                            time: 500
                         }, function () {
                             // 刷新父窗口
                             window.parent.location.reload();

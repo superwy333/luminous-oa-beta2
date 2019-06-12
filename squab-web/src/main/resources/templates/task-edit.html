@@ -50,8 +50,9 @@
                     <!--用来存放文件信息-->
                     <div id="thelist" class="uploader-list"></div>
 
-                    <div id="thatlist" class="uploader-list" >
-                        <div style="display: inline-block;margin-left: 20px" class="item" th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
+                    <div id="thatlist" class="uploader-list">
+                        <div style="display: inline-block;margin-left: 20px" class="item"
+                             th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
                             <div th:id="${oaTaskAttachment.id}">
                                 <a th:href="'http://localhost:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}"
                                    target="_blank" th:text=${oaTaskAttachment.fileName}></a>
@@ -287,7 +288,8 @@
                         })
                         uploader.upload();
                         layer.msg('申请成功', {
-                            anim: 0
+                            anim: 0,
+                            time: 500
                         }, function () {
                             // 刷新父窗口
                             window.parent.location.reload();
