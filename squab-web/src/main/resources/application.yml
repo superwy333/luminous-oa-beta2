@@ -9,6 +9,7 @@ server:
   servlet:
     context-path: /
 
+
 spring:
   profiles:
     include: activiti,mybatis
@@ -18,5 +19,10 @@ spring:
     encoding: UTF-8
     mode: LEGACYHTML5 # 去除thymeleaf的严格校验，需要搭配nekohtml依赖一起使用
     cache: false
+  http:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 100Mb
+
 
 

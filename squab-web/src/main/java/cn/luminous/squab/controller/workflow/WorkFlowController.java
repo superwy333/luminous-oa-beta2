@@ -429,7 +429,8 @@ public class WorkFlowController {
             // 文件名字
             String fileName = file.getOriginalFilename();
             //attachment
-            String directionName = baseUrl + "/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/" + oaTask.getTaskNo();
+            String realtiviUrl = new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/" + oaTask.getTaskNo();
+            String directionName = baseUrl + "/" + realtiviUrl;
             File folder = new File(directionName);
             if (!(folder.isDirectory())) {
                 folder.mkdirs();
@@ -452,7 +453,7 @@ public class WorkFlowController {
             OaTaskAttachment oaTaskAttachment = new OaTaskAttachment();
             oaTaskAttachment.setFileName(fileName);
             oaTaskAttachment.setOaTaskId(oaTaskId);
-            oaTaskAttachment.setUrl(fullUrl);
+            oaTaskAttachment.setUrl(realtiviUrl);
             oaTaskAttachmentService.add(oaTaskAttachment);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
