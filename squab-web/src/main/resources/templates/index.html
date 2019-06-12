@@ -23,8 +23,11 @@
         var is_remember = false;
     </script>
 </head>
-<script>
+<script type="text/javascript">
     console.log("进入index......")
+    setInterval(function () {
+        $('#reload').click();
+    }, 1000 * 60);
 </script>
 <body class="index">
 <!-- 顶部开始 -->
@@ -167,6 +170,7 @@
                             <div class="layui-card-header">代办任务</div>
                             <div class="layui-card-body ">
                                 <div class="layui-card-body ">
+                                    <button id="reload" style="display: none"></button>
                                     <table id="taskTodo" lay-filter="taskTodo"></table>
 
                                     <script type="text/html" id="taskTodoOperation">

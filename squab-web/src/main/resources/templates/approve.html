@@ -242,7 +242,8 @@
                             time: 500
                         }, function () {
                             // 刷新父窗口
-                            window.parent.location.reload();
+                            //window.parent.location.reload();
+                            $("#reload",window.parent.document).click()
                             // 表单提交成功之后进行附件上传
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
