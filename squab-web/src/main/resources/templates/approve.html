@@ -242,6 +242,8 @@
                         layer.msg('操作成功', {
                             anim: 0
                         }, function () {
+                            // 刷新父窗口
+                            window.parent.location.reload();
                             // 表单提交成功之后进行附件上传
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
