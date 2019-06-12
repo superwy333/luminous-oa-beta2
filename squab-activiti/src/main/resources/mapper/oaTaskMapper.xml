@@ -182,6 +182,7 @@
         (
         task.task_state = 1
         OR task.task_state = 2
+        OR task.task_state = 3
         )
         AND task.apply_code = #{condition.userCode}
         ) aaa

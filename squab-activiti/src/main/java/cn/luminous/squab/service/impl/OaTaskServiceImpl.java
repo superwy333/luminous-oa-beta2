@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("oaTaskService")
 @Transactional
@@ -162,6 +159,17 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         oaTaskApproveService.add(oaTaskApprove);
         OaTask oaTask = queryById(oaTaskApprove.getOaTaskId());
         oaTask.setTaskState(Constant.TASK_STATES.REJECTED);
+        updateByIdSelective(oaTask);
+        return null;
+    }
+
+    @Override
+    public String canCelTask(OaTaskApprove oaTaskApprove) throws Exception {
+        OaTask oaTask = queryById(oaTaskApprove.getOaTaskId());
+        activitiService.deleteTaskByProcInstId(oaTask.getProcInstId());
+        oaTaskApprove.setApproveTime(new Date());
+        oaTaskApproveService.add(oaTaskApprove);
+        oaTask.setTaskState(Constant.TASK_STATES.CANCEL);
         updateByIdSelective(oaTask);
         return null;
     }

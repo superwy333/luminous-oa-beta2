@@ -59,6 +59,10 @@
                     <script type="text/html" id="myTaskOperation">
                         <a class="layui-table-link" href="#" lay-event="detail">详情</a>
                         <a class="layui-table-link" href="#" lay-event="edit">编辑</a>
+                        {{#  if(d.taskState == '0'){ }}
+                        <a class="layui-table-link" href="#" lay-event="cancel">撤回</a>
+                        {{#  } }}
+
 <!--                        {{#  if(d.taskState == '2'){ }}-->
 <!--                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>-->
 <!--                        {{#  } else{ }}-->

@@ -108,6 +108,11 @@ public class ActivitiServiceImpl implements ActivitiService {
         runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "Reject");
     }
 
+    @Override
+    public void deleteTaskByProcInstId(String procInstId) throws Exception {
+        runtimeService.deleteProcessInstance(procInstId, "Reject");
+    }
+
     /**
      * 当前任务流程实例是否已经结束
      *

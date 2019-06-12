@@ -285,16 +285,23 @@
                 $.each(dataArray, function (index, value) {
                     tdd += '<tr>';
                     tdd += '<td>';
-                    tdd += value.nodeName;
+                    tdd += value.nodeName==undefined?'':value.nodeName;
                     tdd += '</td>';
                     tdd += '<td>';
                     tdd += value.approver == undefined ? '' : value.approver;
                     tdd += '</td>';
                     tdd += '<td>';
-                    tdd += value.approveResult == 0 ? '同意' : '驳回';
+                    if (value.approveResult == 0) {
+                        tdd += '同意'
+                    } else if (value.approveResult == 1) {
+                        tdd += '驳回'
+                    }else if (value.approveResult == 2) {
+                        tdd += '撤回'
+                    }
+                    // tdd += value.approveResult == 0 ? '同意' : '驳回';
                     tdd += '</td>';
                     tdd += '<td>';
-                    tdd += value.approveContent;
+                    tdd += value.approveContent==undefined?'':value.approveContent;
                     tdd += '</td>';
                     tdd += '<td>';
                     tdd += value.approveTime;

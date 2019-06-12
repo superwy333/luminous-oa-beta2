@@ -13,6 +13,7 @@ public class Constant {
         public static final String IN_PROCESS = "0"; // 流转中
         public static final String PASSED = "1"; // 通过
         public static final String REJECTED = "2"; // 拒绝
+        public static final String CANCEL = "3"; // 撤回
     }
 
     /**
@@ -30,6 +31,7 @@ public class Constant {
     public static class TASK_APPROVE_RESULT {
         public static final String PASS = "0"; // 同意
         public static final String REJECT = "1"; // 驳回
+        public static final String CANCEL = "2"; // 驳回
 
     }
 

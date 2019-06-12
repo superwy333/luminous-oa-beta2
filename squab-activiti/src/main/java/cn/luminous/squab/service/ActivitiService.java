@@ -22,6 +22,8 @@ public interface ActivitiService {
 
     void deleteTask(String actTaskId) throws Exception;
 
+    void deleteTaskByProcInstId(String procInstId) throws Exception;
+
     Boolean isEnd(String actTaskId) throws Exception;
 
     InputStream getDiagramOrgin(String deployId) throws Exception;

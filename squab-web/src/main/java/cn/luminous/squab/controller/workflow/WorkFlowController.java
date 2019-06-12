@@ -368,7 +368,7 @@ public class WorkFlowController {
      * @param rq
      * @return
      */
-    @RequestMapping(value = "/myTaskList", method = RequestMethod.POST)
+    @PostMapping(value = "/myTaskList")
     @ResponseBody
     public String myTaskList(@RequestBody Rq rq) {
         List<OaTaskModel> oaTaskModelList;
@@ -400,6 +400,32 @@ public class WorkFlowController {
             return R.nok(e.getMessage());
         }
         return R.ok(oaTaskModelList, queryCount);
+    }
+
+
+    /**
+     * 申请人本人撤回申请
+     * 只有在途申请才可以撤回
+     *
+     * @param rq
+     * @return
+     */
+    @PostMapping("/cancelProcess")
+    @ResponseBody
+    public String cancelProcess(@RequestBody Rq rq) {
+        try {
+            Map<String, Object> data = (Map<String, Object>) rq.getData();
+            Long oaTaskId = Long.valueOf((Integer) data.get("id"));
+            OaTaskApprove oaTaskApprove = new OaTaskApprove();
+            oaTaskApprove.setOaTaskId(oaTaskId);
+            SysUer sysUer = (SysUer) SecurityUtils.getSubject().getPrincipal();
+            oaTaskApprove.setApprover(sysUer.getUserCode());
+            oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.CANCEL);
+            oaTaskService.canCelTask(oaTaskApprove);
+        } catch (Exception e) {
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
     }
 
 
