@@ -239,13 +239,13 @@
                 data: JSON.stringify(reqData),
                 success: function (data) {
                     if (data.code == 0) {
-                        layer.msg("操作成功", function () {
+                        layer.msg('操作成功', {
+                            anim: 0
+                        }, function () {
+                            // 表单提交成功之后进行附件上传
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
-                            //window.parent.opener.location.reload();
-                            //window.close();
-                            //location.reload();
-                        });
+                        })
                     } else {
                         layer.alert("操作失败，失败原因：" + data.msg);
                     }
