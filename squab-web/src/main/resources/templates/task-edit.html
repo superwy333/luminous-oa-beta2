@@ -200,6 +200,10 @@
             $('textarea[name="' + value1.name + '"]').val(value1.value);
         })
 
+        // 手工渲染的数据
+        var lsh = [[${lsh}]];
+        $('input[name="lsh"]').val(lsh);
+
         $("input[name='lsh']").attr("readOnly", "readOnly");
         $("input[name='sqr']").attr("readOnly", "readOnly");
         $("input[name='gw']").attr("readOnly", "readOnly");

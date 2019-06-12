@@ -185,6 +185,10 @@
             $('textarea[name="' + value1.name + '"]').val(value1.value);
         })
 
+        // 手工渲染的数据
+        var lsh = [[${lsh}]];
+        $('input[name="lsh"]').val(lsh);
+
         // 移除需要操作的input和select的disabled和readOnly
         $('#approveContent').removeAttr("readOnly");
         $('#approveContent').removeAttr("disabled");

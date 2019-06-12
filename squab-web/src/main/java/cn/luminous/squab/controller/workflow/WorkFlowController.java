@@ -162,6 +162,7 @@ public class WorkFlowController {
             model.addAttribute("id", oaTask.getId());
             model.addAttribute("bizKey", oaTask.getBizKey());
             model.addAttribute("type", type);
+            model.addAttribute("lsh",oaTask.getTaskNo());
 
             // 附件
             OaTaskAttachment oaTaskAttachment = new OaTaskAttachment();
