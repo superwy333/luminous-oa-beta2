@@ -89,31 +89,40 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      */
     @Override
     public OaTask registerTask(OaTask oaTask) throws Exception {
-
-        // TODO 流程提交校验，如不能重复请假，或者某些流程一个人不能提交两次 这里需要抛出异常给controller捕获
-
         // 根据bizKey分拣得出流程定义key
         String processKey = oaTask.getProcessKey();
-
         // 把oaTask的表单提交数据装入流程变量
         Map<String, Object> variables = parseJson(oaTask.getData());
-
         // 把当前登陆用户信息装入流程变量
         SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
         sysUserService.parseVariables(currentUser.getUserCode(), variables);
-
         // 启动流程
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
         oaTask.setProcInstId(processInstance.getProcessInstanceId());
         oaTask.setProcDefId(processInstance.getProcessDefinitionId());
         oaTask.setApplyName((String) variables.get("sqr"));
         oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
-
         // 记录提交的表单数据
         this.add(oaTask);
         return oaTask;
     }
 
+    @Override
+    public OaTask startTask(OaTask oaTask) throws Exception {
+        OaTask oaTaskInDB = queryById(oaTask.getId());
+        String processKey = oaTaskInDB.getProcessKey();
+        // 把oaTask的表单提交数据装入流程变量
+        Map<String, Object> variables = parseJson(oaTaskInDB.getData());
+        // 把当前登陆用户信息装入流程变量
+        SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+        sysUserService.parseVariables(currentUser.getUserCode(), variables);
+        ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
+        oaTaskInDB.setProcInstId(processInstance.getProcessInstanceId());
+        oaTaskInDB.setProcDefId(processInstance.getProcessDefinitionId());
+        oaTaskInDB.setTaskState(Constant.TASK_STATES.IN_PROCESS);
+        updateByIdSelective(oaTaskInDB);
+        return oaTaskInDB;
+    }
 
     /**
      * 通用审批

@@ -14,6 +14,8 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     OaTask registerTask(OaTask oaTask) throws Exception; //  启动流程
 
+    OaTask startTask(OaTask oaTask) throws Exception; //  启动流程
+
     String approveTask(OaTaskApprove oaTaskApprove) throws Exception; // 审批通过，完成当前任务
 
     String rejectTask(OaTaskApprove oaTaskApprove) throws Exception; // 审批驳回，直接停止流程

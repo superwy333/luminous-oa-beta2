@@ -16,6 +16,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.Map;
 
 public class ApproveListener implements TaskListener {
@@ -79,6 +80,7 @@ public class ApproveListener implements TaskListener {
                 oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);
                 oaTaskApprove.setApproveContent("责任人相同，自动通过");
                 oaTaskApprove.setActTaskId(delegateTask.getId());
+                oaTaskApprove.setApproveTime(new Date());
                 OaTask oaTask = new OaTask();
                 oaTask.setProcInstId(delegateTask.getProcessInstanceId());
                 oaTask = oaTaskService.queryOne(oaTask);

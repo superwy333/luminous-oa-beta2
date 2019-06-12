@@ -271,6 +271,23 @@ public class WorkFlowController {
         return R.ok(oaTask);
     }
 
+    /**
+     * 发起任务
+     * @param rq
+     * @return
+     */
+    @PostMapping(value = "/startProcess")
+    @ResponseBody
+    public String startProcess(@RequestBody Rq rq) {
+        try {
+            OaTask oaTask = oaTaskService.queryById(rq.getOaTaskId());
+            oaTaskService.startTask(oaTask);
+        }catch (Exception e) {
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
+    }
+
 
     /**
      * 审批
