@@ -11,6 +11,7 @@
             #print {
                 display: none;
             }
+
             .container {
 
             }
@@ -24,9 +25,11 @@
         input {
             border: none;
         }
+
         textarea {
             border: none;
         }
+
         body {
             padding: 0 20px 10px 20px
         }
@@ -58,17 +61,42 @@
         </div>
     </form>
 
+    <!--附件-->
+    <table width="748px" align="center" data-sort="sortDisabled" id="attachment">
+        <tr>
+            <td style="-ms-word-break: break-all;" valign="top" width="88">附件</td>
+            <td>
+                <div id="thelist" class="uploader-list" th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
+                    <div style="display: inline-block;margin-left: 20px" class="item">
+                        <a th:href="'http://localhost:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}"
+                           target="_blank" th:text=${oaTaskAttachment.fileName}></a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     <!--流转信息-->
     <span style="margin-left: 62px">核签记录:</span>
     <!--<span style="text-align: center;display:block;">没有数据显示</span>-->
     <table id="approve-details" align="center">
         <tbody>
         <tr style="width: 1014px; height: 10px">
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">节点名称</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批人</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批结果</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批意见</td>
-            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">审批时间</td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">
+                节点名称
+            </td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">
+                审批人
+            </td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">
+                审批结果
+            </td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">
+                审批意见
+            </td>
+            <td width="203" style="text-align: center; word-break: break-all; border-width: 1px; border-style: solid;">
+                审批时间
+            </td>
         </tr>
         </tbody>
     </table>
@@ -87,10 +115,14 @@
 <script th:inline="javascript">
     var html = [[${html}]];
     $('#htmlContainer').html(html);
+    var width = $('#htmlContainer').find('table').css('width')
+    $('#approve-details').css('width', width);
+    $('#approve-table').css('width', width);
+    $('#attachment').css('width', width);
 </script>
 
 <script th:inline="javascript" type="text/javascript">
-    layui.use(['form', 'layer'],function () {
+    layui.use(['form', 'layer'], function () {
         var data = [[${data}]];
 
         //$('html').find('input').attr("readOnly","readOnly");
@@ -98,37 +130,37 @@
         // 这边分开区分text和checkbox,radio
         var inputs = $('html').find('input');
         $.each(inputs, function (index, value) {
-            if ($(value).attr('type')=='checkbox' || $(value).attr('type')=='radio') {
+            if ($(value).attr('type') == 'checkbox' || $(value).attr('type') == 'radio') {
                 //console.log('check')
-                $(value).attr("disabled","disabled");
-            }else {
-                $(value).attr("readOnly","readOnly");
+                $(value).attr("disabled", "disabled");
+            } else {
+                $(value).attr("readOnly", "readOnly");
                 //console.log('text')
             }
         })
 
-        $('html').find('select').attr("readOnly","readOnly");
-        $('html').find('select').attr("disabled","disabled");
+        $('html').find('select').attr("readOnly", "readOnly");
+        $('html').find('select').attr("disabled", "disabled");
 
-        $('html').find('textarea').attr("readOnly","readOnly");
+        $('html').find('textarea').attr("readOnly", "readOnly");
         //$('html').find('textarea').attr("disabled","disabled");
         // 处理一下删除按钮
-        $('.delrow').css('display','none');
+        $('.delrow').css('display', 'none');
 
         $.each(data, function (index, value) {
             // 渲染页面
-            if (value.name=='trNum') {
+            if (value.name == 'trNum') {
                 var clickNum = value.value - 1
                 var buttons = $('html').find('button');
                 $.each(buttons, function (index, value) {
                     //console.log(value);
                     //console.log($(value).text())
-                    if ($(value).text()=='添加一行') {
-                        for (var i=0;i<clickNum;i++) {
+                    if ($(value).text() == '添加一行') {
+                        for (var i = 0; i < clickNum; i++) {
                             $(value).click();
                         }
                         // 隐藏按钮
-                        $(value).css('display','none')
+                        $(value).css('display', 'none')
                     }
                 })
             }
@@ -137,23 +169,18 @@
 
 
         $.each(data, function (index, value1) {
-
             // 填充数据
             console.log(index + " >>> " + value1.name + " >>> " + value1.value);
-
             var input = $('input[name="' + value1.name + '"]');
-
-            if (input.attr('type')=='text') {
+            if (input.attr('type') == 'text') {
                 $('input[name="' + value1.name + '"]').val(value1.value);
-
-            }else if (input.attr('type')=='checkbox' || input.attr('type')=='radio' ) {
-                $.each(input,function (index, value2) {
-                    if ($(value2).val()==value1.value)  {
-                        $(value2).attr('checked','checked')
+            } else if (input.attr('type') == 'checkbox' || input.attr('type') == 'radio') {
+                $.each(input, function (index, value2) {
+                    if ($(value2).val() == value1.value) {
+                        $(value2).attr('checked', 'checked')
                     }
                 })
             }
-
             $('select[name="' + value1.name + '"]').val(value1.value);
             $('textarea[name="' + value1.name + '"]').val(value1.value);
         })
@@ -171,14 +198,13 @@
         $('#print').removeAttr("disabled");
 
 
-
         $('#approveType').change(function () {
             var data = $(this).val();
             console.log(data);
-            if (data=='approveReject') {
-                $('#callBackNodeRow').css('display','table-row')
-            }else {
-                $('#callBackNodeRow').css('display','none')
+            if (data == 'approveReject') {
+                $('#callBackNodeRow').css('display', 'table-row')
+            } else {
+                $('#callBackNodeRow').css('display', 'none')
             }
         });
 
@@ -187,9 +213,9 @@
         var oaTaskId = [[${id}]];
 
         var detailType = [[${type}]]; // 1浏览 2编辑
-        if (detailType=='1') {
-            $('#approveSubmit').css('display','none');
-        }else {
+        if (detailType == '1') {
+            $('#approveSubmit').css('display', 'none');
+        } else {
 
         }
 
@@ -214,7 +240,7 @@
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
-                    if (data.code==0) {
+                    if (data.code == 0) {
                         layer.msg("操作成功");
                     } else {
                         layer.alert("操作失败，失败原因：" + data.msg);
@@ -230,7 +256,7 @@
         $('#print').click(function () {
             var url = window.location.href;
             var newWindow = window.open(url);
-            newWindow.addEventListener('load', function() { // 增加监听器 防止页面没渲染完成就打印
+            newWindow.addEventListener('load', function () { // 增加监听器 防止页面没渲染完成就打印
                 newWindow.print();
                 newWindow.close();
             });
@@ -242,7 +268,7 @@
 </script>
 <!--渲染核签记录-->
 <script th:inline="javascript">
-    layui.use(['form', 'layer'],function () {
+    layui.use(['form', 'layer'], function () {
 
         var tdd;
         var oaTaskId = [[${id}]]
@@ -257,29 +283,29 @@
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(rq),
-            success: function(data) {
+            success: function (data) {
                 console.log(data)
                 var dataArray = data.data;
                 $.each(dataArray, function (index, value) {
                     tdd += '<tr>';
                     tdd += '<td>';
-                    tdd += value.nodeName==undefined?'':value.nodeName;
+                    tdd += value.nodeName == undefined ? '' : value.nodeName;
                     tdd += '</td>';
                     tdd += '<td>';
-                    tdd += value.approver==undefined?'':value.approver;
+                    tdd += value.approver == undefined ? '' : value.approver;
                     tdd += '</td>';
                     tdd += '<td>';
                     if (value.approveResult == 0) {
                         tdd += '同意'
                     } else if (value.approveResult == 1) {
                         tdd += '驳回'
-                    }else if (value.approveResult == 2) {
+                    } else if (value.approveResult == 2) {
                         tdd += '撤回'
                     }
                     // tdd += value.approveResult == 0 ? '同意' : '驳回';
                     tdd += '</td>';
                     tdd += '<td>';
-                    tdd += value.approveContent==undefined?'':value.approveContent;
+                    tdd += value.approveContent == undefined ? '' : value.approveContent;
                     tdd += '</td>';
                     tdd += '<td>';
                     tdd += value.approveTime;

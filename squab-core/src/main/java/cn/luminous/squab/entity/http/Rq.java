@@ -21,6 +21,16 @@ public class Rq{
 
     private Integer limit;
 
+    private Long oaTaskId;
+
+    public Long getOaTaskId() {
+        return oaTaskId;
+    }
+
+    public void setOaTaskId(Long oaTaskId) {
+        this.oaTaskId = oaTaskId;
+    }
+
     public Integer getPage() {
         return page;
     }

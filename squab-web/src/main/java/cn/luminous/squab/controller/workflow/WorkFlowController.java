@@ -133,7 +133,7 @@ public class WorkFlowController {
         return m;
     }
 
-    @RequestMapping("/myTaskList")
+    @GetMapping("/myTaskList")
     public ModelAndView myTaskList() {
         ModelAndView m = new ModelAndView();
         m.setViewName("myTask-list");
@@ -156,16 +156,27 @@ public class WorkFlowController {
             model.addAttribute("html", form.getHtml());
 
             // 流程流转的数据
-
             JSONArray jsonArray = JSONUtil.parseArray(oaTask.getData());
             model.addAttribute("data", jsonArray);
             //model.addAttribute("taskId",oaTaskModel.getTaskId());
             model.addAttribute("id", oaTask.getId());
+            model.addAttribute("bizKey", oaTask.getBizKey());
             model.addAttribute("type", type);
+
+            // 附件
+            OaTaskAttachment oaTaskAttachment = new OaTaskAttachment();
+            oaTaskAttachment.setOaTaskId(Long.valueOf(id));
+            List<OaTaskAttachment> oaTaskAttachmentList = oaTaskAttachmentService.query(oaTaskAttachment);
+            model.addAttribute("oaTaskAttachmentList", oaTaskAttachmentList);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        m.setViewName("task-detail");
+        if ("1".equals(type)) {
+            m.setViewName("task-detail");
+        }else if ("2".equals(type)) {
+            m.setViewName("task-edit");
+        }
+
         return m;
     }
 
@@ -239,6 +250,26 @@ public class WorkFlowController {
         }
         return R.ok(oaTaskAfterRegister);
     }
+
+    /**
+     * 编辑
+     * @param rq
+     * @return
+     */
+    @PostMapping(value = "/edit")
+    @ResponseBody
+    public String edit(@RequestBody Rq rq) {
+        OaTask oaTask;
+        try {
+            oaTask = oaTaskService.queryById(rq.getOaTaskId());
+            oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
+            oaTaskService.updateByIdSelective(oaTask);
+        }catch (Exception e) {
+            return R.nok(e.getMessage());
+        }
+        return R.ok(oaTask);
+    }
+
 
     /**
      * 审批
@@ -423,6 +454,25 @@ public class WorkFlowController {
             oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.CANCEL);
             oaTaskService.canCelTask(oaTaskApprove);
         } catch (Exception e) {
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
+    }
+
+
+    /**
+     * 删除附件
+     * @return
+     */
+    @PostMapping("/deleteAttachment")
+    @ResponseBody
+    public String deleteAttachment(@RequestBody Rq rq) {
+        try {
+            Map<String, Object> data = (Map<String, Object>) rq.getData();
+            Long attachmentId = Long.valueOf((String) data.get("id"));
+            OaTaskAttachment oaTaskAttachment = oaTaskAttachmentService.queryById(attachmentId);
+            oaTaskAttachmentService.remove(oaTaskAttachment);
+        }catch (Exception e) {
             return R.nok(e.getMessage());
         }
         return R.ok();

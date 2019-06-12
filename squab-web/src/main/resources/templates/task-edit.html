@@ -35,151 +35,278 @@
 <div class="container">
     <form id="ff">
         <div id="htmlContainer" class="row ">
+
         </div>
     </form>
+
+    <table width="748px" align="center" data-sort="sortDisabled" id="fileUpload">
+        <tr>
+            <td style="-ms-word-break: break-all;" valign="top" width="88">附件上传</td>
+            <td>
+                <div id="uploader" class="wu-example">
+                    <div class="btns">
+                        <div id="picker">选择文件</div>
+                    </div>
+                    <!--用来存放文件信息-->
+                    <div id="thelist" class="uploader-list"></div>
+
+                    <div id="thatlist" class="uploader-list" >
+                        <div style="display: inline-block;margin-left: 20px" class="item" th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
+                            <div th:id="${oaTaskAttachment.id}">
+                                <a th:href="'http://localhost:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}"
+                                   target="_blank" th:text=${oaTaskAttachment.fileName}></a>
+                                <a class="remove-that" href="#"> <font size="1" color="red">删除</font></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="form-btn" style="text-align:center;margin-top:20px">
+        <!--<input class="btn btn-primary btn-small" id="reset" type="reset" value="重置">-->
+        <input class="btn btn-success btn-small" id="submit" type="submit" value="提交">
+    </div>
+
 </div>
-
-<div class="form-btn" style="text-align:center;margin-top:20px">
-
-    <input class="btn btn-success btn-small" id="approveSubmit" type="submit" value="提交">
-</div>
-
 
 <!--动态渲染表单-->
 <script th:inline="javascript">
     var html = [[${html}]];
     $('#htmlContainer').html(html);
+
+    var width = $('#htmlContainer').find('table').css('width')
+    $('#fileUpload').css('width', width);
+</script>
+
+
+<script>
+    var uploader = WebUploader.create({
+        // swf文件路径
+        swf: 'static/form/Uploader.swf',
+        // 文件接收服务端。
+        server: '/workflow/oaTaskAttachment',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#picker',
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false,
+        fileSingleSizeLimit: 1 * 1024 * 1024, // 单个文件大小限制
+        fileSizeLimit: 5 * 1024 * 1024 // 所有文件大小限制
+    });
+
+    uploader.on("error", function (type) {
+        console.log(type)
+        if (type == "Q_TYPE_DENIED") {
+            layer.msg("请上传JPG、PNG、GIF、BMP格式文件");
+        } else if (type == "Q_EXCEED_SIZE_LIMIT") {
+            layer.msg("文件总大小不能超过5M");
+        } else if (type == "F_EXCEED_SIZE") {
+            layer.msg("单文件大小不能超过1M");
+        } else {
+            layer.msg("上传出错！请检查后重新上传！错误代码" + type);
+        }
+    });
+
+    // 当有文件被添加进队列的时候
+    uploader.on('fileQueued', function (file) {
+        $('#thelist').append('<div style="display: inline-block;margin-left: 20px" id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            // '<p class="state">等待上传...</p>' +
+            '<a class="remove-this" href="#"> <font size="1" color="red">删除</font></a>' +
+            '</div>');
+    });
+
+    $('#thelist').on('click', '.remove-this', function () {
+        var fileItem = $(this).parent();
+        var id = $(fileItem).attr("id");
+        console.log(id)
+        uploader.removeFile(id, true);
+        $(fileItem).fadeOut(function () {
+            $(fileItem).remove();
+        });
+    });
+
+    $('#thatlist').on('click', '.remove-that', function () {
+        var fileItem = $(this).parent();
+        var id = $(fileItem).attr("id");
+        console.log(id)
+
+        var data = {
+            id: id
+        }
+        var req = {
+            bizKey: 'deleteAttachment',
+            data: data
+        }
+        $.ajax({
+            url: '/workflow/deleteAttachment',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            data: JSON.stringify(req),
+            success: function (data) {
+                if (data.code == 0) {
+                    $(fileItem).fadeOut(function () {
+                        $(fileItem).remove();
+                    });
+                } else {
+                    layer.alert("删除失败，失败原因：" + data.msg);
+                }
+            },
+            error: function (data) {
+                layer.alert("网络超时，请联系管理员");
+            }
+        });
+    });
 </script>
 
 <script th:inline="javascript" type="text/javascript">
-    layui.use(['form', 'layer'],function () {
+    layui.use(['form', 'layer', 'jquery'], function () {
         var data = [[${data}]];
-
-
-
-        $('html').find('input').attr("readOnly","readOnly");
-        $('html').find('input').attr("disabled","disabled");
-
-        $('html').find('select').attr("readOnly","readOnly");
-        $('html').find('select').attr("disabled","disabled");
-
-        $('html').find('textarea').attr("readOnly","readOnly");
-        $('html').find('textarea').attr("disabled","disabled");
-        // 处理一下删除按钮
-        $('.delrow').css('display','none');
-
+        var $ = layui.jquery;
         $.each(data, function (index, value) {
             // 渲染页面
-            if (value.name=='trNum') {
+            if (value.name == 'trNum') {
                 var clickNum = value.value - 1
                 var buttons = $('html').find('button');
                 $.each(buttons, function (index, value) {
-                    //console.log(value);
-                    //console.log($(value).text())
-                    if ($(value).text()=='添加一行') {
-                        for (var i=0;i<clickNum;i++) {
+                    if ($(value).text() == '添加一行') {
+                        for (var i = 0; i < clickNum; i++) {
                             $(value).click();
                         }
-                        // 隐藏按钮
-                        $(value).css('display','none')
                     }
                 })
             }
-
         })
-
 
         $.each(data, function (index, value1) {
 
             // 填充数据
             console.log(index + " >>> " + value1.name + " >>> " + value1.value);
-
             var input = $('input[name="' + value1.name + '"]');
-
-            if (input.attr('type')=='text') {
+            if (input.attr('type') == 'text') {
                 $('input[name="' + value1.name + '"]').val(value1.value);
-
-            }else if (input.attr('type')=='checkbox' || input.attr('type')=='radio' ) {
-                $.each(input,function (index, value2) {
-                    if ($(value2).val()==value1.value)  {
-                        $(value2).attr('checked','checked')
+            } else if (input.attr('type') == 'checkbox' || input.attr('type') == 'radio') {
+                $.each(input, function (index, value2) {
+                    if ($(value2).val() == value1.value) {
+                        $(value2).attr('checked', 'checked')
                     }
                 })
             }
-
             $('select[name="' + value1.name + '"]').val(value1.value);
             $('textarea[name="' + value1.name + '"]').val(value1.value);
         })
 
-        // 移除需要操作的input和select的disabled和readOnly
-        $('#approveContent').removeAttr("readOnly");
-        $('#approveContent').removeAttr("disabled");
-        $('#approveType').removeAttr("readOnly");
-        $('#approveType').removeAttr("disabled");
-        $('#callBackNode').removeAttr("readOnly");
-        $('#callBackNode').removeAttr("disabled");
-        $('#approveSubmit').removeAttr("readOnly");
-        $('#approveSubmit').removeAttr("disabled");
+        $("input[name='lsh']").attr("readOnly", "readOnly");
+        $("input[name='sqr']").attr("readOnly", "readOnly");
+        $("input[name='gw']").attr("readOnly", "readOnly");
+        $("input[name='bm']").attr("readOnly", "readOnly");
+    })
 
-        $('#approveType').change(function () {
-            var data = $(this).val();
-            console.log(data);
-            if (data=='approveReject') {
-                $('#callBackNodeRow').css('display','table-row')
-            }else {
-                $('#callBackNodeRow').css('display','none')
-            }
-        });
 
-        var actTaskId = [[${taskId}]];
-        var currentUser = [[${currentUser}]];
+</script>
+
+<!--提交-->
+<script th:inline="javascript" type="text/javascript">
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var $ = layui.jquery
         var oaTaskId = [[${id}]];
+        var bizKey = [[${bizKey}]];
 
-        var detailType = [[${type}]]; // 1浏览 2编辑
-        if (detailType=='1') {
-            $('#approveSubmit').css('display','none');
-        }else {
-
+        window.checkNotNull = function () {
+            var inputs = $('input');
+            //console.log(inputs)
+            var checkResult = true;
+            $.each(inputs, function (index, value) {
+                // 非空校验
+                var notNull = $(value).attr("notnull")
+                if (notNull == 1 && $(value).val() == '') {
+                    layer.alert("提交失败！请检查带*号必填项不能为空！")
+                    console.log("false")
+                    checkResult = false;
+                    return false;
+                }
+            })
+            // 值校验
+            if (checkResult) {
+                return true
+            } else {
+                return false
+            }
         }
 
 
-        $('#approveSubmit').click(function () {
-            var data = {
-                actTaskId: actTaskId,
-                oaTaskId: oaTaskId,
-                approveType: $('#approveType').val(),
-                approveContent: $('#approveContent').val(),
-                callBackNode: $('#callBackNode').val(),
-                currentUser: currentUser
-            };
-            var reqData = {
-                bizKey: $('#approveType').val(),
-                data: data
-            };
+        $('#submit').click(function () {
+            //校验
+            var verify = checkNotNull();
+            console.log('verify：' + verify)
+            if (!verify) {
+                console.log("exit!!!!")
+                return false;
+            }
+
+            //return false;
+            var data = $('#ff').serializeArray();
+            // 列表控件的处理
+            var buttons = $('html').find('button');
+            $.each(buttons, function (index, value) {
+                if ($(value).text() == '添加一行') {
+                    var table = $(value).closest('table');
+                    //console.log(table.attr('id'))
+                    var tableId = table.attr('id');
+                    var trNum = $("#" + tableId + " tbody").find("tr").length;
+                    var trNum = {
+                        name: 'trNum',
+                        value: trNum - 1
+                    }
+                    data.push(trNum)
+                }
+            })
+
+            var req = {
+                bizKey: 'editTask',
+                data: data,
+                oaTaskId: oaTaskId
+            }
+
+            console.log(JSON.stringify(req));
+
             $.ajax({
-                url: '/workflow/approve',
+                url: '/workflow/edit',
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: JSON.stringify(reqData),
+                data: JSON.stringify(req),
                 success: function (data) {
-                    if (data.code==0) {
-                        layer.msg("操作成功");
+                    if (data.code == 0) {
+                        // 附件上传
+                        uploader.on('uploadBeforeSend', function (obj, data, headers) {
+                            data.oaTaskId = oaTaskId
+                        })
+                        uploader.upload();
+                        layer.msg('申请成功', {
+                            anim: 0
+                        }, function () {
+                            // 刷新父窗口
+                            window.parent.location.reload();
+                            // 表单提交成功之后进行附件上传
+                            var id = $(window.frameElement).attr('tab-id');
+                            parent.element.tabDelete('xbs_tab', id);
+                        })
                     } else {
-                        layer.alert("操作失败，失败原因：" + data.msg);
+                        layer.alert("申请失败，失败原因：" + data.msg);
                     }
                 },
                 error: function (data) {
                     layer.alert("网络超时，请联系管理员");
                 }
             });
-            return false;
+
         });
 
-    });
+    })
 </script>
-
 </body>
 </html>
-
-
