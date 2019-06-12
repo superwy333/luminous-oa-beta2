@@ -79,7 +79,7 @@ public class ListCtrl extends FormField {
             if (value != null && value.trim().length() > 1)
                 jsonValue = JSON.parseObject(value);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             jsonValue = null;
         }
         return parseListCtrl(this, 2, jsonValue);
@@ -92,7 +92,6 @@ public class ListCtrl extends FormField {
             if (value != null && value.trim().length() > 1)
                 jsonValue = JSON.parseObject(value);
         } catch (Exception e) {
-            System.out.println(e);
             jsonValue = null;
         }
 
