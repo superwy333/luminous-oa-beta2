@@ -159,7 +159,8 @@
         task.biz_key,
         task.apply_time,
         task.task_state,
-        actTask.assignee_ AS assignee
+        actTask.assignee_ AS assignee,
+        actTask.NAME_ AS task_name
         FROM
         oa_task task
         LEFT JOIN act_ru_task actTask ON actTask.proc_inst_id_ = task.proc_inst_id
@@ -175,7 +176,8 @@
         task.biz_key,
         task.apply_time,
         task.task_state,
-        NULL AS assignee
+        NULL AS assignee,
+        NULL AS task_name
         FROM
         oa_task task
         WHERE

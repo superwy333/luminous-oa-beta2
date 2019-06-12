@@ -318,6 +318,18 @@ public class ActivitiTest {
     }
 
 
+    @Test
+    public void queryTaskInfo() {
+        Task task=taskService.createTaskQuery() // 创建任务查询
+                .taskId("522626") // 根据任务id查询
+                .singleResult();
+        System.out.println(task);
+
+
+
+    }
+
+
 
 
 }

@@ -29,6 +29,7 @@ layui.use(['table', 'jquery'], function () {
                     }
                 }
             }
+            , {field: 'taskName', title: '当前节点', minWidth: 150, sort: true}
             , {field: 'assignee', title: '当前指派人', minWidth: 150, sort: true}
             , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#myTaskOperation'}
         ]]
