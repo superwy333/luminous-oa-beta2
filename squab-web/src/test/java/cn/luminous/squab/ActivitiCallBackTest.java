@@ -165,7 +165,7 @@ public class ActivitiCallBackTest {
 
     @Test
     public void rollBackStart() {
-        String processInstanceId = "140001";
+        String processInstanceId = "415352";
         //1.获取需要跳转的流程环节processid
         //List<HistoricTaskInstance> historicTaskInstance= historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId)
         List<HistoricTaskInstance> historicTaskInstance= historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).orderByTaskCreateTime().finished().asc().list();

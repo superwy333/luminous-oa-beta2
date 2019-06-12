@@ -236,7 +236,21 @@ public class ActivitiTest {
      */
     @Test
     public void endProcess() {
-        runtimeService.deleteProcessInstance("352593","delete");
+        taskService.createTaskQuery().list();
+        runtimeService.deleteProcessInstance("415352","delete");
+
+    }
+
+    /**
+     * 中止全部流程
+     */
+    @Test
+    public void endAllProcess() {
+        List<Task> taskList = taskService.createTaskQuery().list();
+        taskList.stream().forEach(task -> {
+            runtimeService.deleteProcessInstance(task.getProcessInstanceId(),"delete");
+        });
+
 
     }
 

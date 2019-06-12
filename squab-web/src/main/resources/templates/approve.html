@@ -44,6 +44,24 @@
             <td style="-ms-word-break: break-all;" valign="top" width="88">附件</td>
             <td>
                 <div id="thelist" class="uploader-list">
+                    <div style="display: inline-block;margin-left: 20px" id="24" class="item">
+                        <a href="www.baidu.com" target="_blank">baidu</a>
+                    </div>
+                    <div style="display: inline-block;margin-left: 20px" id="24" class="item">
+                        <a href="http://localhost:8080/attachment/20190612/2019061200001/admin-add.html" target="_blank">admin-add.html</a>
+                    </div>
+
+                    <div style="display: inline-block;margin-left: 20px" id="24" class="item">
+                        <a href="http://localhost:8080/attachment/20190612/2019061200003/bg.png" target="_blank">bg.png</a>
+                    </div>
+
+                    <div style="display: inline-block;margin-left: 20px" id="24" class="item">
+                        <a href="http://localhost:8080/attachment/20190612/2019061200004/3、201903花桥城管.xlsx" target="_blank">3、201903花桥城管.xlsx</a>
+                    </div>
+
+                    <div style="display: inline-block;margin-left: 20px" id="24" class="item">
+                        <a href="http://localhost:8080/attachment/20190612/2019061200004/X-admin-v2.2.zip" target="_blank">X-admin-v2.2.zip</a>
+                    </div>
 
 
 
@@ -126,12 +144,12 @@
         var $ = layui.jquery;
         var attachmentList = [[${oaTaskAttachmentList}]];
         $.each(attachmentList, function (index, value) {
-            console.log(value.fileName)
+            //console.log(value.fileName)
             // $('#thelist').append('<div style="display: inline-block;margin-left: 20px" id="' + value.id + '" class="item">' +
             //     '<h4 class="info">' + value.fileName + '</h4>' +
             //     '</div>')
-            console.log(value.url)
-            $('#thelist').append('<div style="display: inline-block;margin-left: 20px" id="24" class="item"><a href="localhost:8080/"' + value.url + '">' + value.fileName + '</a></div>')
+            //console.log(value.url)
+            //$('#thelist').append('<div style="display: inline-block;margin-left: 20px" id="24" class="item"><a href="localhost:8080/"' + value.url + '">' + value.fileName + '</a></div>')
 
         })
     })

@@ -425,9 +425,10 @@ public class WorkFlowController {
             // 查询文件上传路径配置
             SysConfDictitem sysConfDictitem = sysConfDictitemService.queryByCode("attachment_uploader_config", "upload_url");
             String baseUrl = sysConfDictitem.getDicItemValue();
-            baseUrl = baseUrl.replaceAll("/", "");
+            //baseUrl = baseUrl.replaceAll("/", "");
             // 文件名字
             String fileName = file.getOriginalFilename();
+            //attachment
             String directionName = baseUrl + "/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/" + oaTask.getTaskNo();
             File folder = new File(directionName);
             if (!(folder.isDirectory())) {
