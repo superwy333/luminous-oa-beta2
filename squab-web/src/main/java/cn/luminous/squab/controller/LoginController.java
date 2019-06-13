@@ -150,25 +150,28 @@ public class LoginController {
             result.add(applyMenu);
 
             // 管理员权限
-            // TODO 如果是管理员，则加上下面两个菜单
-            MenuModel form = new MenuModel();
-            form.setName("表单管理");
-            Map<String, String> formItem = new HashMap<>();
-            formItem.put("name", "表单管理");
-            formItem.put("url", "/dynamicForm/formList");
-            form.getChild().add(formItem);
-            result.add(form);
-            MenuModel process = new MenuModel();
-            process.setName("流程管理");
-            Map<String, String> processItem1 = new HashMap<>();
-            processItem1.put("name", "模型管理");
-            processItem1.put("url", "/modeler/modelList");
-            Map<String, String> processItem2 = new HashMap<>();
-            processItem2.put("name", "部署管理");
-            processItem2.put("url", "/deploy/deployList");
-            process.getChild().add(processItem1);
-            process.getChild().add(processItem2);
-            result.add(process);
+            // 如果是管理员，则加上下面两个菜单
+            SysUer sysUer = (SysUer) SecurityUtils.getSubject().getPrincipal();
+            if ("tt".equals(sysUer.getUserCode())) {
+                MenuModel form = new MenuModel();
+                form.setName("表单管理");
+                Map<String, String> formItem = new HashMap<>();
+                formItem.put("name", "表单管理");
+                formItem.put("url", "/dynamicForm/formList");
+                form.getChild().add(formItem);
+                result.add(form);
+                MenuModel process = new MenuModel();
+                process.setName("流程管理");
+                Map<String, String> processItem1 = new HashMap<>();
+                processItem1.put("name", "模型管理");
+                processItem1.put("url", "/modeler/modelList");
+                Map<String, String> processItem2 = new HashMap<>();
+                processItem2.put("name", "部署管理");
+                processItem2.put("url", "/deploy/deployList");
+                process.getChild().add(processItem1);
+                process.getChild().add(processItem2);
+                result.add(process);
+            }
         } catch (Exception e) {
             log.error("菜单获取失败,失败原因：" + e);
             R.nok("菜单获取失败，请联系管理管！" + e.getMessage());
