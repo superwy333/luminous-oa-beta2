@@ -197,13 +197,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         BizMappingAuth queryByDept = new BizMappingAuth();
         queryByDept.setType(Constant.BIZ_MAPPING_AUTH_TYPE.BY_DEPT);
         queryByDept.setDeptId(sysUserModel.getDeptId());
-        List<BizMappingAuth> queryByDeptList = bizMappingAuthService.query(queryByUser);
+        List<BizMappingAuth> queryByDeptList = bizMappingAuthService.query(queryByDept);
 
         // 找到这个人岗位的权限
         BizMappingAuth queryByPost = new BizMappingAuth();
         queryByPost.setType(Constant.BIZ_MAPPING_AUTH_TYPE.BY_POST);
         queryByPost.setPostId(sysUserModel.getPostId());
-        List<BizMappingAuth> queryByPostList = bizMappingAuthService.query(queryByUser);
+        List<BizMappingAuth> queryByPostList = bizMappingAuthService.query(queryByPost);
 
         List<Map<String,String>> bizKeyList = new ArrayList<>();
         parseBizList(queryAllList, bizKeyList);
