@@ -246,7 +246,6 @@ public class WorkFlowController {
             oaTaskAfterRegister = oaTaskService.registerTask(oaTask);
         } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【任务注册失败】入参: " + rq.toString(), e);
-            //return R.nok(e.getMessage());
             return R.nok("没有发起流程的权限，请联系管理员！" + e.getMessage());
         }
         return R.ok(oaTaskAfterRegister);
