@@ -10,6 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="./css/indexicon.css">
     <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/xadmin.js"></script>
@@ -166,13 +167,10 @@
                                                 <cite>0</cite></p>
                                         </a>
                                     </li>
-
-
                                 </ul>
                             </div>
                         </div>
                     </div>
-
 
                     <div class="layui-col-md6">
                         <div class="layui-card" style="height: 403px">
@@ -195,7 +193,6 @@
                                                 {
                                                     field: 'title', title: '标题', width: 450, sort: false,
                                                     templet: function (d) {
-                                                        console.log('d>>>' + d.title)
                                                         var result = ''
                                                         result += '<div></div><a class="layui-table-link" onclick="xadmin.open(\'查看\',\'/workflow/apply?bizKey=qjApply\',800,600,false)">'
                                                         result += d.title
@@ -329,12 +326,26 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="layui-col-md12">
+                        <div class="layui-card" style="height: 250px">
+                            <div class="layui-card-header">快捷方式</div>
+                            <div class="layui-card-body ">
+                                <div class="main markdown">
+                                    <ul class="icon_lists clear">
+                                        <a href="http://www.baidu.com" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont">&#xe6e9;</i>
+                                                <div class="name">快捷连接</div>
+                                            </li>
+                                        </a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
-
 
         <div id="tab_show"></div>
     </div>
