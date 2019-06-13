@@ -13,20 +13,26 @@ layui.use(['table', 'jquery'], function () {
             {field: 'procInstId', title: 'procInstId', minWidth: 150, sort: true, fixed: 'left', hide: true},
             {field: 'procDefId', title: 'procDefId', minWidth: 150, sort: true, fixed: 'left', hide: true}
             , {field: 'taskNo', title: '申请编号', minWidth: 150, sort: true}
-            , {field: 'taskName', title: '任务名称', minWidth: 150, sort: true}
-            , {field: 'applyName', title: '填报人', minWidth: 150, sort: true}
+            , {field: 'bizName', title: '任务类型', minWidth: 150, sort: true}
+            , {field: 'applyTime', title: '填报时间', minWidth: 150, sort: true}
             , {
-                field: 'bizKey', title: '任务类型', minWidth: 150, sort: true,
+                field: 'taskState', title: '任务状态', minWidth: 150, sort: true,
                 templet: function (d) {
-                    if (d.bizKey == 'qj') {
-                        return '请假申请';
-                    } else {
-                        return '其他';
+                    if (d.taskState == '0') {
+                        return '流程中';
+                    } else if (d.taskState == '1') {
+                        return '完成';
+                    } else if (d.taskState == '2') {
+                        return '驳回';
+                    } else if (d.taskState == '3') {
+                        return '撤回';
                     }
                 }
             }
-            , {field: 'applyTime', title: '填报时间', minWidth: 150, sort: true}
-            // , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#taskDoneOperation'}
+            , {field: 'applyName', title: '填报人', minWidth: 150, sort: true}
+            , {field: 'taskName', title: '当前节点', minWidth: 150, sort: true}
+            , {field: 'assignee', title: '当前指派人', minWidth: 150, sort: true}
+            , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#taskDoneOperation'}
         ]]
     });
 
@@ -49,20 +55,9 @@ layui.use(['table', 'jquery'], function () {
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
-
-        if (layEvent === 'detail') { //流转记录
-            //do somehing
-            xadmin.open('流程记录','/workflow/qjApprove',1500,800,false);
-        } else if (layEvent === 'approve'){
-            xadmin.open('流程记录','/workflow/qjApprove?taskId=' + data.taskId,1500,800,true);
+        if (layEvent === 'detail') {
+            xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=1&bizKey=' + data.bizKey, 1600, 800, false);
         }
 
-        // } else if (layEvent === 'del') { //删除
-        //     layer.confirm('真的删除行么', function (index) {
-        //         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-        //         layer.close(index);
-        //         //向服务端发送删除指令
-        //     });
-        // }
     });
 });

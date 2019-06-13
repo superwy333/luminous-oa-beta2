@@ -26,7 +26,9 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     List<OaTaskModel> queryTaskToDoPage(String userCode, Integer page, Integer limit) throws Exception; // 查询待办
 
-    List<OaTaskModel> queryTaskDone() throws Exception; // 查询已办
+    //List<OaTaskModel> queryTaskDone() throws Exception; // 查询已办
+
+    List<OaTaskModel> queryTaskDonePage(String userCode, Integer page, Integer limit) throws Exception; // 查询已办
 
     OaTaskModel queryTaskById(String taskId) throws Exception;
 

@@ -70,7 +70,7 @@ public class WorkFlowController {
         return "taskTodo-list";
     }
 
-    @RequestMapping("/taskDoneList")
+    @GetMapping("/taskDoneList")
     public String toTaskDone() {
         return "taskDone-list";
     }
@@ -162,7 +162,7 @@ public class WorkFlowController {
             model.addAttribute("id", oaTask.getId());
             model.addAttribute("bizKey", oaTask.getBizKey());
             model.addAttribute("type", type);
-            model.addAttribute("lsh",oaTask.getTaskNo());
+            model.addAttribute("lsh", oaTask.getTaskNo());
 
             // 附件
             OaTaskAttachment oaTaskAttachment = new OaTaskAttachment();
@@ -174,7 +174,7 @@ public class WorkFlowController {
         }
         if ("1".equals(type)) {
             m.setViewName("task-detail");
-        }else if ("2".equals(type)) {
+        } else if ("2".equals(type)) {
             m.setViewName("task-edit");
         }
 
@@ -254,6 +254,7 @@ public class WorkFlowController {
 
     /**
      * 编辑
+     *
      * @param rq
      * @return
      */
@@ -265,7 +266,7 @@ public class WorkFlowController {
             oaTask = oaTaskService.queryById(rq.getOaTaskId());
             oaTask.setData(JSONUtil.toJsonStr(rq.getData()));
             oaTaskService.updateByIdSelective(oaTask);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return R.nok(e.getMessage());
         }
         return R.ok(oaTask);
@@ -273,6 +274,7 @@ public class WorkFlowController {
 
     /**
      * 发起任务
+     *
      * @param rq
      * @return
      */
@@ -282,7 +284,7 @@ public class WorkFlowController {
         try {
             OaTask oaTask = oaTaskService.queryById(rq.getOaTaskId());
             oaTaskService.startTask(oaTask);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return R.nok(e.getMessage());
         }
         return R.ok();
@@ -372,12 +374,11 @@ public class WorkFlowController {
     public String taskTodoCount(@RequestBody Rq rq) {
         try {
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             return R.nok(e.getMessage());
         }
         return R.ok();
     }
-
 
 
     /**
@@ -386,18 +387,38 @@ public class WorkFlowController {
      * @param rq
      * @return
      */
-    @RequestMapping(value = "/taskDone", method = RequestMethod.POST)
+    @PostMapping(value = "/taskDone")
     @ResponseBody
     public String taskDone(@RequestBody Rq rq) {
         List<OaTaskModel> taskList;
+        Integer queryCount;
         try {
             log.debug("【查询已办开始】入参: " + rq.toString());
-            taskList = oaTaskService.queryTaskDone();
+            SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
+            taskList = oaTaskService.queryTaskDonePage(currentUser.getUserCode(), rq.getPage(), rq.getLimit());
+            queryCount = oaTaskService.queryTaskDonePage(currentUser.getUserCode(), null, null).size();
+            // 处理一下业务类型和当前指派人
+            taskList.stream().forEach(oaTaskModel -> {
+
+                if (oaTaskModel.getAssignee() != null) {
+                    SysUer sysUer = new SysUer();
+                    sysUer.setUserCode(oaTaskModel.getAssignee());
+                    sysUer = sysUserService.queryOne(sysUer);
+                    if (sysUer != null) {
+                        oaTaskModel.setAssignee(sysUer.getName());
+                    }
+                }
+
+                BizMapping bizMapping = new BizMapping();
+                bizMapping.setBizKey(oaTaskModel.getBizKey());
+                bizMapping = bizMappingService.queryOne(bizMapping);
+                oaTaskModel.setBizName(bizMapping.getBizName());
+            });
         } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询已办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
-        return R.ok(taskList, taskList.size());
+        return R.ok(taskList, queryCount);
 
     }
 
@@ -500,6 +521,7 @@ public class WorkFlowController {
 
     /**
      * 删除附件
+     *
      * @return
      */
     @PostMapping("/deleteAttachment")
@@ -510,7 +532,7 @@ public class WorkFlowController {
             Long attachmentId = Long.valueOf((String) data.get("id"));
             OaTaskAttachment oaTaskAttachment = oaTaskAttachmentService.queryById(attachmentId);
             oaTaskAttachmentService.remove(oaTaskAttachment);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return R.nok(e.getMessage());
         }
         return R.ok();

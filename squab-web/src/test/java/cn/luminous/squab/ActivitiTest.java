@@ -270,7 +270,7 @@ public class ActivitiTest {
 
     @Test
     public void queryWorkDone() {
-        List<HistoricTaskInstance> hisTaskList = historyService.createHistoricTaskInstanceQuery().taskAssignee("008").orderByTaskId().desc().list();
+        List<HistoricTaskInstance> hisTaskList = historyService.createHistoricTaskInstanceQuery().taskAssignee("FTWY06010001").orderByTaskId().desc().list();
         System.out.println(hisTaskList);
     }
 

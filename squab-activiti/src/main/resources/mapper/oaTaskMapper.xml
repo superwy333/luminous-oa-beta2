@@ -105,25 +105,70 @@
     </select>
 
     <select id="queryTaskDone" resultMap="ModelResultMap" parameterType="java.lang.String">
-        SELECT
-        acthitask.id_ AS task_his_id,
-        acthitask.NAME_ AS task_name,
-        oatask.proc_inst_id,
-        oatask.proc_def_id,
-        oatask.apply_name,
-        oatask.apply_Time,
-        oatask.biz_key,
-        oatask. DATA
+            SELECT
+                oatask.*, NULL AS task_name,
+                NULL AS assignee
+            FROM
+                act_hi_taskinst acthitask
+            LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
+            WHERE
+                oatask.deleted = 0
+            AND oatask.task_state IN ('1', '2', '3')
+            <if test="assignee !=null and assignee !=''">
+                AND acthitask.ASSIGNEE_ = #{assignee}
+            </if>
+            AND acthitask.END_TIME_ IS NOT NULL
+            UNION
+                SELECT
+                    oatask.*, acttask.NAME_ AS task_name,
+                    acttask.ASSIGNEE_ AS assignee
+                FROM
+                    act_hi_taskinst acthitask
+                LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
+                LEFT JOIN act_ru_task acttask ON oatask.proc_inst_id = acttask.PROC_INST_ID_
+                WHERE
+                    oatask.deleted = 0
+                AND oatask.task_state = '0'
+                <if test="assignee !=null and assignee !=''">
+                    AND acthitask.ASSIGNEE_ = #{assignee}
+                </if>
+                AND acthitask.END_TIME_ IS NOT NULL
+    </select>
+
+    <select id="queryTaskDonePage" resultMap="ModelResultMap" parameterType="java.util.Map">
+        SELECT aaa.* from
+        (SELECT
+        oatask.*, NULL AS task_name,
+        NULL AS assignee
         FROM
         act_hi_taskinst acthitask
         LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
-        <where>
-            <if test="assignee !=null and assignee !=''">
-                acttask.ASSIGNEE_ = #{assignee}
-            </if>
-            AND
-            acthitask.END_TIME_ is not null
-        </where>
+        WHERE
+        oatask.deleted = 0
+        AND oatask.task_state IN ('1', '2', '3')
+        <if test="condition.assignee !=null and condition.assignee !=''">
+            AND acthitask.ASSIGNEE_ = #{condition.assignee}
+        </if>
+        AND acthitask.END_TIME_ IS NOT NULL
+        UNION
+        SELECT
+        oatask.*, acttask.NAME_ AS task_name,
+        acttask.ASSIGNEE_ AS assignee
+        FROM
+        act_hi_taskinst acthitask
+        LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
+        LEFT JOIN act_ru_task acttask ON oatask.proc_inst_id = acttask.PROC_INST_ID_
+        WHERE
+        oatask.deleted = 0
+        AND oatask.task_state = '0'
+        <if test="condition.assignee !=null and condition.assignee !=''">
+            AND acthitask.ASSIGNEE_ = #{condition.assignee}
+        </if>
+        AND acthitask.END_TIME_ IS NOT NULL) aaa
+        order by aaa.apply_time DESC
+        <if test="condition.page==0 or (condition.page !=null and condition.page !='')">
+            LIMIT #{condition.page}, #{condition.limit}
+        </if>
     </select>
 
     <select id="queryTaskById" resultMap="ModelResultMap" parameterType="java.lang.String">

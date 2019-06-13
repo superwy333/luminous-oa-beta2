@@ -126,13 +126,17 @@ public class LoginController {
             menuModel.setName("我的工作台");
             Map<String, String> myTask = new HashMap<>();
             Map<String, String> todoTask = new HashMap<>();
+            Map<String, String> todoDone = new HashMap<>();
             myTask.put("name", "我发起的");
             myTask.put("url", "/workflow/myTaskList");
             todoTask.put("name", "我的待办");
             todoTask.put("url", "/workflow/taskTodoList");
+            todoDone.put("name", "我的已办");
+            todoDone.put("url", "/workflow/taskDoneList");
             List<Map<String, String>> child = new ArrayList<>();
             child.add(myTask);
             child.add(todoTask);
+            child.add(todoDone);
             menuModel.setChild(child);
             result.add(menuModel);
 

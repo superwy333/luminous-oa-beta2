@@ -211,13 +211,22 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
      * @return
      * @throws Exception
      */
-    @Override
-    public List<OaTaskModel> queryTaskDone() throws Exception {
-        // TODO 从Shiro中获取当前登陆用户
-        String userCode = "008";
-        return oaTaskMapper.queryTaskDone(userCode);
-    }
+//    @Override
+//    public List<OaTaskModel> queryTaskDone() throws Exception {
+//        SysUer sysUer = (SysUer) SecurityUtils.getSubject().getPrincipal();
+//        return oaTaskMapper.queryTaskDone(sysUer.getUserCode());
+//    }
 
+    @Override
+    public List<OaTaskModel> queryTaskDonePage(String userCode, Integer page, Integer limit) throws Exception {
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("assignee", userCode);
+        if (page != null) {
+            condition.put("page", (page - 1) * limit);
+            condition.put("limit", limit);
+        }
+        return oaTaskMapper.queryTaskDonePage(condition);
+    }
 
     /**
      * 通过act_ru_task表id查询oa_task表记录
