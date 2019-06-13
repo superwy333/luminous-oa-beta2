@@ -335,7 +335,7 @@ public class WorkFlowController {
      * @param rq
      * @return
      */
-    @RequestMapping(value = "/taskToDo", method = RequestMethod.POST)
+    @PostMapping(value = "/taskToDo")
     @ResponseBody
     public String taskToDo(@RequestBody Rq rq) {
         List<OaTaskModel> taskList;
@@ -359,6 +359,26 @@ public class WorkFlowController {
         return R.ok(taskList, queryCount);
 
     }
+
+    /**
+     * 代办数量
+     * TODO
+     *
+     * @param rq
+     * @return
+     */
+    @PostMapping(value = "/taskTodoCount")
+    @ResponseBody
+    public String taskTodoCount(@RequestBody Rq rq) {
+        try {
+
+        }catch (Exception e) {
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
+    }
+
+
 
     /**
      * 我的已办列表

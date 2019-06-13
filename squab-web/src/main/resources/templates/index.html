@@ -25,9 +25,38 @@
 </head>
 <script type="text/javascript">
     console.log("进入index......")
-    setInterval(function () {
-        $('#reload').click();
-    }, 1000 * 60);
+    layui.use(['table', 'jquery'], function () {
+        var $ = layui.jquery;
+
+        window.getTaskTodoCount = function() {
+            // 获取待办任务数量
+            var req = {}
+            $.ajax({
+                url: '/workflow/taskToDo',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(req),
+                success: function (data) {
+                    if (data.code == 0) {
+                        $('#taskToDoCount').html(data.count);
+                    } else {
+                        layer.alert("操作失败，失败原因：" + data.msg);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("网络超时，请联系管理员");
+                }
+            });
+        }
+        getTaskTodoCount();
+        // 设置刷新定时任务
+        setInterval(function () {
+            $('#reload').click();
+            getTaskTodoCount();
+        }, 1000 * 60);
+    })
+
 </script>
 <body class="index">
 <!-- 顶部开始 -->
@@ -42,10 +71,10 @@
             <a href="javascript:;" th:text="${username}"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-<!--                <dd>-->
-<!--                    <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>-->
-<!--                <dd>-->
-<!--                    <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>-->
+                <!--                <dd>-->
+                <!--                    <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>-->
+                <!--                <dd>-->
+                <!--                    <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>-->
                 <dd>
                     <a href="/loginout">退出</a></dd>
             </dl>
@@ -108,9 +137,9 @@
                                 <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
                                     <li class="layui-col-md3 layui-col-xs6">
                                         <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3>待办事项</h3>
+                                            <h3>待办任务</h3>
                                             <p>
-                                                <cite>66</cite></p>
+                                                <cite id="taskToDoCount"></cite></p>
                                         </a>
                                     </li>
 
@@ -223,10 +252,10 @@
                                                         fixed: 'left',
                                                         hide: true
                                                     }
-                                                    , {field: 'taskNo', title: '申请编号',  sort: false}
-                                                    , {field: 'applyName', title: '填报人',  sort: false}
-                                                    , {field: 'bizName', title: '任务类型',  sort: false}
-                                                    , {field: 'applyTime', title: '填报时间',  sort: false}
+                                                    , {field: 'taskNo', title: '申请编号', sort: false}
+                                                    , {field: 'applyName', title: '填报人', sort: false}
+                                                    , {field: 'bizName', title: '任务类型', sort: false}
+                                                    , {field: 'applyTime', title: '填报时间', sort: false}
                                                     , {
                                                         field: 'operation',
                                                         title: '操作',
@@ -237,6 +266,7 @@
 
 
                                             $('#reload').click(function () {
+                                                // 我的代办列表刷新
                                                 tableIns.reload(
                                                     {
                                                         page: {
@@ -247,6 +277,8 @@
                                                         }
                                                     }
                                                 );
+
+
                                             });
 
                                             //监听工具条
@@ -293,15 +325,6 @@
 <style id="theme_style"></style>
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->
-<script>
-    layui.use(['table', 'jquery'], function () {
-        var $ = layui.jquery
-        $('#reload').click();
-    })
-    //location.reload()
-
-</script>
-
 <!--动态加载左侧菜单-->
 <script src="js/luminous/menu.js" charset="utf-8"></script>
 
