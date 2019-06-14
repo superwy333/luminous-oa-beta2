@@ -126,6 +126,8 @@ public class WorkFlowController {
             SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
             SysUserModel sysUserModel = sysUserService.queryUserInfo(currentUser.getUserCode());
             model.addAttribute("sysUser", sysUserModel);
+            String applyTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            model.addAttribute("sqrq",applyTime);
         } catch (Exception e) {
             e.printStackTrace();
         }

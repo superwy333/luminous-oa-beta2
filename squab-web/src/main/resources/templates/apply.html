@@ -74,7 +74,9 @@
     var bizKey = [[${bizKey}]]
     var taskNo = [[${taskNo}]]
     var sysUser = [[${sysUser}]]
+    var sqrq = [[${sqrq}]]
     console.log(sysUser)
+    console.log(sqrq)
     layui.use(['form', 'layer', 'jquery'], function () {
         var $ = layui.jquery;
 
@@ -86,6 +88,28 @@
         $("input[name='gw']").attr("readOnly", "readOnly");
         $("input[name='bm']").val(sysUser.deptName);
         $("input[name='bm']").attr("readOnly", "readOnly");
+        $("input[name='sqrq']").val(sqrq);
+        $("input[name='sqrq']").attr("readOnly", "readOnly");
+
+        $("input[name='zdr']").attr("readOnly", "readOnly");
+
+        // 监听申请类型的变化
+        $("select[name='sqlx']").change(function () {
+            var selected = $(this).val();
+            // 这边只能写中文判断了 >>_<<
+            if ('职务代理'==selected) {
+                $("input[name='sqr']").attr('readOnly', false);
+                $("input[name='sqr']").val('')
+                $("input[name='zdr']").val(sysUser.name)
+
+            }else {
+                $("input[name='sqr']").attr('readOnly', true);
+                $("input[name='sqr']").val(sysUser.name)
+                $("input[name='zdr']").val('')
+            }
+        })
+
+
 
         var uploader = WebUploader.create({
             // swf文件路径

@@ -118,11 +118,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         variables.put("post", sysUserModel.getPostName());
         variables.put("dept", sysUserModel.getDeptName());
 
-        // 申请人 申请时组装
+        // 申请人 职代人 申请时组装
         if (Constant.PARSE_USERINFO_TYPE.APPLY.equals(type)) {
+            // 下面的人在普通申请的时候是申请人，在职代的时候是职代人
             variables.put("sqr", sysUserModel.getName());
             variables.put("sqrCode", sysUserModel.getUserCode());
+//            variables.put("zdr", sysUserModel.getName());
+//            variables.put("zdrCode", sysUserModel.getUserCode());
         }
+
+
 
         // 当前主办人
         variables.put("operator", sysUserModel.getName());
