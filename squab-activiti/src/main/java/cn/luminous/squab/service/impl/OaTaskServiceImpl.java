@@ -16,6 +16,7 @@ import cn.luminous.squab.mybatis.imapper.IMapper;
 import cn.luminous.squab.service.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,7 +96,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         Map<String, Object> variables = parseJson(oaTask.getData());
         // 把当前登陆用户信息装入流程变量
         SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
-        sysUserService.parseVariables(currentUser.getUserCode(), variables);
+        sysUserService.parseVariables(currentUser.getUserCode(), variables, Constant.PARSE_USERINFO_TYPE.APPLY);
         // 启动流程
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
         oaTask.setProcInstId(processInstance.getProcessInstanceId());
@@ -104,6 +105,19 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         oaTask.setTaskState(Constant.TASK_STATES.IN_PROCESS);
         // 记录提交的表单数据
         this.add(oaTask);
+        // 发起流程之后如果当前用户和第一个任务的指派人是同一个人，则自动完成第一个任务
+        Task task = activitiService.queryTaskByProcInstId(processInstance.getProcessInstanceId());
+        if (currentUser.getUserCode().equals(task.getAssignee())) {
+            activitiService.completeTask(task.getId(), variables);
+            OaTaskApprove oaTaskApprove = new OaTaskApprove();
+            oaTaskApprove.setApprover(currentUser.getUserCode());
+            oaTaskApprove.setApproveResult(Constant.TASK_APPROVE_RESULT.PASS);
+            oaTaskApprove.setApproveContent("责任人相同，自动通过");
+            oaTaskApprove.setActTaskId(task.getId());
+            oaTaskApprove.setApproveTime(new Date());
+            oaTaskApprove.setOaTaskId(oaTask.getId());
+            oaTaskApproveService.add(oaTaskApprove);
+        }
         return oaTask;
     }
 
@@ -115,7 +129,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         Map<String, Object> variables = parseJson(oaTaskInDB.getData());
         // 把当前登陆用户信息装入流程变量
         SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
-        sysUserService.parseVariables(currentUser.getUserCode(), variables);
+        sysUserService.parseVariables(currentUser.getUserCode(), variables, Constant.PARSE_USERINFO_TYPE.APPLY);
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
         oaTaskInDB.setProcInstId(processInstance.getProcessInstanceId());
         oaTaskInDB.setProcDefId(processInstance.getProcessDefinitionId());
@@ -137,7 +151,7 @@ public class OaTaskServiceImpl extends BaseServiceImpl<OaTask> implements OaTask
         // 完成任务
         Map<String, Object> variables = activitiService.getVariables(actTaskId);
         SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
-        sysUserService.parseVariables(currentUser.getUserCode(), variables);
+        sysUserService.parseVariables(currentUser.getUserCode(), variables, Constant.PARSE_USERINFO_TYPE.APPROVE);
         activitiService.completeTask(actTaskId, variables);
         // 记录审批信息
         oaTaskApproveService.add(oaTaskApprove);

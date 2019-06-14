@@ -328,9 +328,6 @@ public class ActivitiTest {
                 .taskId("522626") // 根据任务id查询
                 .singleResult();
         System.out.println(task);
-
-
-
     }
 
     @Test

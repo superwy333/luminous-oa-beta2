@@ -113,12 +113,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
     }
 
     @Override
-    public void parseVariables(String userCode, Map<String, Object> variables) throws Exception {
+    public void parseVariables(String userCode, Map<String, Object> variables, String type) throws Exception {
         SysUserModel sysUserModel = this.queryUserInfo(userCode);
         variables.put("post", sysUserModel.getPostName());
         variables.put("dept", sysUserModel.getDeptName());
+
+        // 申请人 申请时组装
+        if (Constant.PARSE_USERINFO_TYPE.APPLY.equals(type)) {
+            variables.put("sqr", sysUserModel.getName());
+            variables.put("sqrCode", sysUserModel.getUserCode());
+        }
+
         // 当前主办人
-        variables.put("sqr", sysUserModel.getName());
+        variables.put("operator", sysUserModel.getName());
+        variables.put("operatorCode", sysUserModel.getUserCode());
+
         // 是否是部门直属人员
         Department department = departmentService.queryDepartment(sysUserModel.getUserCode());
         if (department.getPid() == 0) {
@@ -205,7 +214,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         queryByPost.setPostId(sysUserModel.getPostId());
         List<BizMappingAuth> queryByPostList = bizMappingAuthService.query(queryByPost);
 
-        List<Map<String,String>> bizKeyList = new ArrayList<>();
+        List<Map<String, String>> bizKeyList = new ArrayList<>();
         parseBizList(queryAllList, bizKeyList);
         parseBizList(queryByUserList, bizKeyList);
         parseBizList(queryByDeptList, bizKeyList);

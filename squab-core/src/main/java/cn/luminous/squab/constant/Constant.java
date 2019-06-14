@@ -131,5 +131,21 @@ public class Constant {
         public static final String USER_CODE = "1";
     }
 
+    /**
+     * 组装用户信息的类型
+     */
+    public static class PARSE_USERINFO_TYPE {
+
+        /**
+         * 申请时组装
+         */
+        public static final String APPLY = "apply";
+        /**
+         * 审批时组装
+         */
+        public static final String APPROVE = "approve";
+
+    }
+
 
 }

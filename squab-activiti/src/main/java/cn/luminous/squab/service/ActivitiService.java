@@ -16,6 +16,8 @@ public interface ActivitiService {
 
     Map<String,Object> getVariables(String actTaskId) throws Exception;
 
+    Task queryTaskByProcInstId(String procInstId) throws Exception;
+
     void completeTask(String actTaskId) throws Exception;
 
     void completeTask(String actTaskId, Map<String,Object> variables) throws Exception;

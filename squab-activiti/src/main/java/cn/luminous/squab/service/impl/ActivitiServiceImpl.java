@@ -77,6 +77,11 @@ public class ActivitiServiceImpl implements ActivitiService {
         return taskService.getVariables(actTaskId);
     }
 
+    @Override
+    public Task queryTaskByProcInstId(String procInstId) throws Exception {
+        return taskService.createTaskQuery().processInstanceId(procInstId).singleResult();
+    }
+
     /**
      * 完成任务
      *

@@ -80,7 +80,7 @@ public class WorkflowTest {
         String processKey = oaTask.getProcessKey();
         Map<String, Object> variables = parseJson(oaTask.getData());
 
-        sysUserService.parseVariables("王杨", variables);
+        sysUserService.parseVariables("王杨", variables, Constant.PARSE_USERINFO_TYPE.APPLY);
         ProcessInstance processInstance = activitiService.startProcess(processKey, variables);
         oaTask.setProcInstId(processInstance.getProcessInstanceId());
         oaTask.setProcDefId(processInstance.getProcessDefinitionId());

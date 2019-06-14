@@ -18,7 +18,7 @@ public interface SysUserService extends BaseService<SysUer> {
 
     SysUer queryBiStaffId(Long staffId);
 
-    void parseVariables(String userCode, Map<String,Object> variables) throws Exception;
+    void parseVariables(String userCode, Map<String,Object> variables, String type) throws Exception;
 
     List<Map<String,String>> getProcessMenus(String userCode) throws Exception;
 
