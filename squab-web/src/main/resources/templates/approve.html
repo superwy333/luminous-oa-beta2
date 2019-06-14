@@ -167,15 +167,11 @@
 
 
         $.each(data, function (index, value1) {
-
             // 填充数据
             console.log(index + " >>> " + value1.name + " >>> " + value1.value);
-
             var input = $('input[name="' + value1.name + '"]');
-
             if (input.attr('type') == 'text') {
                 $('input[name="' + value1.name + '"]').val(value1.value);
-
             } else if (input.attr('type') == 'checkbox' || input.attr('type') == 'radio') {
                 $.each(input, function (index, value2) {
                     if ($(value2).val() == value1.value) {
@@ -183,7 +179,6 @@
                     }
                 })
             }
-
             $('select[name="' + value1.name + '"]').val(value1.value);
             $('textarea[name="' + value1.name + '"]').val(value1.value);
         })
@@ -191,7 +186,6 @@
         // 手工渲染的数据
         var lsh = [[${lsh}]];
         $('input[name="lsh"]').val(lsh);
-
 
         // 移除需要操作的input和select的disabled和readOnly
         $('#approveContent').removeAttr("readOnly");
@@ -202,7 +196,6 @@
         $('#callBackNode').removeAttr("disabled");
         $('#approveSubmit').removeAttr("readOnly");
         $('#approveSubmit').removeAttr("disabled");
-
         $('#approveType').change(function () {
             var data = $(this).val();
             console.log(data);
@@ -266,7 +259,6 @@
 <!--渲染核签记录-->
 <script th:inline="javascript">
     layui.use(['form', 'layer'], function () {
-
         var tdd;
         var oaTaskId = [[${id}]]
         var rq = {
@@ -319,7 +311,6 @@
     })
 
 </script>
-
 </body>
 </html>
 
