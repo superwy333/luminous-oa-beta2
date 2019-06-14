@@ -45,7 +45,8 @@
             <td>
                 <div id="thelist" class="uploader-list" th:each="oaTaskAttachment : ${oaTaskAttachmentList}">
                     <div style="display: inline-block;margin-left: 20px" class="item">
-                        <a th:href="'http://192.168.1.101:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}" target="_blank" th:text=${oaTaskAttachment.fileName}></a>
+                        <a th:href="'http://192.168.1.101:8080/attachment/' + ${oaTaskAttachment.url} + '/' + ${oaTaskAttachment.fileName}"
+                           target="_blank" th:text=${oaTaskAttachment.fileName}></a>
                     </div>
                 </div>
             </td>
@@ -71,7 +72,7 @@
         <!--<span style="margin-left: 62px">审批:</span>-->
         <table width="748px" align="center" data-sort="sortDisabled" id="approve-table">
             <tr>
-                <td style="-ms-word-break: break-all;" valign="top" width="166">签核类型:</td>
+                <td>签核类型:</td>
                 <td>
                     <select id="approveType" style="width: 150px">
                         <option value="approvePass">同意</option>
@@ -80,7 +81,7 @@
                 </td>
             </tr>
             <tr id="callBackNodeRow" style="display: none">
-                <td style="-ms-word-break: break-all;" valign="top" width="166">回退节点:</td>
+                <td>回退节点:</td>
                 <td>
                     <select id="callBackNode" style="width: 150px">
                         <option value="start">发起人</option>
@@ -91,9 +92,9 @@
 
             </tr>
             <tr>
-                <td style="-ms-word-break: break-all;" valign="top" width="166">签核意见:</td>
-                <td colspan="3" rowspan="1" style="-ms-word-break: break-all;" valign="top" width="661"><textarea
-                        id='approveContent' name='approveContent' style='width: 685px; height: 84px; margin: 0px;'
+                <td>签核意见:</td>
+                <td><textarea
+                        id='approveContent' name='approveContent' style='width: 488px; height: 84px; margin: 0px;'
                         value=''></textarea></td>
             </tr>
         </table>
@@ -243,7 +244,7 @@
                         }, function () {
                             // 刷新父窗口
                             //window.parent.location.reload();
-                            $("#reload",window.parent.document).click()
+                            $("#reload", window.parent.document).click()
                             // 表单提交成功之后进行附件上传
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
@@ -285,7 +286,7 @@
                 $.each(dataArray, function (index, value) {
                     tdd += '<tr>';
                     tdd += '<td>';
-                    tdd += value.nodeName==undefined?'':value.nodeName;
+                    tdd += value.nodeName == undefined ? '' : value.nodeName;
                     tdd += '</td>';
                     tdd += '<td>';
                     tdd += value.approver == undefined ? '' : value.approver;
@@ -295,13 +296,13 @@
                         tdd += '同意'
                     } else if (value.approveResult == 1) {
                         tdd += '驳回'
-                    }else if (value.approveResult == 2) {
+                    } else if (value.approveResult == 2) {
                         tdd += '撤回'
                     }
                     // tdd += value.approveResult == 0 ? '同意' : '驳回';
                     tdd += '</td>';
                     tdd += '<td>';
-                    tdd += value.approveContent==undefined?'':value.approveContent;
+                    tdd += value.approveContent == undefined ? '' : value.approveContent;
                     tdd += '</td>';
                     tdd += '<td>';
                     tdd += value.approveTime;

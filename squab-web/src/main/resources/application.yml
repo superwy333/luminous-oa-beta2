@@ -23,6 +23,9 @@ spring:
     multipart:
       max-file-size: 10Mb
       max-request-size: 100Mb
+  mvc:
+    favicon:
+      enabled: false
 
 
 
