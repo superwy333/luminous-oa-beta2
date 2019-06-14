@@ -31,6 +31,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipInputStream;
 
@@ -317,8 +318,6 @@ public class ActivitiTest {
         }else { // 第一个节点
 
         }
-
-
     }
 
 
@@ -336,7 +335,9 @@ public class ActivitiTest {
         System.out.println(obj);
     }
 
-
-
+    @Test
+    public void testTime() {
+        System.out.println(new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()));
+    }
 
 }
