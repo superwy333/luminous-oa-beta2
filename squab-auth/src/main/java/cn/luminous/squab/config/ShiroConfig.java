@@ -26,6 +26,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/diagram-viewer/**", "anon");
         filterChainDefinitionMap.put("/editor-app/**", "anon");
+        filterChainDefinitionMap.put("/jqprint/**", "anon");
         filterChainDefinitionMap.put("/fonts/**", "anon");
         filterChainDefinitionMap.put("/form/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");

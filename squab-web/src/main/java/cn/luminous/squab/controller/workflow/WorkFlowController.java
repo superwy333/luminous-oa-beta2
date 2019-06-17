@@ -145,7 +145,7 @@ public class WorkFlowController {
     @RequestMapping("/detail")
     public ModelAndView toDetail(@RequestParam("id") String id,
                                  Model model,
-                                 @RequestParam("type") String type) { // type=1浏览type=2编辑
+                                 @RequestParam("type") String type) { // type=1浏览type=2编辑type=3打印
         ModelAndView m = new ModelAndView();
         try {
             OaTask oaTask = oaTaskService.queryById(Long.valueOf(id));
@@ -178,6 +178,8 @@ public class WorkFlowController {
             m.setViewName("task-detail");
         } else if ("2".equals(type)) {
             m.setViewName("task-edit");
+        } else if ("3".equals(type)) {
+            m.setViewName("task-detail2");
         }
 
         return m;

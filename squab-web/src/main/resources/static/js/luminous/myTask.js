@@ -86,7 +86,7 @@ layui.use(['table', 'jquery'], function () {
                     }
                 });
             })
-        }else if (layEvent === 'start')  {
+        } else if (layEvent === 'start') {
             layer.confirm('确定发起流程？', function (index) {
                 var reqData = {
                     bizKey: 'startProcess',
@@ -111,8 +111,8 @@ layui.use(['table', 'jquery'], function () {
                     }
                 });
             })
-
-
+        } else if (layEvent === 'print') {
+            xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=3&bizKey=' + data.bizKey, 1600, 800, true);
         }
     });
 });

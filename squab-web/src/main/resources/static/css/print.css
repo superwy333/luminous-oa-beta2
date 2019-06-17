@@ -1,0 +1,37 @@
+#print {
+    display: none;
+}
+
+input {
+    border: none;
+    background-color: #ffffff;
+}
+
+textarea {
+    border: none;
+}
+
+body {
+    padding: 0 20px 10px 20px
+}
+
+h1 {
+    font-size: 16px
+}
+
+table, td {
+    border: 1px solid #999;
+    border-collapse: collapse
+}
+
+td {
+    padding: 7px 10px
+}
+
+select {
+    border: 0;
+    background: transparent;
+    appearance: none;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari 和 Chrome */
+}

@@ -78,19 +78,20 @@ public class DeployController {
     @ResponseBody
     public String deployList(@RequestBody Rq rq) {
         List<Deployment> deploymentList;
+        Long count;
         try {
             log.debug("【查询部署开始】入参: " + rq.toString());
             // TODO 分页的处理
-            Integer page = 1;
-            Integer limit = 10;
+            Integer page = rq.getPage();
+            Integer limit = rq.getLimit();
             deploymentList = repositoryService.createDeploymentQuery()
                     .listPage(limit * (page - 1), limit);
-            long count = repositoryService.createDeploymentQuery().count();
+            count = repositoryService.createDeploymentQuery().count();
         } catch (Exception e) {
             log.error("【查询部署失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
-        return R.ok(deploymentList);
+        return R.ok(deploymentList, count.intValue());
     }
 
     @PostMapping("/deleteDeploy")

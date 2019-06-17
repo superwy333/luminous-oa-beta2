@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <script src="/form/service/js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <script src="/form/service/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+
+    <link href="/form/service/css/bootstrap.min.css" rel="stylesheet" media="print,screen">
+    <link href="/form/service/css/bootstrap-theme.min.css" rel="stylesheet" media="print,screen">
+    <link href="/css/print.css" rel="stylesheet" type="text/css" media="print">
+
+    <style>
+        input {
+            border: none;
+            background-color: #ffffff;
+        }
+
+        textarea {
+            border: none;
+        }
+
+        body {
+            padding: 0 20px 10px 20px
+        }
+
+        h1 {
+            font-size: 16px
+        }
+
+        table, td {
+            border: 1px solid #999;
+            border-collapse: collapse
+        }
+
+        td {
+            padding: 7px 10px
+        }
+
+        select {
+            border: 0;
+            background: transparent;
+            appearance: none;
+            -moz-appearance: none; /* Firefox */
+            -webkit-appearance: none; /* Safari 和 Chrome */
+        }
+    </style>
+
+<!--    <link href="/form/service/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="/form/service/css/jedate.css" rel="stylesheet" type="text/css">-->
+<!--    <link href="/form/service/css/bootstrap-theme.min.css" rel="stylesheet">-->
+<!--    <link href="/form/service/css/webuploader.css" rel="stylesheet" type="text/css">-->
+<!--    <link href="/css/print.css" rel="stylesheet" type="text/css" media="print,screen">-->
+
+
+</head>
+<body>
+
+<div id="printContainer">
+    <div id="htmlContainer"></div>
+    <div id="approveDetails">
+        <table data-sort="sortDisabled" align="center">
+            <tbody>
+            <tr>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
+                    <span>上级部门：徐炜</span><br>
+                    <span>2019-05-22 08:33:01</span><br>
+                    <span>同意(已核实)</span><br>
+                </td>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
+                    <span>上级部门：徐炜</span><br>
+                    <span>2019-05-22 08:33:01</span><br>
+                    <span>同意(已核实)</span><br>
+                </td>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
+                    <span>上级部门：徐炜</span><br>
+                    <span>2019-05-22 08:33:01</span><br>
+                    <span>同意(已核实)</span><br>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
+                    <span>上级部门：徐炜</span><br>
+                    <span>2019-05-22 08:33:01</span><br>
+                    <span>同意(已核实)</span><br>
+                </td>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
+                    <span>上级部门：徐炜</span><br>
+                    <span>2019-05-22 08:33:01</span><br>
+                    <span>同意(已核实)</span><br>
+                </td>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
+                    <span>上级部门：徐炜</span><br>
+                    <span>2019-05-22 08:33:01</span><br>
+                    <span>同意(已核实)</span><br>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" colspan="1" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 30px; width: 33%"><span>申请人签字</span></td>
+                <td valign="top" colspan="2" rowspan="1"
+                    style="border-width: 1px; border-style: solid; height: 30px; width: 33%"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-btn" style="text-align:center;margin-top:20px">
+    <input class="btn btn-success btn-small" id="print" type="button" value="打印">
+</div>
+<!--动态渲染表单-->
+<script th:inline="javascript">
+    var html = [[${html}]];
+    $('#htmlContainer').html(html);
+    var width = $('#htmlContainer').find('table').css('width')
+    $('#approveDetails table').css('width', width);
+
+    var data = [[${data}]];
+    $.each(data, function (index, value1) {
+        // 填充数据
+        console.log(index + " >>> " + value1.name + " >>> " + value1.value);
+        var input = $('input[name="' + value1.name + '"]');
+        if (input.attr('type') == 'text') {
+            $('input[name="' + value1.name + '"]').val(value1.value);
+        } else if (input.attr('type') == 'checkbox' || input.attr('type') == 'radio') {
+            $.each(input, function (index, value2) {
+                if ($(value2).val() == value1.value) {
+                    $(value2).attr('checked', 'checked')
+                }
+            })
+        }
+        $('select[name="' + value1.name + '"]').val(value1.value);
+        $('textarea[name="' + value1.name + '"]').val(value1.value);
+    })
+
+
+</script>
+
+<script th:inline="javascript" type="text/javascript">
+    layui.use(['form', 'layer'], function () {
+        var data = [[${data}]];
+        var inputs = $('html').find('input');
+        $.each(inputs, function (index, value) {
+            $(value).attr("readOnly", "readOnly");
+            $(value).attr("disabled", "disabled");
+        })
+
+        $('html').find('select').attr("readOnly", "readOnly");
+        $('html').find('select').attr("disabled", "disabled");
+
+        $('html').find('textarea').attr("readOnly", "readOnly");
+        // 处理一下删除按钮
+        $('.delrow').css('display', 'none');
+
+        $.each(data, function (index, value) {
+            // 渲染页面
+            if (value.name == 'trNum') {
+                var clickNum = value.value - 1
+                var buttons = $('html').find('button');
+                $.each(buttons, function (index, value) {
+                    if ($(value).text() == '添加一行') {
+                        for (var i = 0; i < clickNum; i++) {
+                            $(value).click();
+                        }
+                        // 隐藏按钮
+                        $(value).css('display', 'none')
+                    }
+                })
+            }
+        })
+
+
+
+
+        // 手工渲染的数据
+        var lsh = [[${lsh}]];
+        $('input[name="lsh"]').val(lsh);
+
+        // 移除需要操作的input和select的disabled和readOnly
+        $('#approveContent').removeAttr("readOnly");
+        $('#approveContent').removeAttr("disabled");
+        $('#approveType').removeAttr("readOnly");
+        $('#approveType').removeAttr("disabled");
+        $('#callBackNode').removeAttr("readOnly");
+        $('#callBackNode').removeAttr("disabled");
+        $('#approveSubmit').removeAttr("readOnly");
+        $('#approveSubmit').removeAttr("disabled");
+        $('#print').removeAttr("readOnly");
+        $('#print').removeAttr("disabled");
+
+
+        $('#approveType').change(function () {
+            var data = $(this).val();
+            console.log(data);
+            if (data == 'approveReject') {
+                $('#callBackNodeRow').css('display', 'table-row')
+            } else {
+                $('#callBackNodeRow').css('display', 'none')
+            }
+        });
+
+        var actTaskId = [[${taskId}]];
+        var currentUser = [[${currentUser}]];
+        var oaTaskId = [[${id}]];
+
+        var detailType = [[${type}]]; // 1浏览 2编辑
+
+        $('#print').click(function () {
+            //window.print()
+            window.print()
+            // $("#printContainer").jqprint({
+            //     debug: false,
+            //     importCSS: true,
+            //     printContainer: true,
+            //     operaSupport: true,
+            //     printTime : 6000
+            // });
+
+        })
+    });
+</script>
+</body>
+</html>
+
+
