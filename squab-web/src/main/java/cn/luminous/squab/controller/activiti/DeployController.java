@@ -2,9 +2,11 @@ package cn.luminous.squab.controller.activiti;
 
 
 import cn.luminous.squab.entity.BizMapping;
+import cn.luminous.squab.entity.BizMappingAuth;
 import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.service.ActivitiService;
+import cn.luminous.squab.service.BizMappingAuthService;
 import cn.luminous.squab.service.BizMappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
@@ -33,6 +35,8 @@ public class DeployController {
     private ActivitiService activitiService;
     @Autowired
     private BizMappingService bizMappingService;
+    @Autowired
+    private BizMappingAuthService bizMappingAuthService;
 
     @RequestMapping("/deployList")
     public String toModelList() {
@@ -120,6 +124,13 @@ public class DeployController {
                 if (bizMapping != null) {
                     bizMappingService.remove(bizMapping);
                 }
+                // 同步删除授权
+                BizMappingAuth bizMappingAuth = new BizMappingAuth();
+                bizMappingAuth.setBizMappingId(bizMapping.getId());
+                List<BizMappingAuth> bizMappingAuthList = bizMappingAuthService.query(bizMappingAuth);
+                bizMappingAuthList.stream().forEach(bizMappingAuth1 -> {
+                    bizMappingAuthService.remove(bizMappingAuth1);
+                });
             }
             repositoryService.deleteDeployment(deplotmentId);
         } catch (Exception e) {
