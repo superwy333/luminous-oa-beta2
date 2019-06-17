@@ -24,6 +24,35 @@
             padding: 7px 10px
         }
 
+
+        #htmlContainer input {
+            border: none;
+            background-color: #ffffff;
+        }
+
+        #htmlContainer textarea {
+            border: none;
+        }
+
+
+        #htmlContainer table, td {
+            border: 1px solid #999;
+            border-collapse: collapse
+        }
+
+        #htmlContainer td {
+            padding: 7px 10px
+        }
+
+        #htmlContainer select {
+            border: 0;
+            background: transparent;
+            appearance: none;
+            -moz-appearance: none; /* Firefox */
+            -webkit-appearance: none; /* Safari 和 Chrome */
+        }
+
+
     </style>
     <script src="/form/service/js/jquery-1.12.4.min.js"></script>
     <script src="/form/service/js/jquery.jedate.min.js" type="text/javascript"></script>
@@ -34,7 +63,7 @@
 <body>
 <div class="container">
     <form id="ff">
-        <div id="htmlContainer" class="row ">
+        <div id="htmlContainer">
         </div>
     </form>
 
