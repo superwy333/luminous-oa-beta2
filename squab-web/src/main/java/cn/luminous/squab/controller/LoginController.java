@@ -150,7 +150,23 @@ public class LoginController {
             result.add(applyMenu);
 
             // 管理员权限
-            // TODO 如果是管理员，则加上下面两个菜单
+            // TODO 如果是管理员，则加上下面三个个菜单
+            MenuModel hr = new MenuModel();
+            hr.setName("人事管理");
+            Map<String, String> hrItem1 = new HashMap<>();
+            hrItem1.put("name", "职员管理");
+            hrItem1.put("url", "");
+            hr.getChild().add(hrItem1);
+            Map<String, String> hrItem2 = new HashMap<>();
+            hrItem2.put("name", "部门管理");
+            hrItem2.put("url", "/department/deptList");
+            hr.getChild().add(hrItem2);
+            Map<String, String> hrItem3 = new HashMap<>();
+            hrItem3.put("name", "岗位管理");
+            hrItem3.put("url", "");
+            hr.getChild().add(hrItem1);
+            result.add(hr);
+
             MenuModel form = new MenuModel();
             form.setName("表单管理");
             Map<String, String> formItem = new HashMap<>();
@@ -158,6 +174,7 @@ public class LoginController {
             formItem.put("url", "/dynamicForm/formList");
             form.getChild().add(formItem);
             result.add(form);
+
             MenuModel process = new MenuModel();
             process.setName("流程管理");
             Map<String, String> processItem1 = new HashMap<>();
@@ -169,6 +186,8 @@ public class LoginController {
             process.getChild().add(processItem1);
             process.getChild().add(processItem2);
             result.add(process);
+
+
         } catch (Exception e) {
             log.error("菜单获取失败,失败原因：" + e);
             R.nok("菜单获取失败，请联系管理管！" + e.getMessage());
