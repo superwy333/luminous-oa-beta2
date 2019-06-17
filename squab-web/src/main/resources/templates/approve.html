@@ -156,14 +156,6 @@
 
         var inputs = $('html').find('input');
         $.each(inputs, function (index, value) {
-            // if ($(value).attr('type')=='checkbox' || $(value).attr('type')=='radio') {
-            //     //console.log('check')
-            //     $(value).attr("disabled","disabled");
-            // }else {
-            //     $(value).attr("readOnly","readOnly");
-            //     $(value).attr("disabled","disabled");
-            //     //console.log('text')
-            // }
             $(value).attr("readOnly", "readOnly");
             $(value).attr("disabled", "disabled");
         })
@@ -193,7 +185,6 @@
             }
 
         })
-
 
         $.each(data, function (index, value1) {
             // 填充数据

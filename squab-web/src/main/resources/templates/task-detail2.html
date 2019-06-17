@@ -53,7 +53,7 @@
 <div id="printContainer">
     <div id="htmlContainer"></div>
     <div id="approveDetails">
-        <table data-sort="sortDisabled" align="center" width="1045px">
+        <table data-sort="sortDisabled" align="center">
             <tbody>
             <tr>
                 <td valign="top" colspan="1" rowspan="1"
@@ -114,7 +114,7 @@
     var html = [[${html}]];
     $('#htmlContainer').html(html);
     var width = $('#htmlContainer').find('table').css('width')
-    //$('#approveDetails table').css('width', width);
+    $('#approveDetails table').css('width', width);
 
     var ps = $('html').find('p')
     $.each(ps, function (index, value) {
@@ -123,7 +123,24 @@
         }
     })
 
+
     var data = [[${data}]];
+    $.each(data, function (index, value) {
+        // 渲染页面
+        if (value.name == 'trNum') {
+            var clickNum = value.value - 1
+            var buttons = $('html').find('button');
+            $.each(buttons, function (index, value) {
+                if ($(value).text() == '添加一行') {
+                    for (var i = 0; i < clickNum; i++) {
+                        $(value).click();
+                    }
+                    // 隐藏按钮
+                    $(value).css('display', 'none')
+                }
+            })
+        }
+    })
     $.each(data, function (index, value1) {
         // 填充数据
         console.log(index + " >>> " + value1.name + " >>> " + value1.value);
@@ -160,22 +177,6 @@
         // 处理一下删除按钮
         $('.delrow').css('display', 'none');
 
-        $.each(data, function (index, value) {
-            // 渲染页面
-            if (value.name == 'trNum') {
-                var clickNum = value.value - 1
-                var buttons = $('html').find('button');
-                $.each(buttons, function (index, value) {
-                    if ($(value).text() == '添加一行') {
-                        for (var i = 0; i < clickNum; i++) {
-                            $(value).click();
-                        }
-                        // 隐藏按钮
-                        $(value).css('display', 'none')
-                    }
-                })
-            }
-        })
 
 
 
