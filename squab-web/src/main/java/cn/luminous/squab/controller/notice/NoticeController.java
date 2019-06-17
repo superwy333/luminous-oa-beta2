@@ -5,10 +5,8 @@ import cn.luminous.squab.entity.http.R;
 import cn.luminous.squab.entity.http.Rq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +17,16 @@ import java.util.Map;
 @Controller
 @Slf4j
 public class NoticeController {
+
+
+
+    @GetMapping("/noticePage")
+    public ModelAndView toNoticePage() {
+        ModelAndView m = new ModelAndView();
+        m.setViewName("notice-page");
+        return m;
+
+    }
 
     /**
      * 首页显示的通知公告列表
