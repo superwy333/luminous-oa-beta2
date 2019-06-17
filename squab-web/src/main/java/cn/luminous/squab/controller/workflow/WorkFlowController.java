@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,7 +128,7 @@ public class WorkFlowController {
             SysUserModel sysUserModel = sysUserService.queryUserInfo(currentUser.getUserCode());
             model.addAttribute("sysUser", sysUserModel);
             String applyTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            model.addAttribute("sqrq",applyTime);
+            model.addAttribute("sqrq", applyTime);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,8 +137,15 @@ public class WorkFlowController {
     }
 
     @GetMapping("/myTaskList")
-    public ModelAndView myTaskList() {
+    public ModelAndView myTaskList(Model model) {
         ModelAndView m = new ModelAndView();
+        try {
+            // 业务类型下拉菜单
+            List<BizMapping> bizMappingList = bizMappingService.query(new BizMapping());
+            model.addAttribute("bizMappingList",bizMappingList);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         m.setViewName("myTask-list");
         return m;
     }
@@ -355,7 +363,9 @@ public class WorkFlowController {
                 BizMapping bizMapping = new BizMapping();
                 bizMapping.setBizKey(oaTaskModel.getBizKey());
                 bizMapping = bizMappingService.queryOne(bizMapping);
-                oaTaskModel.setBizName(bizMapping.getBizName());
+                if (bizMapping != null) {
+                    oaTaskModel.setBizName(bizMapping.getBizName());
+                }
             });
         } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询待办任务失败】入参: " + rq.toString(), e);
@@ -415,7 +425,10 @@ public class WorkFlowController {
                 BizMapping bizMapping = new BizMapping();
                 bizMapping.setBizKey(oaTaskModel.getBizKey());
                 bizMapping = bizMappingService.queryOne(bizMapping);
-                oaTaskModel.setBizName(bizMapping.getBizName());
+                if (bizMapping != null) {
+                    oaTaskModel.setBizName(bizMapping.getBizName());
+                }
+
             });
         } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询已办任务失败】入参: " + rq.toString(), e);
@@ -469,8 +482,22 @@ public class WorkFlowController {
         try {
             // 获取当前登陆人
             SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
-            oaTaskModelList = oaTaskService.queryMyTaskPage(currentUser.getUserCode(), rq.getPage(), rq.getLimit());
-            queryCount = oaTaskService.queryMyTaskPage(currentUser.getUserCode(), null, null).size();
+
+            // 查询条件
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("userCode", currentUser.getUserCode());
+            if (rq.getPage() != null) {
+                condition.put("page", (rq.getPage() - 1) * rq.getLimit());
+                condition.put("limit", rq.getLimit());
+            }
+            Map<String, String> data = (Map<String, String>) rq.getData();
+            if (data!=null) {
+                condition.putAll(data);
+            }
+            oaTaskModelList = oaTaskService.queryMyTaskPage(condition);
+            condition.put("page",null);
+            condition.put("limit",null);
+            queryCount = oaTaskService.queryMyTaskPage(condition).size();
             // 处理一下当前指派人和业务类型
             oaTaskModelList.stream().forEach(oaTaskModel -> {
 
@@ -485,7 +512,10 @@ public class WorkFlowController {
                 BizMapping bizMapping = new BizMapping();
                 bizMapping.setBizKey(oaTaskModel.getBizKey());
                 bizMapping = bizMappingService.queryOne(bizMapping);
-                oaTaskModel.setBizName(bizMapping.getBizName());
+                if (bizMapping != null) {
+                    oaTaskModel.setBizName(bizMapping.getBizName());
+                }
+
             });
             log.debug("【查询我的任务开始】入参: " + rq.toString());
         } catch (Exception e) {

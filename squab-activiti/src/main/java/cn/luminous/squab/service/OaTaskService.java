@@ -8,6 +8,7 @@ import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OaTaskService extends BaseService<OaTask> {
 
@@ -34,7 +35,7 @@ public interface OaTaskService extends BaseService<OaTask> {
 
     List<OaTaskApproveModel> queryTaskApproveDetails(Long oaTaskId) throws Exception;
 
-    List<OaTaskModel> queryMyTaskPage(String userCode, Integer page, Integer limit) throws Exception;
+    List<OaTaskModel> queryMyTaskPage(Map condition) throws Exception;
 
     void testTransactional() throws Exception;
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -36,21 +36,31 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <div class="layui-inline layui-show-xs-block">
-                        <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start"></div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end"></div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input type="text" name="taskNo" placeholder="申请编号" autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input type="text" name="bizKey" placeholder="任务类型" autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input type="text" name="taskState" placeholder="任务状态" autocomplete="off" class="layui-input">
-                    </div>
-                    <button class="layui-btn" id="reload"><i class="layui-icon">&#xe615;</i></button>
-                    </button>
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input class="layui-input" placeholder="开始日" name="start" id="start"></div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input class="layui-input" placeholder="截止日" name="end" id="end"></div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input class="layui-input" placeholder="申请编号" name="taskNo" id="taskNo"></div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="bizKey" id="bizKey">
+                                <option value="">任务类型</option>
+                                <option th:each="option : ${bizMappingList}" th:value="${option.bizKey}"
+                                        th:text="${option.bizName}"></option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="taskState" id="taskState">
+                                <option value="">任务状态</option>
+                                <option value="0">流转中</option>
+                                <option value="1">完成</option>
+                                <option value="2">驳回</option>
+                                <option value="3">撤回</option>
+                            </select>
+                        </div>
+                        <button class="layui-btn" id="reload"><i class="layui-icon">&#xe615;</i></button>
+                    </form>
                 </div>
                 <div class="layui-card-body ">
                     <table id="myTask" lay-filter="myTask"></table>
@@ -66,15 +76,13 @@
                         {{#  } }}
                         <a class="layui-table-link" href="#" lay-event="print">打印</a>
 
-<!--                        {{#  if(d.taskState == '2'){ }}-->
-<!--                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>-->
-<!--                        {{#  } else{ }}-->
-<!--                        <a class="layui-table-link" href="#" lay-event="detail">详情</a>-->
-<!--                        {{#  } }}-->
-
+                        <!--                        {{#  if(d.taskState == '2'){ }}-->
+                        <!--                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>-->
+                        <!--                        {{#  } else{ }}-->
+                        <!--                        <a class="layui-table-link" href="#" lay-event="detail">详情</a>-->
+                        <!--                        {{#  } }}-->
 
                     </script>
-
                     <!--数据表格操作-->
                     <script type="text/javascript" src="/js/luminous/myTask.js"></script>
 
