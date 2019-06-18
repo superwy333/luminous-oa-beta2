@@ -4,6 +4,7 @@ package cn.luminous.squab.controller.workflow;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.luminous.squab.constant.Constant;
+import cn.luminous.squab.controller.BaseController;
 import cn.luminous.squab.controller.form.pojo.UeForm;
 import cn.luminous.squab.entity.*;
 import cn.luminous.squab.entity.http.R;
@@ -34,7 +35,7 @@ import java.util.Map;
 @RequestMapping("/workflow")
 @Controller
 @Slf4j
-public class WorkFlowController {
+public class WorkFlowController extends BaseController {
 
     @Autowired
     private OaTaskService oaTaskService;
@@ -484,16 +485,8 @@ public class WorkFlowController {
             SysUer currentUser = (SysUer) SecurityUtils.getSubject().getPrincipal();
 
             // 查询条件
-            Map<String, Object> condition = new HashMap<>();
+            Map<String, Object> condition = parseListQueryCondition(rq);
             condition.put("userCode", currentUser.getUserCode());
-            if (rq.getPage() != null) {
-                condition.put("page", (rq.getPage() - 1) * rq.getLimit());
-                condition.put("limit", rq.getLimit());
-            }
-            Map<String, String> data = (Map<String, String>) rq.getData();
-            if (data!=null) {
-                condition.putAll(data);
-            }
             oaTaskModelList = oaTaskService.queryMyTaskPage(condition);
             condition.put("page",null);
             condition.put("limit",null);

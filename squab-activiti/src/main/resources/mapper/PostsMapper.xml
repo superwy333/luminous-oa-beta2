@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.luminous.squab.mapper.PostsMapper">
+    <resultMap id="BaseResultMap" type="cn.luminous.squab.entity.Posts">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="post_code" jdbcType="VARCHAR" property="postCode"/>
+        <result column="intro" jdbcType="VARCHAR" property="intro"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="rank" jdbcType="INTEGER" property="rank"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+        <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt"/>
+        <result column="deleted" jdbcType="INTEGER" property="deleted"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy"/>
+        <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime"/>
+        <result column="ext_field1" jdbcType="VARCHAR" property="extField1"/>
+        <result column="ext_field2" jdbcType="VARCHAR" property="extField2"/>
+        <result column="ext_field3" jdbcType="VARCHAR" property="extField3"/>
+        <result column="ext_field4" jdbcType="VARCHAR" property="extField4"/>
+        <result column="ext_field5" jdbcType="VARCHAR" property="extField5"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.luminous.squab.entity.Posts">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="purview" jdbcType="LONGVARCHAR" property="purview"/>
+    </resultMap>
+
+    <resultMap id="ModelResultMap" type="cn.luminous.squab.model.PostsModel">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="post_code" jdbcType="VARCHAR" property="postCode"/>
+        <result column="intro" jdbcType="VARCHAR" property="intro"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="rank" jdbcType="INTEGER" property="rank"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+        <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt"/>
+        <result column="deleted" jdbcType="INTEGER" property="deleted"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy"/>
+        <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime"/>
+        <result column="ext_field1" jdbcType="VARCHAR" property="extField1"/>
+        <result column="ext_field2" jdbcType="VARCHAR" property="extField2"/>
+        <result column="ext_field3" jdbcType="VARCHAR" property="extField3"/>
+        <result column="ext_field4" jdbcType="VARCHAR" property="extField4"/>
+        <result column="ext_field5" jdbcType="VARCHAR" property="extField5"/>
+    </resultMap>
+    <resultMap extends="ModelResultMap" id="ModelResultMapWithBLOBs" type="cn.luminous.squab.model.PostsModel">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="purview" jdbcType="LONGVARCHAR" property="purview"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, name, post_code, intro, pid, rank, status, created_at, updated_at, deleted_at,
+        deleted, version, create_by, create_time, last_modify_by, last_modify_time, ext_field1,
+        ext_field2, ext_field3, ext_field4, ext_field5
+    </sql>
+    <sql id="Blob_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        purview
+    </sql>
+
+    <select id="queryPostsPage" resultMap="ModelResultMap" parameterType="java.util.Map">
+        SELECT
+            p.*
+        FROM
+            posts p
+        <where>
+            p.deleted = 0
+        </where>
+        ORDER BY p.rank ASC
+        <if test="condition.page==0 or (condition.page !=null and condition.page !='')">
+            LIMIT #{condition.page}, #{condition.limit}
+        </if>
+  </select>
+
+</mapper>

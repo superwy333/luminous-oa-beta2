@@ -1,6 +1,7 @@
 package cn.luminous.squab.controller.auth;
 
 
+import cn.luminous.squab.controller.BaseController;
 import cn.luminous.squab.entity.Department;
 import cn.luminous.squab.entity.SysUer;
 import cn.luminous.squab.entity.http.R;
@@ -14,14 +15,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/department")
 @Slf4j
-public class DeptmentsController {
+public class DeptmentsController extends BaseController {
 
     @Autowired
     private DepartmentService departmentService;
@@ -41,15 +41,7 @@ public class DeptmentsController {
         List<DepartmentModel> departmentModelList = null;
         Integer queryCount = null;
         try {
-            Map<String, Object> condition = new HashMap<>();
-            if (rq.getPage() != null) {
-                condition.put("page", (rq.getPage() - 1) * rq.getLimit());
-                condition.put("limit", rq.getLimit());
-            }
-            Map<String, String> data = (Map<String, String>) rq.getData();
-            if (data != null) {
-                condition.putAll(data);
-            }
+            Map<String, Object> condition = parseListQueryCondition(rq);
             departmentModelList = departmentService.queryDepartmentsPage(condition);
             condition.put("page", null);
             condition.put("limit", null);
@@ -57,33 +49,33 @@ public class DeptmentsController {
             departmentModelList.stream().forEach(departmentModel -> {
                 SysUer sysUer = new SysUer();
                 SysUer query = new SysUer();
-                if (departmentModel.getLeader()!=null) {
+                if (departmentModel.getLeader() != null) {
                     query.setStaffId(Long.valueOf(departmentModel.getLeader()));
                     sysUer = sysUserService.queryOne(query);
                     departmentModel.setLeaderTxt(sysUer.getName());
                 }
 
-                if (departmentModel.getParentLeader()!=null) {
+                if (departmentModel.getParentLeader() != null) {
                     query.setStaffId(Long.valueOf(departmentModel.getParentLeader()));
                     sysUer = sysUserService.queryOne(query);
                     departmentModel.setParentLeaderTxt(sysUer.getName());
                 }
 
 
-                if (departmentModel.getLeaderBranch()!=null) {
+                if (departmentModel.getLeaderBranch() != null) {
                     query.setStaffId(Long.valueOf(departmentModel.getLeaderBranch()));
                     sysUer = sysUserService.queryOne(query);
                     departmentModel.setLeaderBranchTxt(sysUer.getName());
                 }
 
                 Department department = departmentService.queryById(Long.valueOf(departmentModel.getPid()));
-                if (department!=null) {
+                if (department != null) {
                     departmentModel.setParentDeptTxt(department.getName());
                 }
 
             });
         } catch (Exception e) {
-            log.error("部门列表查询异常：",e);
+            log.error("部门列表查询异常：", e);
             R.nok(e.getMessage());
         }
         return R.ok(departmentModelList, queryCount);

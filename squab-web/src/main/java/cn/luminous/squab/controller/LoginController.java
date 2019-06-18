@@ -156,15 +156,15 @@ public class LoginController {
             Map<String, String> hrItem1 = new HashMap<>();
             hrItem1.put("name", "职员管理");
             hrItem1.put("url", "");
-            hr.getChild().add(hrItem1);
             Map<String, String> hrItem2 = new HashMap<>();
             hrItem2.put("name", "部门管理");
             hrItem2.put("url", "/department/deptList");
-            hr.getChild().add(hrItem2);
             Map<String, String> hrItem3 = new HashMap<>();
             hrItem3.put("name", "岗位管理");
-            hrItem3.put("url", "");
+            hrItem3.put("url", "/posts/postsList");
             hr.getChild().add(hrItem1);
+            hr.getChild().add(hrItem2);
+            hr.getChild().add(hrItem3);
             result.add(hr);
 
             MenuModel form = new MenuModel();
