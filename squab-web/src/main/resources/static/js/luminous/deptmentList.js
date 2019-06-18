@@ -54,64 +54,8 @@ layui.use(['table', 'jquery', 'laydate'], function () {
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-        if (layEvent === 'detail') { //流转记录
-            xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=1&bizKey=' + data.bizKey, 1600, 800, false);
-        } else if (layEvent === 'edit') {
-            xadmin.open('编辑', '/workflow/detail?id=' + data.id + '&type=2', 1600, 800, true);
-        } else if (layEvent === 'cancel') {
-            layer.confirm('确定撤回申请？', function (index) {
-                var reqData = {
-                    bizKey: 'cancelProcess',
-                    data: {
-                        id: data.id
-                    }
-                };
-                $.ajax({
-                    url: '/workflow/cancelProcess',
-                    type: 'POST',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify(reqData),
-                    success: function (data) {
-                        if (data.code == 0) {
-                            layer.msg("操作成功");
-                            window.location.reload();
-                        } else {
-                            layer.alert("操作失败，失败原因：" + data.msg);
-                        }
-                    },
-                    error: function (data) {
-                        layer.alert("网络超时，请联系管理员");
-                    }
-                });
-            })
-        } else if (layEvent === 'start') {
-            layer.confirm('确定发起流程？', function (index) {
-                var reqData = {
-                    bizKey: 'startProcess',
-                    oaTaskId: data.id
-                };
-                $.ajax({
-                    url: '/workflow/startProcess',
-                    type: 'POST',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify(reqData),
-                    success: function (data) {
-                        if (data.code == 0) {
-                            layer.msg("操作成功");
-                            window.location.reload();
-                        } else {
-                            layer.alert("操作失败，失败原因：" + data.msg);
-                        }
-                    },
-                    error: function (data) {
-                        layer.alert("网络超时，请联系管理员");
-                    }
-                });
-            })
-        } else if (layEvent === 'print') {
-            xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=3&bizKey=' + data.bizKey, 1600, 800, true);
+        if (layEvent === 'edit') { //流转记录
+            xadmin.open('编辑', '/department/edit?id=' + data.id, 480, 500, false);
         }
     });
 });

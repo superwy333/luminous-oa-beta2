@@ -12,6 +12,7 @@ import cn.luminous.squab.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,6 +28,57 @@ public class DeptmentsController extends BaseController {
     private DepartmentService departmentService;
     @Autowired
     private SysUserService sysUserService;
+
+
+    @GetMapping("/edit")
+    public ModelAndView edit(Model model, @RequestParam("id") Long id) {
+        ModelAndView m = new ModelAndView();
+        try {
+            Department department = departmentService.queryById(id);
+            List<SysUer> sysUerList = sysUserService.query(new SysUer());
+            List<Department> departmentList = departmentService.query(new Department());
+            model.addAttribute("department", department);
+            model.addAttribute("sysUerList", sysUerList);
+            model.addAttribute("departmentList", departmentList);
+        } catch (Exception e) {
+            log.error("查询部门信息失败: ", e);
+        }
+        m.setViewName("dept-edit");
+        return m;
+    }
+
+    @PostMapping("/edit")
+    @ResponseBody
+    public String edit(@RequestBody Rq rq) {
+        try {
+            Map<String, Object> data = (Map<String, Object>) rq.getData();
+            String newLeader = (String) data.get("leader");
+            String newLeaderBranch = (String) data.get("leaderBranch");
+            Integer pid = null;
+            if (!data.get("pid").equals("")) {
+                pid = Integer.valueOf((String) data.get("pid"));
+            }
+            Long id = Long.valueOf((String) data.get("id"));
+            Department department = departmentService.queryById(id);
+            department.setLeader(newLeader);
+            department.setLeaderBranch(newLeaderBranch);
+            if (pid != null && department.getPid() != pid) {
+                department.setPid(pid);
+                Department parentDept = departmentService.queryById(Long.valueOf(pid));
+                department.setParentLeader(Long.valueOf(parentDept.getLeader()));
+            }
+            if (pid == null) {
+                department.setPid(0);
+                department.setParentLeader(null);
+            }
+            departmentService.updateById(department);
+        } catch (Exception e) {
+            log.error("修改部门数据失败{}", e);
+            return R.nok(e.getMessage());
+        }
+        return R.ok();
+    }
+
 
     @GetMapping("/deptList")
     public ModelAndView toDeptList() {
