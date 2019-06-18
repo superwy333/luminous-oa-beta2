@@ -66,21 +66,6 @@
                     <table id="deptList" lay-filter="deptList"></table>
 
                     <script type="text/html" id="deptListOperation">
-                        <a class="layui-table-link" href="#" lay-event="detail">详情</a>
-                        {{#  if(d.taskState == '2'||d.taskState == '3'){ }}
-                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>
-                        <a class="layui-table-link" href="#" lay-event="start">发起</a>
-                        {{#  } }}
-                        {{#  if(d.taskState == '0'){ }}
-                        <a class="layui-table-link" href="#" lay-event="cancel">撤回</a>
-                        {{#  } }}
-                        <a class="layui-table-link" href="#" lay-event="print">打印</a>
-
-                        <!--                        {{#  if(d.taskState == '2'){ }}-->
-                        <!--                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>-->
-                        <!--                        {{#  } else{ }}-->
-                        <!--                        <a class="layui-table-link" href="#" lay-event="detail">详情</a>-->
-                        <!--                        {{#  } }}-->
 
                     </script>
                     <!--数据表格操作-->

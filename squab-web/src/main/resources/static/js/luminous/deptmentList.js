@@ -17,11 +17,11 @@ layui.use(['table', 'jquery', 'laydate'], function () {
         , limit: 10
         , cols: [[ //表头
             {field: 'id', title: 'ID', minWidth: 150, sort: true, fixed: 'left', hide: true},
-            , {field: '', title: '部门名称', minWidth: 150, sort: true}
-            , {field: '', title: '主管领导', minWidth: 150, sort: true}
-            , {field: '', title: '分管领导', minWidth: 150, sort: true}
-            , {field: '', title: '上级部门', minWidth: 150, sort: true}
-            , {field: '', title: '上级部门领导', minWidth: 150, sort: true}
+            {field: 'name', title: '部门名称', minWidth: 150, sort: true}
+            , {field: 'parentDeptTxt', title: '上级部门', minWidth: 150, sort: true}
+            , {field: 'leaderTxt', title: '主管领导', minWidth: 150, sort: true}
+            , {field: 'leaderBranchTxt', title: '分管领导', minWidth: 150, sort: true}
+            , {field: 'parentLeaderTxt', title: '上级部门领导', minWidth: 150, sort: true}
             , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#deptListOperation'}
         ]]
     });

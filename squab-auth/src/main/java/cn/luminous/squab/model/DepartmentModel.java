@@ -27,6 +27,8 @@ public class DepartmentModel extends BaseDomain {
      */
     private Integer pid;
 
+    private String parentDeptTxt;
+
     /**
      * 排序
      */
@@ -70,6 +72,14 @@ public class DepartmentModel extends BaseDomain {
     private String extField4;
 
     private String extField5;
+
+    public String getParentDeptTxt() {
+        return parentDeptTxt;
+    }
+
+    public void setParentDeptTxt(String parentDeptTxt) {
+        this.parentDeptTxt = parentDeptTxt;
+    }
 
     /**
      * 获取部门名称

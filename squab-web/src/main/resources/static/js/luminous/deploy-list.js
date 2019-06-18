@@ -11,7 +11,6 @@ layui.use(['table', 'jquery'], function () {
         , cols: [[ //表头
             {field: 'id', title: 'ID', minWidth: 150, sort: true, fixed: 'left', hide: true}
             , {field: 'name', title: '模型名称', minWidth: 150, sort: true}
-            // , {field: 'description', title: '描述', minWidth: 150, sort: true}
             , {field: 'deploymentTime', title: '部署时间', minWidth: 150, sort: true}
             , {field: 'operation', title: '操作', minWidth: 150, toolbar: '#deployListOperation'}
         ]]

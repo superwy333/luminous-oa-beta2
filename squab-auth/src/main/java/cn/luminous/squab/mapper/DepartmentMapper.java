@@ -12,7 +12,7 @@ public interface DepartmentMapper extends IMapper<Department> {
 
     Department queryDepartment(@Param(value = "userCode") String userCode);
 
-    List<DepartmentModel> queryDepartmentsPage(Map<String,Object> condition);
+    List<DepartmentModel> queryDepartmentsPage(@Param("condition") Map<String,Object> condition);
 
 
 }
