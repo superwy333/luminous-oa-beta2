@@ -41,6 +41,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
     }
 
     @Override
+    public List<SysUserModel> querySysUserPage(Map condition) {
+        return sysUserMapper.queryUserPage(condition);
+    }
+
+    @Override
     public List<SysUer> queryAllUsers(SysUer sysUer) {
         return sysUserMapper.queryAllUsers(sysUer);
     }

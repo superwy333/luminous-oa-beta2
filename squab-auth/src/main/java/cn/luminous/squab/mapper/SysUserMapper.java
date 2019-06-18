@@ -7,6 +7,7 @@ import cn.luminous.squab.mybatis.imapper.IMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysUserMapper extends IMapper<SysUer> {
 
@@ -16,5 +17,7 @@ public interface SysUserMapper extends IMapper<SysUer> {
     //Department queryDepartment(@Param(value = "userCode") String userCode);
 
     SysUserModel queryUserInfo(@Param(value = "userCode") String userCode);
+
+    List<SysUserModel> queryUserPage(@Param("condition") Map<String,Object> condition);
 
 }

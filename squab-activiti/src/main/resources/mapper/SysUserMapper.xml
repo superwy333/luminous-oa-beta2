@@ -88,4 +88,29 @@
     </select>
 
 
+    <select id="queryUserPage" resultMap="ModelResultMap" parameterType="java.util.Map">
+        SELECT
+            `user`.id,
+            `user`.name,
+            `user`.user_code,
+            departments.`name` AS dept_name,
+            posts.`name` AS post_name
+        FROM
+            sys_user USER
+        LEFT JOIN staffs staffs ON `user`.staff_id = staffs.id
+        LEFT JOIN departments ON staffs.department_id = departments.id
+        LEFT JOIN posts ON staffs.post_id = posts.id
+        <where>
+            `user`.deleted = 0
+            AND staffs.deleted = 0
+            AND departments.deleted = 0
+            AND posts.deleted = 0
+        </where>
+        <if test="condition.page==0 or (condition.page !=null and condition.page !='')">
+            LIMIT #{condition.page}, #{condition.limit}
+        </if>
+    </select>
+
+
+
 </mapper>

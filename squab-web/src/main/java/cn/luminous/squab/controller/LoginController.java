@@ -155,7 +155,7 @@ public class LoginController {
             hr.setName("人事管理");
             Map<String, String> hrItem1 = new HashMap<>();
             hrItem1.put("name", "职员管理");
-            hrItem1.put("url", "");
+            hrItem1.put("url", "/sysUser/sysUserList");
             Map<String, String> hrItem2 = new HashMap<>();
             hrItem2.put("name", "部门管理");
             hrItem2.put("url", "/department/deptList");
