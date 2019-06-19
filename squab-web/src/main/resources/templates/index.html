@@ -139,42 +139,43 @@
                     <!--                    </div>-->
                     <div class="layui-col-md12"></div>
 
+
                     <div class="layui-col-md12">
                         <div class="layui-card">
                             <div class="layui-card-header">我的工作台</div>
                             <div class="layui-card-body ">
                                 <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
-                                    <li class="layui-col-md3 layui-col-xs6">
-                                        <a onclick="xadmin.add_tab('我的待办','/workflow/taskTodoList',true)" class="x-admin-backlog-body">
-                                            <h3 style="font-size: 30px">待办任务</h3>
-                                            <i class="icon iconfont">&#xe6ac;</i>
-                                            <p>
+                                    <li class="layui-col-md3 layui-col-xs6" style="text-align: center; line-height: 34px">
+                                        <a onclick="xadmin.add_tab('我的待办','/workflow/taskTodoList',true)" class="x-admin-backlog-body" style="color: #0f0f0f">
+                                            <h3 style="font-size: 30px">我的待办</h3>
+                                            <i class="icon iconfont" style="font-size: 44px;">&#xe72d;</i>
+                                            <p style="color: red">
                                                 <cite id="taskToDoCount"></cite></p>
                                         </a>
                                     </li>
 
-                                    <li class="layui-col-md3 layui-col-xs6">
-                                        <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3 style="font-size: 30px">会议通知</h3>
-                                            <i class="icon iconfont">&#xe6ac;</i>
+                                    <li class="layui-col-md3 layui-col-xs6" style="text-align: center; line-height: 34px">
+                                        <a onclick="xadmin.add_tab('我发起的','/workflow/myTaskList',true)" class="x-admin-backlog-body" style="color: #0f0f0f">
+                                            <h3 style="font-size: 30px">我发起的</h3>
+                                            <i class="icon iconfont" style="font-size: 44px;">&#xe75a;</i>
                                             <p>
                                                 <cite>0</cite></p>
                                         </a>
                                     </li>
 
-                                    <li class="layui-col-md3 layui-col-xs6">
-                                        <a href="javascript:;" class="x-admin-backlog-body">
+                                    <li class="layui-col-md3 layui-col-xs6" style="text-align: center; line-height: 34px">
+                                        <a onclick="xadmin.add_tab('我的办结','/workflow/taskDoneList',true)" class="x-admin-backlog-body" style="color: #0f0f0f">
+                                            <h3 style="font-size: 30px">我的办结</h3>
+                                            <i class="icon iconfont" style="font-size: 44px;">&#xe760;</i>
+                                            <p>
+                                                <cite>0</cite></p>
+                                        </a>
+                                    </li>
+
+                                    <li class="layui-col-md3 layui-col-xs6" style="text-align: center; line-height: 34px">
+                                        <a href="javascript:;" class="x-admin-backlog-body" style="color: #0f0f0f">
                                             <h3 style="font-size: 30px">我的传阅</h3>
-                                            <i class="icon iconfont">&#xe6a2;</i>
-                                            <p>
-                                                <cite>0</cite></p>
-                                        </a>
-                                    </li>
-
-                                    <li class="layui-col-md3 layui-col-xs6">
-                                        <a href="javascript:;" class="x-admin-backlog-body">
-                                            <h3 style="font-size: 30px">发文拟搞</h3>
-                                            <i class="icon iconfont">&#xe69f;</i>
+                                            <i class="icon iconfont" style="font-size: 44px;">&#xe802;</i>
                                             <p>
                                                 <cite>0</cite></p>
                                         </a>
@@ -183,6 +184,125 @@
                             </div>
                         </div>
                     </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-card" style="height: 250px">
+                            <div class="layui-card-header">常用链接</div>
+                            <div class="layui-card-body ">
+                                <div class="main markdown" style="padding: 0px">
+                                    <ul class="icon_lists clear">
+                                        <a href="http://www.baidu.com" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6ac;</i>
+                                                <div class="name">百度搜索</div>
+                                            </li>
+                                        </a>
+
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6a2;</i>
+                                                <div class="name">旧版OA</div>
+                                            </li>
+                                        </a>
+
+                                        <a href="http://www.baidu.com" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe69f;</i>
+                                                <div class="name">仓库系统</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe696;</i>
+                                                <div class="name">人事系统</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe69b;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe69e;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6a9;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6ab;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6ae;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6b3;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6b5;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6eb;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6e9;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe6ce;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe70a;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe704;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+                                        <a href="http://192.168.1.62:8081/login" target="_blank">
+                                            <li>
+                                                <i class="icon iconfont" style="font-size: 44px;">&#xe756;</i>
+                                                <div class="name">备用链接</div>
+                                            </li>
+                                        </a>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
 
                     <div class="layui-col-md6">
                         <div class="layui-card" style="height: 403px">
@@ -341,11 +461,25 @@
                             <div class="layui-card-header">我发起的</div>
                             <div class="layui-card-body ">
                                 <button id="reload1" style="display: none"></button>
-                                <table id="taskTodo1" lay-filter="taskTodo"></table>
+                                <table id="myTaskList" lay-filter="myTaskList"></table>
 
-                                <script type="text/html" id="taskTodoOperation1">
-                                    <a class="layui-table-link" href="#" lay-event="approve">审批</a>
-                                    <!--                                    <a class="layui-table-link" href="#" lay-event="detail">流转记录</a>-->
+                                <script type="text/html" id="myTaskListOperation">
+                                    <a class="layui-table-link" href="#" lay-event="detail">详情</a>
+                                    {{#  if(d.taskState == '2'||d.taskState == '3'){ }}
+                                    <a class="layui-table-link" href="#" lay-event="edit">编辑</a>
+                                    <a class="layui-table-link" href="#" lay-event="start">发起</a>
+                                    {{#  } }}
+                                    {{#  if(d.taskState == '0'){ }}
+                                    <a class="layui-table-link" href="#" lay-event="cancel">撤回</a>
+                                    {{#  } }}
+                                    <a class="layui-table-link" href="#" lay-event="print">打印</a>
+
+                                    <!--                        {{#  if(d.taskState == '2'){ }}-->
+                                    <!--                        <a class="layui-table-link" href="#" lay-event="edit">编辑</a>-->
+                                    <!--                        {{#  } else{ }}-->
+                                    <!--                        <a class="layui-table-link" href="#" lay-event="detail">详情</a>-->
+                                    <!--                        {{#  } }}-->
+
                                 </script>
 
                                 <!--数据表格操作-->
@@ -353,11 +487,11 @@
                                     layui.use(['table', 'jquery'], function () {
                                         var table = layui.table;
                                         var tableIns = table.render({
-                                            elem: '#taskTodo1'
+                                            elem: '#myTaskList'
                                             , method: 'post'
                                             , contentType: 'application/json'
                                             , height: 300
-                                            , url: '/workflow/taskToDo' //数据接口
+                                            , url: '/workflow/myTaskList' //数据接口
                                             , page: true //开启分页
                                             , cols: [[ //表头
                                                 {
@@ -397,41 +531,111 @@
                                                 , {field: 'bizName', title: '任务类型', sort: false}
                                                 , {field: 'applyTime', title: '填报时间', sort: false}
                                                 , {
+                                                    field: 'taskState', title: '任务状态', minWidth: 50, sort: true,
+                                                    templet: function (d) {
+                                                        if (d.taskState == '0') {
+                                                            return '流程中';
+                                                        } else if (d.taskState == '1') {
+                                                            return '完成';
+                                                        } else if (d.taskState == '2') {
+                                                            return '驳回';
+                                                        } else if (d.taskState == '3') {
+                                                            return '撤回';
+                                                        }
+                                                    }
+                                                }
+                                                // , {field: 'taskName', title: '当前节点', minWidth: 150, sort: true}
+                                                // , {field: 'assignee', title: '当前指派人', minWidth: 150, sort: true}
+                                                , {
                                                     field: 'operation',
                                                     title: '操作',
-                                                    toolbar: '#taskTodoOperation'
+                                                    minWidth: 220,
+                                                    toolbar: '#myTaskListOperation'
                                                 }
                                             ]]
                                         });
 
 
-                                        $('#reload1').click(function () {
-                                            // 我的代办列表刷新
-                                            tableIns.reload(
-                                                {
-                                                    page: {
-                                                        curr: 1 //重新从第 1 页开始
-                                                    }
-                                                    , where: {
-                                                        createBy: $('#createBy').val()
-                                                    }
-                                                }
-                                            );
-
-
-                                        });
+                                        // $('#reload1').click(function () {
+                                        //     // 我的代办列表刷新
+                                        //     tableIns.reload(
+                                        //         {
+                                        //             page: {
+                                        //                 curr: 1 //重新从第 1 页开始
+                                        //             }
+                                        //             , where: {
+                                        //                 createBy: $('#createBy').val()
+                                        //             }
+                                        //         }
+                                        //     );
+                                        //
+                                        //
+                                        // });
 
                                         //监听工具条
-                                        table.on('tool(taskTodo1)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        table.on('tool(myTaskList)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
                                             var data = obj.data; //获得当前行数据
                                             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                                             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
                                             if (layEvent === 'detail') { //流转记录
-                                                //do somehing
-                                                xadmin.open('流程记录', '/workflow/approve?id=' + data.id, 1500, 800, false);
-                                            } else if (layEvent === 'approve') {
-                                                xadmin.open('审批', '/workflow/approve?id=' + data.taskId, 1500, 800, true);
+                                                xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=1&bizKey=' + data.bizKey, 1600, 800, false);
+                                            } else if (layEvent === 'edit') {
+                                                xadmin.open('编辑', '/workflow/detail?id=' + data.id + '&type=2', 1600, 800, true);
+                                            } else if (layEvent === 'cancel') {
+                                                layer.confirm('确定撤回申请？', function (index) {
+                                                    var reqData = {
+                                                        bizKey: 'cancelProcess',
+                                                        data: {
+                                                            id: data.id
+                                                        }
+                                                    };
+                                                    $.ajax({
+                                                        url: '/workflow/cancelProcess',
+                                                        type: 'POST',
+                                                        contentType: "application/json; charset=utf-8",
+                                                        dataType: 'json',
+                                                        data: JSON.stringify(reqData),
+                                                        success: function (data) {
+                                                            if (data.code == 0) {
+                                                                layer.msg("操作成功");
+                                                                window.location.reload();
+                                                            } else {
+                                                                layer.alert("操作失败，失败原因：" + data.msg);
+                                                            }
+                                                        },
+                                                        error: function (data) {
+                                                            layer.alert("网络超时，请联系管理员");
+                                                        }
+                                                    });
+                                                })
+                                            } else if (layEvent === 'start') {
+                                                layer.confirm('确定发起流程？', function (index) {
+                                                    var reqData = {
+                                                        bizKey: 'startProcess',
+                                                        oaTaskId: data.id
+                                                    };
+                                                    $.ajax({
+                                                        url: '/workflow/startProcess',
+                                                        type: 'POST',
+                                                        contentType: "application/json; charset=utf-8",
+                                                        dataType: 'json',
+                                                        data: JSON.stringify(reqData),
+                                                        success: function (data) {
+                                                            if (data.code == 0) {
+                                                                layer.msg("操作成功");
+                                                                window.location.reload();
+                                                            } else {
+                                                                layer.alert("操作失败，失败原因：" + data.msg);
+                                                            }
+                                                        },
+                                                        error: function (data) {
+                                                            layer.alert("网络超时，请联系管理员");
+                                                        }
+                                                    });
+                                                })
+                                            } else if (layEvent === 'print') {
+                                                xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=3&bizKey=' + data.bizKey, 1600, 800, true);
                                             }
 
                                             // } else if (layEvent === 'del') { //删除
@@ -453,13 +657,13 @@
 
                     <div class="layui-col-md6">
                         <div class="layui-card" style="height: 403px">
-                            <div class="layui-card-header">我的已办</div>
+                            <div class="layui-card-header">我的办结</div>
                             <div class="layui-card-body ">
                                 <button id="reload2" style="display: none"></button>
-                                <table id="taskTodo2" lay-filter="taskTodo"></table>
+                                <table id="taskDone" lay-filter="taskDone"></table>
 
-                                <script type="text/html" id="taskTodoOperation2">
-                                    <a class="layui-table-link" href="#" lay-event="approve">审批</a>
+                                <script type="text/html" id="taskDoneOperation">
+                                    <a class="layui-table-link" href="#" lay-event="detail">详情</a>
                                     <!--                                    <a class="layui-table-link" href="#" lay-event="detail">流转记录</a>-->
                                 </script>
 
@@ -468,18 +672,18 @@
                                     layui.use(['table', 'jquery'], function () {
                                         var table = layui.table;
                                         var tableIns = table.render({
-                                            elem: '#taskTodo2'
+                                            elem: '#taskDone'
                                             , method: 'post'
                                             , contentType: 'application/json'
                                             , height: 300
-                                            , url: '/workflow/taskToDo' //数据接口
+                                            , url: '/workflow/taskDone' //数据接口
                                             , page: true //开启分页
                                             , cols: [[ //表头
                                                 {
                                                     field: 'id',
                                                     title: 'ID',
                                                     minWidth: 150,
-                                                    sort: false,
+                                                    sort: true,
                                                     fixed: 'left',
                                                     hide: true
                                                 },
@@ -487,7 +691,7 @@
                                                     field: 'taskId',
                                                     title: 'taskId',
                                                     minWidth: 150,
-                                                    sort: false,
+                                                    sort: true,
                                                     fixed: 'left',
                                                     hide: true
                                                 },
@@ -495,7 +699,7 @@
                                                     field: 'procInstId',
                                                     title: 'procInstId',
                                                     minWidth: 150,
-                                                    sort: false,
+                                                    sort: true,
                                                     fixed: 'left',
                                                     hide: true
                                                 },
@@ -503,7 +707,7 @@
                                                     field: 'procDefId',
                                                     title: 'procDefId',
                                                     minWidth: 150,
-                                                    sort: false,
+                                                    sort: true,
                                                     fixed: 'left',
                                                     hide: true
                                                 }
@@ -511,42 +715,56 @@
                                                 , {field: 'applyName', title: '填报人', sort: false}
                                                 , {field: 'bizName', title: '任务类型', sort: false}
                                                 , {field: 'applyTime', title: '填报时间', sort: false}
+                                                ,{
+                                                    field: 'taskState', title: '任务状态', minWidth: 150, sort: true,
+                                                    templet: function (d) {
+                                                        if (d.taskState == '0') {
+                                                            return '流程中';
+                                                        } else if (d.taskState == '1') {
+                                                            return '完成';
+                                                        } else if (d.taskState == '2') {
+                                                            return '驳回';
+                                                        } else if (d.taskState == '3') {
+                                                            return '撤回';
+                                                        }
+                                                    }
+                                                }
+                                                , {field: 'applyName', title: '填报人', minWidth: 150, sort: true}
+                                                , {field: 'taskName', title: '当前节点', minWidth: 150, sort: true}
+                                                , {field: 'assignee', title: '当前指派人', minWidth: 150, sort: true}
                                                 , {
                                                     field: 'operation',
                                                     title: '操作',
-                                                    toolbar: '#taskTodoOperation'
+                                                    toolbar: '#taskDoneOperation'
                                                 }
                                             ]]
                                         });
 
 
-                                        $('#reload2').click(function () {
-                                            // 我的代办列表刷新
-                                            tableIns.reload(
-                                                {
-                                                    page: {
-                                                        curr: 1 //重新从第 1 页开始
-                                                    }
-                                                    , where: {
-                                                        createBy: $('#createBy').val()
-                                                    }
-                                                }
-                                            );
-
-
-                                        });
+                                        // $('#reload2').click(function () {
+                                        //     // 我的代办列表刷新
+                                        //     tableIns.reload(
+                                        //         {
+                                        //             page: {
+                                        //                 curr: 1 //重新从第 1 页开始
+                                        //             }
+                                        //             , where: {
+                                        //                 createBy: $('#createBy').val()
+                                        //             }
+                                        //         }
+                                        //     );
+                                        //
+                                        //
+                                        // });
 
                                         //监听工具条
-                                        table.on('tool(taskTodo2)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                                        table.on('tool(taskDone)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
                                             var data = obj.data; //获得当前行数据
                                             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                                             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-                                            if (layEvent === 'detail') { //流转记录
-                                                //do somehing
-                                                xadmin.open('流程记录', '/workflow/approve?id=' + data.id, 1500, 800, false);
-                                            } else if (layEvent === 'approve') {
-                                                xadmin.open('审批', '/workflow/approve?id=' + data.taskId, 1500, 800, true);
+                                            if (layEvent === 'detail') {
+                                                xadmin.open('详情', '/workflow/detail?id=' + data.id + '&type=1&bizKey=' + data.bizKey, 1600, 800, false);
                                             }
 
                                             // } else if (layEvent === 'del') { //删除
@@ -565,39 +783,39 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-col-md12">
-                        <div class="layui-card" style="height: 250px">
-                            <div class="layui-card-header">常用链接</div>
-                            <div class="layui-card-body ">
-                                <div class="main markdown">
-                                    <ul class="icon_lists clear">
-                                        <a href="http://www.baidu.com" target="_blank">
-                                            <li>
-                                                <i class="icon iconfont">&#xe6ac;</i>
-                                                <div class="name">百度</div>
-                                            </li>
-                                        </a>
+                    <!--<div class="layui-col-md12">-->
+                        <!--<div class="layui-card" style="height: 250px">-->
+                            <!--<div class="layui-card-header">常用链接</div>-->
+                            <!--<div class="layui-card-body ">-->
+                                <!--<div class="main markdown">-->
+                                    <!--<ul class="icon_lists clear">-->
+                                        <!--<a href="http://www.baidu.com" target="_blank">-->
+                                            <!--<li>-->
+                                                <!--<i class="icon iconfont">&#xe6ac;</i>-->
+                                                <!--<div class="name">百度</div>-->
+                                            <!--</li>-->
+                                        <!--</a>-->
 
-                                        <a href="http://192.168.1.62:8081/login" target="_blank">
-                                            <li>
-                                                <i class="icon iconfont">&#xe6a2;</i>
-                                                <div class="name">旧版OA</div>
-                                            </li>
-                                        </a>
+                                        <!--<a href="http://192.168.1.62:8081/login" target="_blank">-->
+                                            <!--<li>-->
+                                                <!--<i class="icon iconfont">&#xe6a2;</i>-->
+                                                <!--<div class="name">旧版OA</div>-->
+                                            <!--</li>-->
+                                        <!--</a>-->
 
-                                        <a href="http://www.baidu.com" target="_blank">
-                                            <li>
-                                                <i class="icon iconfont">&#xe69f;</i>
-                                                <div class="name">邮件</div>
-                                            </li>
-                                        </a>
+                                        <!--<a href="http://www.baidu.com" target="_blank">-->
+                                            <!--<li>-->
+                                                <!--<i class="icon iconfont">&#xe69f;</i>-->
+                                                <!--<div class="name">邮件</div>-->
+                                            <!--</li>-->
+                                        <!--</a>-->
 
 
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                    <!--</ul>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>

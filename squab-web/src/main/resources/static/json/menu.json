@@ -12,6 +12,10 @@
         {
           "name": "我的待办",
           "url": "/workflow/taskTodoList"
+        },
+        {
+          "name": "我的办结",
+          "url": "/workflow/taskDoneList"
         }
       ]
     },

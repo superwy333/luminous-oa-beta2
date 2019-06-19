@@ -46,9 +46,9 @@ public class NoticeController {
             data = new ArrayList<>();
             for (int i = 0; i < 18; i++) {
                 Map<String, String> dataItem = new HashMap<>();
-                dataItem.put("title", "关于XXXXXX的通知");
+                dataItem.put("title", "关于新OA上线的测试通知");
                 dataItem.put("auth", "管理员");
-                dataItem.put("time", "2019-06-13");
+                dataItem.put("time", "2019-06-17");
                 data.add(dataItem);
             }
             result.put("data", data);
