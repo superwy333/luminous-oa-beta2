@@ -1,4 +1,11 @@
-layui.use(['table', 'jquery'], function () {
+layui.use(['table', 'jquery', 'laydate'], function () {
+    var laydate = layui.laydate;
+    laydate.render({
+        elem: '#start'
+    });
+    laydate.render({
+        elem: '#end'
+    });
     var table = layui.table;
     var tableIns = table.render({
         elem: '#myTask'
@@ -43,10 +50,18 @@ layui.use(['table', 'jquery'], function () {
                     curr: 1 //重新从第 1 页开始
                 }
                 , where: {
-                    createBy: $('#createBy').val()
+                    data: {
+                        start: $('#start').val(),
+                        end: $('#end').val(),
+                        taskNo: $('#taskNo').val(),
+                        bizKey: $('#bizKey').val(),
+                        taskState: $('#taskState').val()
+                    }
+
                 }
             }
         );
+        return false
     });
 
     //监听工具条

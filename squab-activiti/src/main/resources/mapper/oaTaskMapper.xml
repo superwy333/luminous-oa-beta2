@@ -105,34 +105,34 @@
     </select>
 
     <select id="queryTaskDone" resultMap="ModelResultMap" parameterType="java.lang.String">
-            SELECT
-                oatask.*, NULL AS task_name,
-                NULL AS assignee
-            FROM
-                act_hi_taskinst acthitask
-            LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
-            WHERE
-                oatask.deleted = 0
-            AND oatask.task_state IN ('1', '2', '3')
-            <if test="assignee !=null and assignee !=''">
-                AND acthitask.ASSIGNEE_ = #{assignee}
-            </if>
-            AND acthitask.END_TIME_ IS NOT NULL
-            UNION
-                SELECT
-                    oatask.*, acttask.NAME_ AS task_name,
-                    acttask.ASSIGNEE_ AS assignee
-                FROM
-                    act_hi_taskinst acthitask
-                LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
-                LEFT JOIN act_ru_task acttask ON oatask.proc_inst_id = acttask.PROC_INST_ID_
-                WHERE
-                    oatask.deleted = 0
-                AND oatask.task_state = '0'
-                <if test="assignee !=null and assignee !=''">
-                    AND acthitask.ASSIGNEE_ = #{assignee}
-                </if>
-                AND acthitask.END_TIME_ IS NOT NULL
+        SELECT
+        oatask.*, NULL AS task_name,
+        NULL AS assignee
+        FROM
+        act_hi_taskinst acthitask
+        LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
+        WHERE
+        oatask.deleted = 0
+        AND oatask.task_state IN ('1', '2', '3')
+        <if test="assignee !=null and assignee !=''">
+            AND acthitask.ASSIGNEE_ = #{assignee}
+        </if>
+        AND acthitask.END_TIME_ IS NOT NULL
+        UNION
+        SELECT
+        oatask.*, acttask.NAME_ AS task_name,
+        acttask.ASSIGNEE_ AS assignee
+        FROM
+        act_hi_taskinst acthitask
+        LEFT JOIN oa_task oatask ON oatask.proc_inst_id = acthitask.PROC_INST_ID_
+        LEFT JOIN act_ru_task acttask ON oatask.proc_inst_id = acttask.PROC_INST_ID_
+        WHERE
+        oatask.deleted = 0
+        AND oatask.task_state = '0'
+        <if test="assignee !=null and assignee !=''">
+            AND acthitask.ASSIGNEE_ = #{assignee}
+        </if>
+        AND acthitask.END_TIME_ IS NOT NULL
     </select>
 
     <select id="queryTaskDonePage" resultMap="ModelResultMap" parameterType="java.util.Map">
@@ -205,13 +205,13 @@
         task.apply_time,
         task.task_state,
         actTask.assignee_ AS assignee,
-        actTask.NAME_ AS task_name
+        actTask.NAME_ AS task_name,
+        task.apply_code
         FROM
         oa_task task
         LEFT JOIN act_ru_task actTask ON actTask.proc_inst_id_ = task.proc_inst_id
         WHERE
         task.task_state = 0
-        AND task.apply_code = #{condition.userCode}
         UNION
         SELECT
         task.id,
@@ -222,7 +222,8 @@
         task.apply_time,
         task.task_state,
         NULL AS assignee,
-        NULL AS task_name
+        NULL AS task_name,
+        task.apply_code
         FROM
         oa_task task
         WHERE
@@ -231,8 +232,28 @@
         OR task.task_state = 2
         OR task.task_state = 3
         )
-        AND task.apply_code = #{condition.userCode}
         ) aaa
+        <where>
+            1=1
+            <if test="condition.userCode!=null and condition.userCode!=''">
+                AND aaa.apply_code = #{condition.userCode}
+            </if>
+            <if test="condition.taskNo!=null and condition.taskNo!=''">
+                AND aaa.task_no = #{condition.taskNo}
+            </if>
+            <if test="condition.taskState!=null and condition.taskState!=''">
+                AND aaa.task_state = #{condition.taskState}
+            </if>
+            <if test="condition.bizKey!=null and condition.bizKey!=''">
+                AND aaa.biz_key = #{condition.bizKey}
+            </if>
+            <if test="condition.start!=null and condition.start!=''">
+                AND aaa.apply_time &gt;= #{condition.start}
+            </if>
+            <if test="condition.end!=null and condition.end!=''">
+                AND aaa.apply_time &lt; #{condition.end}
+            </if>
+        </where>
         ORDER BY
         aaa.apply_time DESC
         <if test="condition.page==0 or (condition.page !=null and condition.page !='')">

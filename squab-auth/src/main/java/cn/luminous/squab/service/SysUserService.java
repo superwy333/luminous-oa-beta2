@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface SysUserService extends BaseService<SysUer> {
 
+    List<SysUserModel> querySysUserPage(Map condition);
+
     List<SysUer> queryAllUsers(SysUer sysUer);
 
     String getAssignee(String src, String type) throws Exception;
