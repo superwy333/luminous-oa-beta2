@@ -412,25 +412,7 @@ public class WorkFlowController extends BaseController {
             taskList = oaTaskService.queryTaskDonePage(currentUser.getUserCode(), rq.getPage(), rq.getLimit());
             queryCount = oaTaskService.queryTaskDonePage(currentUser.getUserCode(), null, null).size();
             // 处理一下业务类型和当前指派人
-            taskList.stream().forEach(oaTaskModel -> {
-
-                if (oaTaskModel.getAssignee() != null) {
-                    SysUer sysUer = new SysUer();
-                    sysUer.setUserCode(oaTaskModel.getAssignee());
-                    sysUer = sysUserService.queryOne(sysUer);
-                    if (sysUer != null) {
-                        oaTaskModel.setAssignee(sysUer.getName());
-                    }
-                }
-
-                BizMapping bizMapping = new BizMapping();
-                bizMapping.setBizKey(oaTaskModel.getBizKey());
-                bizMapping = bizMappingService.queryOne(bizMapping);
-                if (bizMapping != null) {
-                    oaTaskModel.setBizName(bizMapping.getBizName());
-                }
-
-            });
+            parseTaskList(taskList);
         } catch (Exception e) { // 统一再controller层捕获异常
             log.error("【查询已办任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
@@ -486,36 +468,47 @@ public class WorkFlowController extends BaseController {
 
             // 查询条件
             Map<String, Object> condition = parseListQueryCondition(rq);
-            condition.put("userCode", currentUser.getUserCode());
+            // 如果当前登陆人是管理员，则不需要加入用户搜索纬度
+            if (!currentUser.getUserCode().equals("tt")) {
+                condition.put("userCode", currentUser.getUserCode());
+            }
             oaTaskModelList = oaTaskService.queryMyTaskPage(condition);
             condition.put("page",null);
             condition.put("limit",null);
             queryCount = oaTaskService.queryMyTaskPage(condition).size();
             // 处理一下当前指派人和业务类型
-            oaTaskModelList.stream().forEach(oaTaskModel -> {
-
-                if (oaTaskModel.getAssignee() != null) {
-                    SysUer sysUer = new SysUer();
-                    sysUer.setUserCode(oaTaskModel.getAssignee());
-                    sysUer = sysUserService.queryOne(sysUer);
-                    if (sysUer != null) {
-                        oaTaskModel.setAssignee(sysUer.getName());
-                    }
-                }
-                BizMapping bizMapping = new BizMapping();
-                bizMapping.setBizKey(oaTaskModel.getBizKey());
-                bizMapping = bizMappingService.queryOne(bizMapping);
-                if (bizMapping != null) {
-                    oaTaskModel.setBizName(bizMapping.getBizName());
-                }
-
-            });
+            parseTaskList(oaTaskModelList);
             log.debug("【查询我的任务开始】入参: " + rq.toString());
         } catch (Exception e) {
             log.error("【查询我的任务失败】入参: " + rq.toString(), e);
             return R.nok(e.getMessage());
         }
         return R.ok(oaTaskModelList, queryCount);
+    }
+
+    /**
+     * 处理用于返回给前端的任务列表
+     * @param oaTaskModelList
+     */
+    private void parseTaskList(List<OaTaskModel> oaTaskModelList) {
+        oaTaskModelList.stream().forEach(oaTaskModel -> {
+
+            if (oaTaskModel.getAssignee() != null) {
+                SysUer sysUer = new SysUer();
+                sysUer.setUserCode(oaTaskModel.getAssignee());
+                sysUer = sysUserService.queryOne(sysUer);
+                if (sysUer != null) {
+                    oaTaskModel.setAssignee(sysUer.getName());
+                }
+            }
+            BizMapping bizMapping = new BizMapping();
+            bizMapping.setBizKey(oaTaskModel.getBizKey());
+            bizMapping = bizMappingService.queryOne(bizMapping);
+            if (bizMapping != null) {
+                oaTaskModel.setBizName(bizMapping.getBizName());
+            }
+
+        });
     }
 
 

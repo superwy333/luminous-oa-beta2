@@ -91,7 +91,7 @@ layui.use(['table', 'jquery', 'laydate'], function () {
                     success: function (data) {
                         if (data.code == 0) {
                             layer.msg("操作成功");
-                            window.location.reload();
+                            $('#reload').click();
                         } else {
                             layer.alert("操作失败，失败原因：" + data.msg);
                         }
