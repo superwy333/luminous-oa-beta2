@@ -1,36 +1,31 @@
 package cn.luminous.squab;
 
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
-import org.activiti.image.impl.DefaultProcessDiagramGenerator;
-import org.apache.commons.io.FileUtils;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.apache.shiro.web.session.mgt.WebSessionManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.omg.CORBA.ObjectHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.*;
+
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipInputStream;
@@ -80,14 +75,14 @@ public class ActivitiTest {
 
     @Test
     public void deployWithZip() {
-        InputStream in=this.getClass().getClassLoader().getSystemResourceAsStream("processes/qjlc.zip");
-        ZipInputStream zipInputStream=new ZipInputStream(in);
-        Deployment deployment=processEngine.getRepositoryService()
+        InputStream in = this.getClass().getClassLoader().getSystemResourceAsStream("processes/qjlc.zip");
+        ZipInputStream zipInputStream = new ZipInputStream(in);
+        Deployment deployment = processEngine.getRepositoryService()
                 .createDeployment().addZipInputStream(zipInputStream)
                 .name("请假流程WithZip")
                 .deploy();
-        System.out.println("流程部署ID:"+deployment.getId());
-        System.out.println("流程部署Name:"+deployment.getName());
+        System.out.println("流程部署ID:" + deployment.getId());
+        System.out.println("流程部署Name:" + deployment.getName());
 
     }
 
@@ -95,7 +90,7 @@ public class ActivitiTest {
      * 查询流程定义
      */
     @Test
-    public void findProcessDefinition(){
+    public void findProcessDefinition() {
         List<ProcessDefinition> list = processEngine.getRepositoryService()//与流程定义和部署对象相关的Service
                 .createProcessDefinitionQuery()//创建一个流程定义查询
                 /*指定查询条件,where条件*/
@@ -113,15 +108,15 @@ public class ActivitiTest {
         //.count();//返回结果集数量
         //.listPage(firstResult, maxResults)//分页查询
 
-        if(list != null && list.size()>0){
-            for(ProcessDefinition processDefinition:list){
-                System.out.println("流程定义ID:"+processDefinition.getId());//流程定义的key+版本+随机生成数
-                System.out.println("流程定义名称:"+processDefinition.getName());//对应HelloWorld.bpmn文件中的name属性值
-                System.out.println("流程定义的key:"+processDefinition.getKey());//对应HelloWorld.bpmn文件中的id属性值
-                System.out.println("流程定义的版本:"+processDefinition.getVersion());//当流程定义的key值相同的情况下，版本升级，默认从1开始
-                System.out.println("资源名称bpmn文件:"+processDefinition.getResourceName());
-                System.out.println("资源名称png文件:"+processDefinition.getDiagramResourceName());
-                System.out.println("部署对象ID:"+processDefinition.getDeploymentId());
+        if (list != null && list.size() > 0) {
+            for (ProcessDefinition processDefinition : list) {
+                System.out.println("流程定义ID:" + processDefinition.getId());//流程定义的key+版本+随机生成数
+                System.out.println("流程定义名称:" + processDefinition.getName());//对应HelloWorld.bpmn文件中的name属性值
+                System.out.println("流程定义的key:" + processDefinition.getKey());//对应HelloWorld.bpmn文件中的id属性值
+                System.out.println("流程定义的版本:" + processDefinition.getVersion());//当流程定义的key值相同的情况下，版本升级，默认从1开始
+                System.out.println("资源名称bpmn文件:" + processDefinition.getResourceName());
+                System.out.println("资源名称png文件:" + processDefinition.getDiagramResourceName());
+                System.out.println("部署对象ID:" + processDefinition.getDeploymentId());
                 System.out.println("################################");
             }
         }
@@ -134,9 +129,9 @@ public class ActivitiTest {
     @Test
     public void isEnd() {
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId("150077").singleResult();
-        if (processInstance==null) {
+        if (processInstance == null) {
             System.out.println("流程结束");
-        }else {
+        } else {
             System.out.println("流程未结束");
         }
     }
@@ -169,16 +164,15 @@ public class ActivitiTest {
     }
 
 
-
     /**
      * 删除已经部署的流程
      */
     @Test
     public void delete() {
         String[] ids = {"412540"};
-        for (int i =0;i<ids.length;i++) {
+        for (int i = 0; i < ids.length; i++) {
             processEngine.getRepositoryService()
-                    .deleteDeployment(ids[i],true);
+                    .deleteDeployment(ids[i], true);
         }
 
 
@@ -190,10 +184,10 @@ public class ActivitiTest {
     @Test
     public void start() {
         System.out.println("【Before】Number of process instances: " + runtimeService.createProcessInstanceQuery().count());
-        Map<String,Object> variables = new HashMap<>();
-        variables.put("assignee","aaa");
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("assignee", "aaa");
         processEngine.getRuntimeService()
-                .startProcessInstanceByKey("test-process-01",variables); // 流程实例id传act_re_procdef.KEY
+                .startProcessInstanceByKey("test-process-01", variables); // 流程实例id传act_re_procdef.KEY
         System.out.println("【After】Number of process instances: " + runtimeService.createProcessInstanceQuery().count());
     }
 
@@ -202,7 +196,7 @@ public class ActivitiTest {
      */
     @Test
     public void getVariables() {
-        Map<String,Object> variables = taskService.getVariables("100030");
+        Map<String, Object> variables = taskService.getVariables("100030");
         System.out.println(variables);
 
 
@@ -225,13 +219,13 @@ public class ActivitiTest {
     public void completeTask2() {
         String post = "cwkzy"; // 财务科职员
         String assignee = "";
-        Map<String,Object> variables = new HashMap<>();
-        variables.put("post","zy");
-        variables.put("days",18);
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("post", "zy");
+        variables.put("days", 18);
         if ("cwkzy".equals(post)) assignee = "财务科科长";
         if ("xxkzy".equals(post)) assignee = "信息科科长";
-        variables.put("assignee",assignee);
-        processEngine.getTaskService().complete("70005",variables);
+        variables.put("assignee", assignee);
+        processEngine.getTaskService().complete("70005", variables);
 
     }
 
@@ -242,7 +236,7 @@ public class ActivitiTest {
     @Test
     public void endProcess() {
         taskService.createTaskQuery().list();
-        runtimeService.deleteProcessInstance("415352","delete");
+        runtimeService.deleteProcessInstance("415352", "delete");
 
     }
 
@@ -253,7 +247,7 @@ public class ActivitiTest {
     public void endAllProcess() {
         List<Task> taskList = taskService.createTaskQuery().list();
         taskList.stream().forEach(task -> {
-            runtimeService.deleteProcessInstance(task.getProcessInstanceId(),"delete");
+            runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "delete");
         });
 
 
@@ -278,6 +272,7 @@ public class ActivitiTest {
     /**
      * 获取流程图
      * 解决中文方框问题
+     *
      * @throws Exception
      */
     @Test
@@ -290,13 +285,13 @@ public class ActivitiTest {
         Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
 
         ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-        InputStream inputStream = diagramGenerator.generateDiagram(bpmnModel, "png", new ArrayList<>(),new ArrayList<>(),"宋体","宋体","宋体",null,1.0);
-        FileOutputStream outputStream=new FileOutputStream("D:/a.png");
-        byte[] b=new byte[1024];
-        int red=inputStream.read(b);
-        while(red!=-1){
-            outputStream.write(b,0,red);
-            red=inputStream.read(b);
+        InputStream inputStream = diagramGenerator.generateDiagram(bpmnModel, "png", new ArrayList<>(), new ArrayList<>(), "宋体", "宋体", "宋体", null, 1.0);
+        FileOutputStream outputStream = new FileOutputStream("D:/a.png");
+        byte[] b = new byte[1024];
+        int red = inputStream.read(b);
+        while (red != -1) {
+            outputStream.write(b, 0, red);
+            red = inputStream.read(b);
         }
         outputStream.write(b);
         inputStream.close();
@@ -311,11 +306,11 @@ public class ActivitiTest {
                 .createHistoricTaskInstanceQuery()//创建历史任务实例查询
                 .processInstanceId(processInstanceId)
                 .list();
-        if (list.size()>1) { // 已经审批过一次了
-            HistoricTaskInstance perviousTask = list.get(list.size()-2);
-            System.out.println(list.get(list.size()-2));
+        if (list.size() > 1) { // 已经审批过一次了
+            HistoricTaskInstance perviousTask = list.get(list.size() - 2);
+            System.out.println(list.get(list.size() - 2));
 
-        }else { // 第一个节点
+        } else { // 第一个节点
 
         }
     }
@@ -323,7 +318,7 @@ public class ActivitiTest {
 
     @Test
     public void queryTaskInfo() {
-        Task task=taskService.createTaskQuery() // 创建任务查询
+        Task task = taskService.createTaskQuery() // 创建任务查询
                 .taskId("522626") // 根据任务id查询
                 .singleResult();
         System.out.println(task);
@@ -338,6 +333,29 @@ public class ActivitiTest {
     @Test
     public void testTime() {
         System.out.println(new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()));
+    }
+
+    @Test
+    public void modelCopy() throws Exception {
+        String modelId = "632501";
+        Model sourceModel = repositoryService.createModelQuery().modelId(modelId).singleResult();
+        ObjectNode sourceObjectNode = (ObjectNode) new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelId));
+
+        Model newModel = repositoryService.newModel();
+        newModel.setKey(sourceModel.getKey() + "_" + "111");
+        newModel.setName(sourceModel.getName()+"_copy");
+        newModel.setCategory(sourceModel.getCategory());
+        newModel.setVersion(1);
+        repositoryService.saveModel(newModel);
+        ObjectNode editorNode = sourceObjectNode.deepCopy();
+        ObjectNode properties = new ObjectMapper().createObjectNode();
+        properties.put("process_id", newModel.getKey());
+        properties.put("process_author", "lms");
+        properties.put("name", newModel.getName());
+        editorNode.set("properties", properties);
+
+        repositoryService.addModelEditorSource(newModel.getId(), editorNode.toString().getBytes("utf-8"));
+
     }
 
 }
