@@ -48,9 +48,9 @@
 
             <div class="layui-form-item">
                 <label for="leaderBranch" class="layui-form-label">
-                    <span class="x-red">*</span>分管领导</label>
+                    <span class="x-red"></span>分管领导</label>
                 <div class="layui-input-inline">
-                    <select th:field="*{department.leaderBranch}" id="leaderBranch" name="leaderBranch" class="valid" lay-search lay-verify="required">
+                    <select th:field="*{department.leaderBranch}" id="leaderBranch" name="leaderBranch" class="valid" lay-search>
                         <option value="">请选择</option>
                         <option
                                 th:each="option : ${sysUerList}"
@@ -62,7 +62,7 @@
 
             <div class="layui-form-item">
                 <label for="parentDept" class="layui-form-label">
-                    <span class="x-red">*</span>上级部门</label>
+                    <span class="x-red"></span>上级部门</label>
                 <div class="layui-input-inline">
                     <select th:field="*{department.pid}" id="parentDept" name="parentDept" class="valid" lay-search>
                         <option value="">请选择</option>

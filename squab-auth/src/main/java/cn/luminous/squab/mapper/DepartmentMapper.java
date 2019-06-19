@@ -12,6 +12,8 @@ public interface DepartmentMapper extends IMapper<Department> {
 
     Department queryDepartment(@Param(value = "userCode") String userCode);
 
+    Department queryDepartmentByUserId(@Param(value = "userId") Long userId);
+
     List<DepartmentModel> queryDepartmentsPage(@Param("condition") Map<String,Object> condition);
 
 

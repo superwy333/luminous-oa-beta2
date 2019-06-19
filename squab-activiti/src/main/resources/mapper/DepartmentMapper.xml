@@ -90,6 +90,18 @@
         AND usu.user_code = #{userCode}
     </select>
 
+    <select id="queryDepartmentByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+	    dep.*
+        FROM
+	    sys_user usu
+        LEFT JOIN staffs sta ON usu.staff_id = sta.id
+        LEFT JOIN departments dep ON sta.department_id = dep.id
+        WHERE
+	    usu.deleted = 0
+        AND usu.id = #{userId}
+    </select>
+
     <select id="queryDepartmentsPage" resultMap="ModelResultMap" parameterType="java.util.Map">
         SELECT
         dept.*

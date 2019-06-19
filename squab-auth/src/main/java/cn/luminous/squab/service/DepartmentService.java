@@ -10,5 +10,7 @@ public interface DepartmentService extends BaseService<Department> {
 
     Department queryDepartment(String userCode);
 
+    Department queryDepartmentByUserId(Long userId);
+
     List<DepartmentModel> queryDepartmentsPage(Map condition);
 }

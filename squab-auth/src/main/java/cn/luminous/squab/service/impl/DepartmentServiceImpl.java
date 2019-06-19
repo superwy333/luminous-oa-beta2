@@ -28,6 +28,11 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     }
 
     @Override
+    public Department queryDepartmentByUserId(Long userId) {
+        return departmentMapper.queryDepartmentByUserId(userId);
+    }
+
+    @Override
     public List<DepartmentModel> queryDepartmentsPage(Map condition) {
         return departmentMapper.queryDepartmentsPage(condition);
     }

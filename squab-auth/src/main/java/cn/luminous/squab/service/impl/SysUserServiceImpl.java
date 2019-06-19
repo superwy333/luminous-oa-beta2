@@ -122,6 +122,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         SysUserModel sysUserModel = this.queryUserInfo(userCode);
         variables.put("post", sysUserModel.getPostName());
         variables.put("dept", sysUserModel.getDeptName());
+        variables.put("postId", sysUserModel.getPostId());
+        variables.put("deptId", sysUserModel.getDeptId());
 
         // 申请人 职代人 申请时组装
         if (Constant.PARSE_USERINFO_TYPE.APPLY.equals(type)) {
@@ -137,6 +139,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUer> implements SysUs
         // 当前主办人
         variables.put("operator", sysUserModel.getName());
         variables.put("operatorCode", sysUserModel.getUserCode());
+        variables.put("userId", sysUserModel.getId());
 
         // 是否是部门直属人员
         Department department = departmentService.queryDepartment(sysUserModel.getUserCode());

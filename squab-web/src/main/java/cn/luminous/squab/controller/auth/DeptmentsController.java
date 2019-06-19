@@ -9,6 +9,7 @@ import cn.luminous.squab.entity.http.Rq;
 import cn.luminous.squab.model.DepartmentModel;
 import cn.luminous.squab.service.DepartmentService;
 import cn.luminous.squab.service.SysUserService;
+import cn.luminous.squab.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -101,27 +102,27 @@ public class DeptmentsController extends BaseController {
             departmentModelList.stream().forEach(departmentModel -> {
                 SysUer sysUer = new SysUer();
                 SysUer query = new SysUer();
-                if (departmentModel.getLeader() != null) {
+                if (!BeanUtil.isEmpty(departmentModel.getLeader())) {
                     query.setStaffId(Long.valueOf(departmentModel.getLeader()));
                     sysUer = sysUserService.queryOne(query);
                     departmentModel.setLeaderTxt(sysUer.getName());
                 }
 
-                if (departmentModel.getParentLeader() != null) {
+                if (!BeanUtil.isEmpty(departmentModel.getParentLeader())) {
                     query.setStaffId(Long.valueOf(departmentModel.getParentLeader()));
                     sysUer = sysUserService.queryOne(query);
                     departmentModel.setParentLeaderTxt(sysUer.getName());
                 }
 
 
-                if (departmentModel.getLeaderBranch() != null) {
+                if (!BeanUtil.isEmpty(departmentModel.getLeaderBranch())) {
                     query.setStaffId(Long.valueOf(departmentModel.getLeaderBranch()));
                     sysUer = sysUserService.queryOne(query);
                     departmentModel.setLeaderBranchTxt(sysUer.getName());
                 }
 
                 Department department = departmentService.queryById(Long.valueOf(departmentModel.getPid()));
-                if (department != null) {
+                if (!BeanUtil.isEmpty(department)) {
                     departmentModel.setParentDeptTxt(department.getName());
                 }
 

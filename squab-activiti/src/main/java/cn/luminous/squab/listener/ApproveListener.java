@@ -80,7 +80,7 @@ public class ApproveListener implements TaskListener {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            delegateTask.setAssignee("tt"); // 异常情况把任务给管理员
+            //delegateTask.setAssignee("tt"); // 异常情况把任务给管理员
         }
 
 
