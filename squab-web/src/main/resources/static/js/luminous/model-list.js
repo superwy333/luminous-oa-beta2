@@ -38,39 +38,16 @@ layui.use(['table', 'jquery'], function () {
         var tr = obj.tr; //获得当前行 tr 的DOM对象
 
         if (layEvent === 'edit') {
-            window.parent.parent.location.href='/editor?modelId=' + data.id;
+            window.parent.parent.location.href = '/editor?modelId=' + data.id;
         } else if (layEvent === 'deploy') {
-            xadmin.open('发布模型','/modeler/deploy?modelId=' + data.id,600,400);
-
-
-            // var reqData = {
-            //     bizKey: 'deployModel',
-            //     data: {
-            //         id:data.id
-            //     }
-            // };
-            // $.ajax({
-            //     url: '/modeler/deploy',
-            //     type: 'POST',
-            //     contentType: "application/json; charset=utf-8",
-            //     dataType: 'json',
-            //     data: JSON.stringify(reqData),
-            //     success: function (data) {
-            //         if (data.code==0) {
-            //             layer.msg("操作成功");
-            //         } else {
-            //             layer.alert("操作失败，失败原因：" + data.msg);
-            //         }
-            //     },
-            //     error: function (data) {
-            //         layer.alert("网络超时，请联系管理员");
-            //     }
-            // });
+            xadmin.open('发布模型', '/modeler/deploy?modelId=' + data.id, 600, 400);
+        } else if (layEvent === 'copy') {
+            xadmin.open('复制模型', '/modeler/modelCopy?modelId=' + data.id, 600, 400);
         } else if (layEvent === 'del') {
             var reqData = {
                 bizKey: 'delModel',
                 data: {
-                    id:data.id
+                    id: data.id
                 }
             };
             $.ajax({
@@ -80,7 +57,7 @@ layui.use(['table', 'jquery'], function () {
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
-                    if (data.code==0) {
+                    if (data.code == 0) {
                         layer.msg("操作成功");
                         window.location.reload();
                     } else {
@@ -91,11 +68,11 @@ layui.use(['table', 'jquery'], function () {
                     layer.alert("网络超时，请联系管理员");
                 }
             });
-        }else if (layEvent === 'update') {
+        } else if (layEvent === 'update') {
             var reqData = {
                 bizKey: 'updateDeploy',
                 data: {
-                    modelId:data.id
+                    modelId: data.id
                 }
             };
             $.ajax({
@@ -105,7 +82,7 @@ layui.use(['table', 'jquery'], function () {
                 dataType: 'json',
                 data: JSON.stringify(reqData),
                 success: function (data) {
-                    if (data.code==0) {
+                    if (data.code == 0) {
                         layer.msg("操作成功");
                         //window.location.reload();
                     } else {
