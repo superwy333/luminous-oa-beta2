@@ -11,4 +11,7 @@ public interface OaTaskApproveMapper extends IMapper<OaTaskApprove> {
 
     List<OaTaskApproveModel> queryApproveDetail(@Param("oaTaskId") Long oaTaskId);
 
+
+    List<OaTaskApproveModel> queryOaTaskApproveForPrint(@Param("oaTaskId") Long oaTaskId);
+
 }

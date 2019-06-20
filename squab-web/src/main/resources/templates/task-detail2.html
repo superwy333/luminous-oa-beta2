@@ -56,43 +56,21 @@
         <table data-sort="sortDisabled" align="center">
             <tbody>
             <tr>
-                <td valign="top" colspan="1" rowspan="1"
+                <td th:each="oaTaskApproveModel : ${oaTaskApproveModelList1}"
+                    valign="top" colspan="1" rowspan="1"
                     style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
-                    <span>上级部门：徐炜</span><br>
-                    <span>2019-05-22 08:33:01</span><br>
-                    <span>同意(已核实)</span><br>
-                </td>
-                <td valign="top" colspan="1" rowspan="1"
-                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
-                    <span>上级部门：徐炜</span><br>
-                    <span>2019-05-22 08:33:01</span><br>
-                    <span>同意(已核实)</span><br>
-                </td>
-                <td valign="top" colspan="1" rowspan="1"
-                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
-                    <span>上级部门：徐炜</span><br>
-                    <span>2019-05-22 08:33:01</span><br>
-                    <span>同意(已核实)</span><br>
+                    <span th:text="${oaTaskApproveModel.nodeName}+${oaTaskApproveModel.mh}+${oaTaskApproveModel.approver}"></span><br>
+                    <span th:text="${oaTaskApproveModel.approveTimeStr}"></span><br>
+                    <span th:text="${oaTaskApproveModel.approveResult}"></span><br>
                 </td>
             </tr>
             <tr>
-                <td valign="top" colspan="1" rowspan="1"
+                <td th:each="oaTaskApproveModel : ${oaTaskApproveModelList2}"
+                    valign="top" colspan="1" rowspan="1"
                     style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
-                    <span>上级部门：徐炜</span><br>
-                    <span>2019-05-22 08:33:01</span><br>
-                    <span>同意(已核实)</span><br>
-                </td>
-                <td valign="top" colspan="1" rowspan="1"
-                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
-                    <span>上级部门：徐炜</span><br>
-                    <span>2019-05-22 08:33:01</span><br>
-                    <span>同意(已核实)</span><br>
-                </td>
-                <td valign="top" colspan="1" rowspan="1"
-                    style="border-width: 1px; border-style: solid; height: 70px; width: 33%">
-                    <span>上级部门：徐炜</span><br>
-                    <span>2019-05-22 08:33:01</span><br>
-                    <span>同意(已核实)</span><br>
+                    <span th:text="${oaTaskApproveModel.nodeName}+${oaTaskApproveModel.mh}+${oaTaskApproveModel.approver}"></span><br>
+                    <span th:text="${oaTaskApproveModel.approveTimeStr}"></span><br>
+                    <span th:text="${oaTaskApproveModel.approveResult}"></span><br>
                 </td>
             </tr>
             <tr>
@@ -101,6 +79,7 @@
                 <td valign="top" colspan="2" rowspan="1"
                     style="border-width: 1px; border-style: solid; height: 30px; width: 33%"></td>
             </tr>
+
             </tbody>
         </table>
     </div>
@@ -118,8 +97,8 @@
 
     var ps = $('html').find('p')
     $.each(ps, function (index, value) {
-        if ($(value).html()=='') {
-            $(value).css('display','none')
+        if ($(value).html() == '') {
+            $(value).css('display', 'none')
         }
     })
 
@@ -176,9 +155,6 @@
         $('html').find('textarea').attr("readOnly", "readOnly");
         // 处理一下删除按钮
         $('.delrow').css('display', 'none');
-
-
-
 
 
         // 手工渲染的数据

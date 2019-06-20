@@ -2,6 +2,7 @@ package cn.luminous.squab;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.*;
@@ -21,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -343,7 +342,7 @@ public class ActivitiTest {
 
         Model newModel = repositoryService.newModel();
         newModel.setKey(sourceModel.getKey() + "_" + "111");
-        newModel.setName(sourceModel.getName()+"_copy");
+        newModel.setName(sourceModel.getName() + "_copy");
         newModel.setCategory(sourceModel.getCategory());
         newModel.setVersion(1);
         repositoryService.saveModel(newModel);
@@ -356,6 +355,22 @@ public class ActivitiTest {
 
         repositoryService.addModelEditorSource(newModel.getId(), editorNode.toString().getBytes("utf-8"));
 
+    }
+
+    @Test
+    public void testMo() {
+        int num = 13;
+        int tem = num % 3;
+        System.out.println("分成" + num / 3 + "份");
+        System.out.println("剩余" + tem + "个");
+//        if (num % 3 != 0) {
+//            tem = 3 - num % 10;
+//            System.out.println("分成" + num/3  + "份");
+//            System.out.println("剩余" +tem  + "个");
+//        }else {
+//            System.out.println("分成" + num/3  + "份");
+//            System.out.println("剩余0个");
+//        }
     }
 
 }

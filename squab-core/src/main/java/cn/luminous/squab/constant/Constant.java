@@ -147,5 +147,23 @@ public class Constant {
 
     }
 
+    /**
+     * 任务详情查看类型
+     */
+    public static class TASK_DETAIL_TYPE {
+        /**
+         * 详情
+         */
+        public static final String DETAIL = "1";
+        /**
+         * 编辑
+         */
+        public static final String EDIT = "2";
+        /**
+         * 打印
+         */
+        public static final String PRINT = "3";
+    }
+
 
 }

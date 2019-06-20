@@ -19,6 +19,28 @@ public class OaTaskApproveModel extends BaseDomain {
     private String extField4;
     private String extField5;
 
+    /*
+    给打印页面用的
+     */
+    private String approveTimeStr;
+    private String mh;
+
+    public String getApproveTimeStr() {
+        return approveTimeStr;
+    }
+
+    public void setApproveTimeStr(String approveTimeStr) {
+        this.approveTimeStr = approveTimeStr;
+    }
+
+    public String getMh() {
+        return mh;
+    }
+
+    public void setMh(String mh) {
+        this.mh = mh;
+    }
+
     public String getNodeName() {
         return nodeName;
     }

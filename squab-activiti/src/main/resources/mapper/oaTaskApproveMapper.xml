@@ -47,28 +47,40 @@
 
     <select id="queryApproveDetail" resultMap="ModelResultMap" parameterType="java.lang.Long">
         SELECT
-	    approve.id,
-	    his.NAME_ AS node_name,
-	    approve.approver,
-	    approve.approve_result,
-	    approve.approve_content,
-	    approve.approve_time
+        approve.id,
+        his.NAME_ AS node_name,
+        approve.approver,
+        approve.approve_result,
+        approve.approve_content,
+        approve.approve_time
         FROM
-	    oa_task_approve approve
+        oa_task_approve approve
         LEFT JOIN act_hi_taskinst his ON approve.act_task_id = his.id_
         <where>
             approve.oa_task_id = #{oaTaskId}
         </where>
         ORDER BY
-	    approve.approve_time ASC
+        approve.approve_time ASC
     </select>
 
 
-
-
-
-
-
+    <select id="queryOaTaskApproveForPrint" resultMap="ModelResultMap" parameterType="java.lang.Long">
+        SELECT
+        his.NAME_ AS node_name,
+        users.`name` AS approver,
+        approve.approve_time AS approve_time
+        FROM
+        oa_task_approve approve
+        LEFT JOIN oa_task task ON approve.oa_task_id = task.id
+        LEFT JOIN act_hi_taskinst his ON approve.act_task_id = his.ID_
+        LEFT JOIN sys_user users ON approve.approver = users.user_code
+        <where>
+            approve.deleted = 0
+            AND task.deleted = 0
+            AND task.id = #{oaTaskId}
+        </where>
+        ORDER BY approve.approve_time ASC
+    </select>
 
 
 </mapper>

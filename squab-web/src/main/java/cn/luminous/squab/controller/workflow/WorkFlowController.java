@@ -16,6 +16,7 @@ import cn.luminous.squab.model.OaTaskModel;
 import cn.luminous.squab.model.OaTaskNodeModel;
 import cn.luminous.squab.model.SysUserModel;
 import cn.luminous.squab.service.*;
+import cn.luminous.squab.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class WorkFlowController extends BaseController {
 
     @Autowired
     private OaTaskService oaTaskService;
+    @Autowired
+    private OaTaskApproveService oaTaskApproveService;
     @Autowired
     private DynamicFormService dynamicFormService;
     @Autowired
@@ -143,8 +146,8 @@ public class WorkFlowController extends BaseController {
         try {
             // 业务类型下拉菜单
             List<BizMapping> bizMappingList = bizMappingService.query(new BizMapping());
-            model.addAttribute("bizMappingList",bizMappingList);
-        }catch (Exception e) {
+            model.addAttribute("bizMappingList", bizMappingList);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         m.setViewName("myTask-list");
@@ -180,18 +183,70 @@ public class WorkFlowController extends BaseController {
             oaTaskAttachment.setOaTaskId(Long.valueOf(id));
             List<OaTaskAttachment> oaTaskAttachmentList = oaTaskAttachmentService.query(oaTaskAttachment);
             model.addAttribute("oaTaskAttachmentList", oaTaskAttachmentList);
+
+            // 打印需要的流程流转记录
+            if (Constant.TASK_DETAIL_TYPE.PRINT.equals(type)) {
+                parsePrintData(model, Long.valueOf(id));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if ("1".equals(type)) {
+        if (Constant.TASK_DETAIL_TYPE.DETAIL.equals(type)) {
             m.setViewName("task-detail");
-        } else if ("2".equals(type)) {
+        } else if (Constant.TASK_DETAIL_TYPE.EDIT.equals(type)) {
             m.setViewName("task-edit");
-        } else if ("3".equals(type)) {
+        } else if (Constant.TASK_DETAIL_TYPE.PRINT.equals(type)) {
             m.setViewName("task-detail2");
         }
-
         return m;
+    }
+
+    private void removeSameAndGetLast(List<OaTaskApproveModel> oaTaskApproveModelList) {
+        for (int i = 0; i < oaTaskApproveModelList.size() - 1; i++) {
+            for (int j = oaTaskApproveModelList.size() - 1; j > i; j--) {
+                if (oaTaskApproveModelList.get(j).getNodeName().equals(oaTaskApproveModelList.get(i).getNodeName())) {
+                    oaTaskApproveModelList.remove(i);
+                }
+            }
+        }
+    }
+
+    private void parsePrintData(Model model, Long oaTaskId) throws Exception {
+        List<OaTaskApproveModel> oaTaskApproveModelList = oaTaskApproveService.queryOaTaskApproveForPrint(oaTaskId);
+        removeSameAndGetLast(oaTaskApproveModelList);
+        // 处理approveResult
+        oaTaskApproveModelList.stream().forEach(oaTaskApproveModel -> {
+            oaTaskApproveModel.setApproveResult("同意");
+            oaTaskApproveModel.setMh(":");
+            oaTaskApproveModel.setApproveTimeStr(BeanUtil.formatDate(oaTaskApproveModel.getApproveTime(), "yyyy-MM-dd HH:mm:ss"));
+        });
+        // 拆分两行
+        if (!BeanUtil.isEmpty(oaTaskApproveModelList) && oaTaskApproveModelList.size() > 3) {
+            List<OaTaskApproveModel> oaTaskApproveModelList1 = new ArrayList<>();
+            List<OaTaskApproveModel> oaTaskApproveModelList2 = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                oaTaskApproveModelList1.add(oaTaskApproveModelList.get(i));
+            }
+            for (int i = 3; i < oaTaskApproveModelList.size(); i++) {
+                oaTaskApproveModelList2.add(oaTaskApproveModelList.get(i));
+            }
+            if (oaTaskApproveModelList.size() < 6) { // 补齐
+                int offset = 6 - oaTaskApproveModelList.size();
+                for (int i = 0; i < offset; i++) {
+                    OaTaskApproveModel oaTaskApproveModel = new OaTaskApproveModel();
+                    oaTaskApproveModel.setNodeName("");
+                    oaTaskApproveModel.setApprover("");
+                    oaTaskApproveModel.setApproveTimeStr("");
+                    oaTaskApproveModel.setApproveResult("");
+                    oaTaskApproveModel.setMh("");
+                    oaTaskApproveModelList2.add(oaTaskApproveModel);
+                }
+            }
+            model.addAttribute("oaTaskApproveModelList1", oaTaskApproveModelList1);
+            model.addAttribute("oaTaskApproveModelList2", oaTaskApproveModelList2);
+        } else {
+            model.addAttribute("oaTaskApproveModelList1", oaTaskApproveModelList);
+        }
     }
 
 
@@ -473,8 +528,8 @@ public class WorkFlowController extends BaseController {
                 condition.put("userCode", currentUser.getUserCode());
             }
             oaTaskModelList = oaTaskService.queryMyTaskPage(condition);
-            condition.put("page",null);
-            condition.put("limit",null);
+            condition.put("page", null);
+            condition.put("limit", null);
             queryCount = oaTaskService.queryMyTaskPage(condition).size();
             // 处理一下当前指派人和业务类型
             parseTaskList(oaTaskModelList);
@@ -488,6 +543,7 @@ public class WorkFlowController extends BaseController {
 
     /**
      * 处理用于返回给前端的任务列表
+     *
      * @param oaTaskModelList
      */
     private void parseTaskList(List<OaTaskModel> oaTaskModelList) {
