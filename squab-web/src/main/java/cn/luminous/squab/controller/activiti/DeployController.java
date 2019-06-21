@@ -123,14 +123,14 @@ public class DeployController {
                 bizMapping = bizMappingService.queryOne(bizMapping);
                 if (bizMapping != null) {
                     bizMappingService.remove(bizMapping);
+                    // 同步删除授权
+                    BizMappingAuth bizMappingAuth = new BizMappingAuth();
+                    bizMappingAuth.setBizMappingId(bizMapping.getId());
+                    List<BizMappingAuth> bizMappingAuthList = bizMappingAuthService.query(bizMappingAuth);
+                    bizMappingAuthList.stream().forEach(bizMappingAuth1 -> {
+                        bizMappingAuthService.remove(bizMappingAuth1);
+                    });
                 }
-                // 同步删除授权
-                BizMappingAuth bizMappingAuth = new BizMappingAuth();
-                bizMappingAuth.setBizMappingId(bizMapping.getId());
-                List<BizMappingAuth> bizMappingAuthList = bizMappingAuthService.query(bizMappingAuth);
-                bizMappingAuthList.stream().forEach(bizMappingAuth1 -> {
-                    bizMappingAuthService.remove(bizMappingAuth1);
-                });
             }
             repositoryService.deleteDeployment(deplotmentId);
         } catch (Exception e) {
