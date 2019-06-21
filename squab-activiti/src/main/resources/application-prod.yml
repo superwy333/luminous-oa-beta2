@@ -9,9 +9,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.1.64:3306/laminous_activiti2?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://127.0.0.1:3306/laminous_activiti2?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
       username: root
-      password:
+      password: futianwuye523~
       initial-size: 10
       max-active: 100
       min-idle: 10
