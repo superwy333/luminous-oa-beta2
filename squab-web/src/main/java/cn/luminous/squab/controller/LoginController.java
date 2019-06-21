@@ -51,7 +51,7 @@ public class LoginController {
     @RequestMapping(value = "/loginout")
     public String logout() {
         SecurityUtils.getSubject().logout();
-        return "/login";
+        return "redirect:/login";
     }
 
     @RequestMapping("/index")
